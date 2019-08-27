@@ -1,1 +1,1 @@
-# submarine-admin
+# submarine-admin-backend

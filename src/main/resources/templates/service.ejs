@@ -1,0 +1,44 @@
+package <%= package %>.modules.<%= module %>.service;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import <%= package %>.common.dto.XPage;
+import <%= package %>.modules.<%= module %>.entity.<%= Entity %>;
+import <%= package %>.modules.<%= module %>.mapper.<%= Entity %>Mapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Service
+public class <%= Entity %>Service extends ServiceImpl<<%= Entity %>Mapper, <%= Entity %>> {
+
+    @Resource
+    private <%= Entity %>Mapper <%= entity %>Mapper;
+
+    @Transactional(readOnly = true)
+    public XPage<<%= Entity %>> find<%= Entity %>List(<%= Entity %> <%= entity %>, XPage xPage) {
+        XPage<<%= Entity %>> <%= entity %>XPage = <%= entity %>Mapper.findPage(xPage, <%= entity %>);
+        return <%= entity %>XPage;
+    }
+
+    @Transactional(readOnly = true)
+    public List<<%= Entity %>> find<%= Entity %>List(<%= Entity %> <%= entity %>) {
+        return <%= entity %>Mapper.findList(<%= entity %>);
+    }
+
+    @Transactional
+    public void save<%= Entity %>(<%= Entity %> <%= entity %>) {
+        super.saveOrUpdate(<%= entity %>);
+    }
+
+    @Transactional
+    public <%= Entity %> get<%= Entity %>ById(Long id) {
+        return <%= entity %>Mapper.selectById(id);
+    }
+
+    @Transactional
+    public void delete<%= Entity %>(Long id) {
+        super.removeById(id);
+    }
+}

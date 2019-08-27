@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="<%= package %>.modules.<%= module %>.mapper.<%= Entity %>Mapper">
+
+    <sql id="SelectColumns">
+<% fields.forEach(function(field, index){ -%>
+    <%_ if( fields.length != index+1 ) { -%>
+        a.<%= StrUtil.camelToUnderscore(field.field) %>,
+    <%_ } else { -%>
+        a.<%= StrUtil.camelToUnderscore(field.field) %>
+    <%_ } -%>
+<% }); -%>
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM <%= entity %> a WHERE a.del_flag = #{<%= entity %>.delFlag}
+<% fields.forEach(function(field, index){ -%>
+    <%_ if( field.field != 'delFlag' ) { -%>
+        <if test="<%= entity %>.<%= field.field %> != null and <%= entity %>.<%= field.field %> != ''">
+            AND a.<%= StrUtil.camelToUnderscore(field.field) %> = #{<%= entity %>.<%= field.field %>}
+        </if>
+    <%_ } -%>
+<% }); -%>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="<%= Entity %>">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="<%= Entity %>">
+        <include refid="findList"/>
+    </select>
+
+</mapper>

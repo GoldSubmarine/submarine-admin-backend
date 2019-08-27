@@ -1,0 +1,40 @@
+package <%= package %>.modules.<%= module %>.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import <%= package %>.base.BaseEntity;
+import <%= package %>.modules.<%= module %>.dto.<%= Entity %>Dto;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
+public class <%= Entity %> extends BaseEntity {
+<%
+    function getType(str) {
+        if(str == 'varchar') return 'String';
+        if(str == 'bigint') return 'Long';
+        if(str == 'datetime') return 'Date';
+        if(str == 'int') return 'Integer';
+    } 
+-%>
+<% baseField = ['id', 'remark', 'createBy', 'createTime', 'updateBy', 'updateTime', 'delFlag']; -%>
+
+<% fields.forEach(function(field){ -%>
+    <%_ if( !baseField.includes(field.field) ) { -%>
+    /**
+     * <%= field.comment %>
+     */
+    private <%= getType(field.type) %> <%= field.field %>;
+
+    <%_ } -%>
+<% }); -%>
+
+    public <%= Entity %>Dto toDto() {
+        <%= Entity %>Dto <%= entity %>Dto = super.copyProperties(<%= Entity %>Dto.class);
+        return <%= entity %>Dto;
+    }
+
+}

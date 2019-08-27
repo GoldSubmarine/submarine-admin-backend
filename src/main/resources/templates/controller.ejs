@@ -1,0 +1,69 @@
+package <%= package %>.modules.<%= module %>.controller;
+
+import <%= package %>.common.dto.Result;
+import <%= package %>.common.dto.XPage;
+import <%= package %>.common.util.CommonUtil;
+import <%= package %>.modules.<%= module %>.dto.<%= Entity %>Dto;
+import <%= package %>.modules.<%= module %>.entity.<%= Entity %>;
+import <%= package %>.modules.<%= module %>.service.<%= Entity %>Service;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * @menu <%= entityZh %>
+ */
+@RestController
+@RequestMapping("/<%= entity %>")
+public class <%= Entity %>Controller {
+
+    @Resource
+    private <%= Entity %>Service <%= entity %>Service;
+
+    /**
+     * <%= entityZh %>分页查询
+     */
+    @GetMapping("/list/page")
+    public XPage<<%= Entity %>Dto> findListByPage(<%= Entity %>Dto <%= entity %>Dto, XPage xPage) {
+        XPage<<%= Entity %>> <%= entity %>Page = <%= entity %>Service.find<%= Entity %>List(<%= entity %>Dto.toEntity(), xPage);
+        return <%= entity %>Page.toDto();
+    }
+
+    /**
+     * <%= entityZh %>查询
+     */
+    @GetMapping("/list/all")
+    public List<<%= Entity %>Dto> findList(<%= Entity %>Dto <%= entity %>Dto) {
+        List<<%= Entity %>> <%= entity %>List = <%= entity %>Service.find<%= Entity %>List(<%= entity %>Dto.toEntity());
+        return CommonUtil.toDto(<%= entity %>List);
+    }
+
+    /**
+     * <%= entityZh %>详情
+     */
+    @GetMapping("/detail")
+    public <%= Entity %>Dto getById(Long id) {
+        <%= Entity %> <%= entity %> = <%= entity %>Service.get<%= Entity %>ById(id);
+        return <%= entity %>.toDto();
+    }
+
+    /**
+
+     * <%= entityZh %>保存
+     */
+    @PostMapping("/save")
+    public Result save(@RequestBody <%= Entity %>Dto <%= entity %>Dto) {
+        <%= entity %>Service.save<%= Entity %>(<%= entity %>Dto.toEntity());
+        return Result.successMsg("保存成功");
+    }
+
+    /**
+     * <%= entityZh %>删除
+     */
+    @DeleteMapping("/del")
+    public Result delete(@RequestBody <%= Entity %>Dto <%= entity %>Dto) {
+        <%= entity %>Service.delete<%= Entity %>(<%= entity %>Dto.getId());
+        return Result.successMsg("删除成功");
+    }
+}
