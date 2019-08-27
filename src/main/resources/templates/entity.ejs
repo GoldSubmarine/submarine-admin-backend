@@ -15,10 +15,11 @@ public class <%= Entity %> extends BaseEntity {
 <%
     function getType(str) {
         if(str == 'varchar') return 'String';
+        if(str == 'text') return 'String';
         if(str == 'bigint') return 'Long';
         if(str == 'datetime') return 'Date';
         if(str == 'int') return 'Integer';
-    } 
+    }
 -%>
 <% baseField = ['id', 'remark', 'createBy', 'createTime', 'updateBy', 'updateTime', 'delFlag']; -%>
 

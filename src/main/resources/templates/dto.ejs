@@ -16,6 +16,7 @@ public class <%= Entity %>Dto extends BaseDto {
 <%
     function getType(str) {
         if(str == 'varchar') return 'String';
+        if(str == 'text') return 'String';
         if(str == 'bigint') return 'Long';
         if(str == 'datetime') return 'Date';
         if(str == 'int') return 'Integer';

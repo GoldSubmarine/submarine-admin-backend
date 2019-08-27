@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +33,7 @@ public class PermissionService extends ServiceImpl<PermissionMapper, Permission>
     @Transactional
     public void savePermission(Permission permission) {
         Permission parent = super.getById(permission.getPid());
-        permission.setPids(String.format("%s%s,", parent.getPids(), parent.getId()));
+        permission.setPids(String.format("%s%s,", Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
         super.saveOrUpdate(permission);
     }
 

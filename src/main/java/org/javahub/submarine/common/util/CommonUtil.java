@@ -3,6 +3,7 @@ package org.javahub.submarine.common.util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,9 +119,10 @@ public class CommonUtil {
                 setChildren.invoke(item, itemChild);
             }
             return resultList;
-        } catch (Exception e) {
-            return resultList;
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
         }
+        return resultList;
     }
 
 }
