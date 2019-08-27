@@ -33,7 +33,9 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
     @Transactional
     public void saveMenu(Menu menu) {
         Menu parent = super.getById(menu.getPid());
-        menu.setPids(String.format("%s%s,", Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
+        if(parent != null) {
+            menu.setPids(String.format("%s%s,", Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
+        }
         super.saveOrUpdate(menu);
     }
 

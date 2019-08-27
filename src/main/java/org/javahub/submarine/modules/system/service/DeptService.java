@@ -33,7 +33,9 @@ public class DeptService extends ServiceImpl<DeptMapper, Dept> {
     @Transactional
     public void saveDept(Dept dept) {
         Dept parent = super.getById(dept.getPid());
-        dept.setPids(String.format("%s%s,", Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
+        if(parent != null) {
+            dept.setPids(String.format("%s%s,", Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
+        }
         super.saveOrUpdate(dept);
     }
 

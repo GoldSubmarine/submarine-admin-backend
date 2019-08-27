@@ -33,7 +33,9 @@ public class PermissionService extends ServiceImpl<PermissionMapper, Permission>
     @Transactional
     public void savePermission(Permission permission) {
         Permission parent = super.getById(permission.getPid());
-        permission.setPids(String.format("%s%s,", Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
+        if(parent != null) {
+            permission.setPids(String.format("%s%s,", Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
+        }
         super.saveOrUpdate(permission);
     }
 
