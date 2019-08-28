@@ -8,8 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.javahub.submarine.base.BaseEntity;
-import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.DeptDto;
+import org.javahub.submarine.modules.system.mapstruct.DeptMapStruct;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
@@ -48,9 +49,8 @@ public class Dept extends BaseEntity {
     private List<Dept> children;
 
     public DeptDto toDto() {
-        DeptDto deptDto = super.copyProperties(DeptDto.class);
-        deptDto.setChildren(CommonUtil.toDto(children));
-        return deptDto;
+        DeptMapStruct mapStruct = Mappers.getMapper( DeptMapStruct.class );
+        return mapStruct.toDto(this);
     }
 
 }

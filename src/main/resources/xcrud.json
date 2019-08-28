@@ -15,7 +15,7 @@
     },
     "fields": [
         {
-            "title": "启用禁用",
+            "title": "下拉选择示范",
             "name": "enable",
             "default": "enable",
             "type": "select",
@@ -25,7 +25,7 @@
             ]
         },
         {
-            "title": "地址",
+            "title": "输入框示范",
             "name": "address",
             "default": "",
             "type": "input"

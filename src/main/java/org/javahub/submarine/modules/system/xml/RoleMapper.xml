@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.javahub.submarine.modules.system.mapper.RoleMapper">
+
+    <sql id="SelectColumns">
+        a.id,
+        a.name,
+        a.code,
+        a.remark,
+        a.create_by,
+        a.create_time,
+        a.update_by,
+        a.update_time,
+        a.del_flag
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM role a WHERE a.del_flag = #{role.delFlag}
+        <if test="role.id != null and role.id != ''">
+            AND a.id = #{role.id}
+        </if>
+        <if test="role.name != null and role.name != ''">
+            AND a.name = #{role.name}
+        </if>
+        <if test="role.code != null and role.code != ''">
+            AND a.code = #{role.code}
+        </if>
+        <if test="role.remark != null and role.remark != ''">
+            AND a.remark = #{role.remark}
+        </if>
+        <if test="role.createBy != null and role.createBy != ''">
+            AND a.create_by = #{role.createBy}
+        </if>
+        <if test="role.createTime != null and role.createTime != ''">
+            AND a.create_time = #{role.createTime}
+        </if>
+        <if test="role.updateBy != null and role.updateBy != ''">
+            AND a.update_by = #{role.updateBy}
+        </if>
+        <if test="role.updateTime != null and role.updateTime != ''">
+            AND a.update_time = #{role.updateTime}
+        </if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="Role">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="Role">
+        <include refid="findList"/>
+    </select>
+
+</mapper>

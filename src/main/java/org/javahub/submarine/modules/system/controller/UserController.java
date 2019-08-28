@@ -6,6 +6,7 @@ import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.UserDto;
 import org.javahub.submarine.modules.system.entity.User;
+import org.javahub.submarine.modules.system.mapstruct.UserMapStruct;
 import org.javahub.submarine.modules.system.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +54,7 @@ public class UserController {
     @GetMapping("/list/all")
     public List<UserDto> findList(UserDto userDto) {
         List<User> userList = userService.findUserList(userDto.toEntity());
-        return CommonUtil.toDto(userList);
+        return CommonUtil.toDto(userList, UserMapStruct.class);
     }
 
     /**

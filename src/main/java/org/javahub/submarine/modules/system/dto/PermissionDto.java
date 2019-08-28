@@ -7,8 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.javahub.submarine.base.BaseDto;
-import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.entity.Permission;
+import org.javahub.submarine.modules.system.mapstruct.PermissionMapStruct;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
@@ -41,9 +42,8 @@ public class PermissionDto extends BaseDto {
     private List<PermissionDto> children;
 
     public Permission toEntity() {
-        Permission permission = super.copyProperties(Permission.class);
-        permission.setChildren(CommonUtil.toEntity(children));
-        return permission;
+        PermissionMapStruct mapStruct = Mappers.getMapper( PermissionMapStruct.class );
+        return mapStruct.toEntity(this);
     }
 
 }

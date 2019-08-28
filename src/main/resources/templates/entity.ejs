@@ -34,8 +34,8 @@ public class <%= Entity %> extends BaseEntity {
 <% }); -%>
 
     public <%= Entity %>Dto toDto() {
-        <%= Entity %>Dto <%= entity %>Dto = super.copyProperties(<%= Entity %>Dto.class);
-        return <%= entity %>Dto;
+        <%= Entity %>MapStruct mapStruct = Mappers.getMapper( <%= Entity %>MapStruct.class );
+        return mapStruct.toDto(this);
     }
 
 }

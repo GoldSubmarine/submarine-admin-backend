@@ -5,6 +5,7 @@ import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.MenuDto;
 import org.javahub.submarine.modules.system.entity.Menu;
+import org.javahub.submarine.modules.system.mapstruct.MenuMapStruct;
 import org.javahub.submarine.modules.system.service.MenuService;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,7 @@ public class MenuController {
     @GetMapping("/list/all")
     public List<MenuDto> findList(MenuDto menuDto) {
         List<Menu> menuList = menuService.findMenuList(menuDto.toEntity());
-        return CommonUtil.toDto(menuList);
+        return CommonUtil.toDto(menuList, MenuMapStruct.class);
     }
 
     /**
@@ -56,7 +57,7 @@ public class MenuController {
     public List<MenuDto> getMenuTree() {
         List<Menu> menuList = menuService.findMenuList(new Menu());
         List<Menu> treeList = CommonUtil.listToTree(menuList);
-        return CommonUtil.toDto(treeList);
+        return CommonUtil.toDto(treeList, MenuMapStruct.class);
     }
 
     /**

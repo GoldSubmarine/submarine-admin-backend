@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.javahub.submarine.base.BaseDto;
 import org.javahub.submarine.modules.system.entity.User;
+import org.javahub.submarine.modules.system.mapstruct.UserMapStruct;
+import org.mapstruct.factory.Mappers;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -76,8 +78,8 @@ public class UserDto extends BaseDto {
 
 
     public User toEntity() {
-        User user = super.copyProperties(User.class);
-        return user;
+        UserMapStruct mapStruct = Mappers.getMapper( UserMapStruct.class );
+        return mapStruct.toEntity(this);
     }
 
 }

@@ -5,6 +5,7 @@ import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.DeptDto;
 import org.javahub.submarine.modules.system.entity.Dept;
+import org.javahub.submarine.modules.system.mapstruct.DeptMapStruct;
 import org.javahub.submarine.modules.system.service.DeptService;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,7 @@ public class DeptController {
     @GetMapping("/list/all")
     public List<DeptDto> findList(DeptDto deptDto) {
         List<Dept> deptList = deptService.findDeptList(deptDto.toEntity());
-        return CommonUtil.toDto(deptList);
+        return CommonUtil.toDto(deptList, DeptMapStruct.class);
     }
 
     /**
@@ -56,7 +57,7 @@ public class DeptController {
     public List<DeptDto> getDeptTree() {
         List<Dept> deptList = deptService.findDeptList(new Dept());
         List<Dept> treeList = CommonUtil.listToTree(deptList);
-        return CommonUtil.toDto(treeList);
+        return CommonUtil.toDto(treeList, DeptMapStruct.class);
     }
 
     /**

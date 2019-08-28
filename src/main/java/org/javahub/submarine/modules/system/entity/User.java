@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.javahub.submarine.base.BaseEntity;
 import org.javahub.submarine.common.constant.GlobalConst;
 import org.javahub.submarine.modules.system.dto.UserDto;
+import org.javahub.submarine.modules.system.mapstruct.UserMapStruct;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
@@ -112,7 +114,7 @@ public class User extends BaseEntity {
     }
 
     public UserDto toDto() {
-        UserDto userDto = super.copyProperties(UserDto.class);
-        return userDto;
+        UserMapStruct mapStruct = Mappers.getMapper( UserMapStruct.class );
+        return mapStruct.toDto(this);
     }
 }

@@ -8,8 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.javahub.submarine.base.BaseEntity;
-import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.MenuDto;
+import org.javahub.submarine.modules.system.mapstruct.MenuMapStruct;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
@@ -48,9 +49,8 @@ public class Menu extends BaseEntity {
     private List<Menu> children;
 
     public MenuDto toDto() {
-        MenuDto menuDto = super.copyProperties(MenuDto.class);
-        menuDto.setChildren(CommonUtil.toDto(children));
-        return menuDto;
+        MenuMapStruct mapStruct = Mappers.getMapper( MenuMapStruct.class );
+        return mapStruct.toDto(this);
     }
 
 }

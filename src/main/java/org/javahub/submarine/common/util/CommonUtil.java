@@ -1,6 +1,8 @@
 package org.javahub.submarine.common.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.javahub.submarine.base.BaseMapStruct;
+import org.mapstruct.factory.Mappers;
 import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -14,17 +16,19 @@ import java.util.stream.Collectors;
 public class CommonUtil {
 
     /**
-     * 反射调用 list 的 toDto 方法
+     * 调用 list 的 toDto 方法
      */
-    public static <V, T> List<V> toDto(List<T> source) {
-        return invokeMethod(source, "toDto");
+    public static <V, T> List<V> toDto(List<T> source, Class<? extends BaseMapStruct> mapStruct) {
+        BaseMapStruct mapper = Mappers.getMapper(mapStruct);
+        return mapper.toDto(source);
     }
 
     /**
-     * 反射调用 list 的 toEntity 方法
+     * 调用 list 的 toDto 方法
      */
-    public static <V, T> List<V> toEntity(List<T> source) {
-        return invokeMethod(source, "toEntity");
+    public static <V, T> List<V> toEntity(List<T> source, Class<? extends BaseMapStruct> mapStruct) {
+        BaseMapStruct mapper = Mappers.getMapper(mapStruct);
+        return mapper.toEntity(source);
     }
 
     /**
@@ -65,6 +69,7 @@ public class CommonUtil {
             toDto.setAccessible(true);
             return (V) toDto.invoke(item);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

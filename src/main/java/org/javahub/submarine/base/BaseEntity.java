@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.javahub.submarine.common.constant.GlobalConst;
-import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -58,26 +57,5 @@ public abstract class BaseEntity implements Serializable {
      */
     @TableLogic
     private Integer delFlag = GlobalConst.UNDEL_FLAG;
-
-    protected <T> T copyProperties(Class<T> target) {
-        // 如果自身实现了toDto方法，则调用
-//        try {
-//            Method toDto = null;
-//            toDto = this.getClass().getMethod("toDto");
-//            toDto.setAccessible(true);
-//            return (T)toDto.invoke(this);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        // 自身没有toDto，则浅拷贝
-        try {
-            T targetInstance = target.newInstance();
-            BeanUtils.copyProperties(this, targetInstance);
-            return targetInstance;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 }

@@ -5,6 +5,7 @@ import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.PermissionDto;
 import org.javahub.submarine.modules.system.entity.Permission;
+import org.javahub.submarine.modules.system.mapstruct.PermissionMapStruct;
 import org.javahub.submarine.modules.system.service.PermissionService;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,7 @@ public class PermissionController {
     @GetMapping("/list/all")
     public List<PermissionDto> findList(PermissionDto permissionDto) {
         List<Permission> permissionList = permissionService.findPermissionList(permissionDto.toEntity());
-        return CommonUtil.toDto(permissionList);
+        return CommonUtil.toDto(permissionList, PermissionMapStruct.class);
     }
 
     /**
@@ -56,7 +57,7 @@ public class PermissionController {
     public List<PermissionDto> getPermissionTree() {
         List<Permission> permissionList = permissionService.findPermissionList(new Permission());
         List<Permission> treeList = CommonUtil.listToTree(permissionList);
-        return CommonUtil.toDto(treeList);
+        return CommonUtil.toDto(treeList, PermissionMapStruct.class);
     }
 
     /**

@@ -45,8 +45,8 @@ public class PermissionService extends ServiceImpl<PermissionMapper, Permission>
     }
 
     @Transactional
-    public void deletePermission(Long id) {
-        List<Permission> permissionList = super.lambdaQuery().like(id != null, Permission::getPids, id).list();
+    public void deletePermission(long id) {
+        List<Permission> permissionList = super.lambdaQuery().like(Permission::getPids, id).list();
         List<Long> ids = permissionList.stream().map(BaseEntity::getId).collect(Collectors.toList());
         ids.add(id);
         super.removeByIds(ids);
