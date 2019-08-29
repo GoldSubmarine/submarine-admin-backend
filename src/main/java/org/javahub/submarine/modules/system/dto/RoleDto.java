@@ -9,6 +9,8 @@ import org.javahub.submarine.modules.system.entity.Role;
 import org.javahub.submarine.modules.system.mapstruct.RoleMapStruct;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -26,6 +28,15 @@ public class RoleDto extends BaseDto {
      */
     private String code;
 
+    /**
+     * 权限
+     */
+    private List<PermissionDto> permissionList;
+
+    /**
+     * 菜单
+     */
+    private List<MenuDto> menuList;
 
     public Role toEntity() {
         RoleMapStruct mapStruct = Mappers.getMapper( RoleMapStruct.class );

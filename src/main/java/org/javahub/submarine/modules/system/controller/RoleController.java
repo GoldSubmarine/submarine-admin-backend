@@ -44,18 +44,35 @@ public class RoleController {
      * 角色详情
      */
     @GetMapping("/detail")
-    public RoleDto getById(Long id) {
+    public RoleDto getById(long id) {
         Role role = roleService.getRoleById(id);
         return role.toDto();
     }
 
     /**
-
      * 角色保存
      */
     @PostMapping("/save")
-    public Result save(@RequestBody RoleDto roleDto) {
+    public Result save(RoleDto roleDto) {
         roleService.saveRole(roleDto.toEntity());
+        return Result.successMsg("保存成功");
+    }
+
+    /**
+     * 角色的权限保存
+     */
+    @PostMapping("/permission/save")
+    public Result saveRolePermission(long id, @RequestParam(value = "permissionList") List<Long> permissionList) {
+        roleService.saveRolePermission(id, permissionList);
+        return Result.successMsg("保存成功");
+    }
+
+    /**
+     * 角色的菜单保存
+     */
+    @PostMapping("/menu/save")
+    public Result saveRoleMenu(long id, @RequestParam(value = "menuList") List<Long> menuList) {
+        roleService.saveRoleMenu(id, menuList);
         return Result.successMsg("保存成功");
     }
 
@@ -63,7 +80,7 @@ public class RoleController {
      * 角色删除
      */
     @DeleteMapping("/del")
-    public Result delete(@RequestBody RoleDto roleDto) {
+    public Result delete(RoleDto roleDto) {
         roleService.deleteRole(roleDto.getId());
         return Result.successMsg("删除成功");
     }

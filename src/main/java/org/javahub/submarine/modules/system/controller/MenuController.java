@@ -64,7 +64,7 @@ public class MenuController {
      * 菜单保存
      */
     @PostMapping("/save")
-    public Result save(@RequestBody MenuDto menuDto) {
+    public Result save(MenuDto menuDto) {
         menuService.saveMenu(menuDto.toEntity());
         return Result.successMsg("保存成功");
     }
@@ -73,7 +73,7 @@ public class MenuController {
      * 菜单删除
      */
     @DeleteMapping("/del")
-    public Result delete(@RequestBody MenuDto menuDto) {
+    public Result delete(MenuDto menuDto) {
         menuService.deleteMenu(menuDto.getId());
         return Result.successMsg("删除成功");
     }

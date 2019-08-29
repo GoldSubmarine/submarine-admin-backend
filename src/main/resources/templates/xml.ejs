@@ -16,7 +16,7 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM <%= entity %> a WHERE a.del_flag = #{<%= entity %>.delFlag}
+        FROM <%= StrUtil.camelToUnderscore(tableName) %> a WHERE a.del_flag = #{<%= entity %>.delFlag}
 <% fields.forEach(function(field, index){ -%>
     <%_ if( field.field != 'delFlag' ) { -%>
         <if test="<%= entity %>.<%= field.field %> != null and <%= entity %>.<%= field.field %> != ''">

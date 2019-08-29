@@ -33,7 +33,7 @@ public class <%= Entity %>Service extends ServiceImpl<<%= Entity %>Mapper, <%= E
     }
 
     @Transactional
-    public <%= Entity %> get<%= Entity %>ById(Long id) {
+    public <%= Entity %> get<%= Entity %>ById(long id) {
         return <%= entity %>Mapper.selectById(id);
     }
 

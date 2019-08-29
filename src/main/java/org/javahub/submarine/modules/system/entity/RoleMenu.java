@@ -10,12 +10,12 @@ import org.javahub.submarine.base.BaseEntity;
 @NoArgsConstructor
 @Data
 @Builder
-public class RolePermission extends BaseEntity {
+public class RoleMenu extends BaseEntity {
 
     /**
-     * 权限id
+     * 菜单id
      */
-    private Long permissionId;
+    private Long menuId;
 
     /**
      * 角色id

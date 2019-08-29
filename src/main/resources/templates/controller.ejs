@@ -22,7 +22,7 @@ public class <%= Entity %>Controller {
     private <%= Entity %>Service <%= entity %>Service;
 
     /**
-     * <%= entityZh %>分页查询
+     * 分页查询
      */
     @GetMapping("/list/page")
     public XPage<<%= Entity %>Dto> findListByPage(<%= Entity %>Dto <%= entity %>Dto, XPage xPage) {
@@ -31,7 +31,7 @@ public class <%= Entity %>Controller {
     }
 
     /**
-     * <%= entityZh %>查询
+     * 查询
      */
     @GetMapping("/list/all")
     public List<<%= Entity %>Dto> findList(<%= Entity %>Dto <%= entity %>Dto) {
@@ -40,29 +40,29 @@ public class <%= Entity %>Controller {
     }
 
     /**
-     * <%= entityZh %>详情
+     * 详情
      */
     @GetMapping("/detail")
-    public <%= Entity %>Dto getById(Long id) {
+    public <%= Entity %>Dto getById(long id) {
         <%= Entity %> <%= entity %> = <%= entity %>Service.get<%= Entity %>ById(id);
         return <%= entity %>.toDto();
     }
 
     /**
 
-     * <%= entityZh %>保存
+     * 保存
      */
     @PostMapping("/save")
-    public Result save(@RequestBody <%= Entity %>Dto <%= entity %>Dto) {
+    public Result save(<%= Entity %>Dto <%= entity %>Dto) {
         <%= entity %>Service.save<%= Entity %>(<%= entity %>Dto.toEntity());
         return Result.successMsg("保存成功");
     }
 
     /**
-     * <%= entityZh %>删除
+     * 删除
      */
     @DeleteMapping("/del")
-    public Result delete(@RequestBody <%= Entity %>Dto <%= entity %>Dto) {
+    public Result delete(<%= Entity %>Dto <%= entity %>Dto) {
         <%= entity %>Service.delete<%= Entity %>(<%= entity %>Dto.getId());
         return Result.successMsg("删除成功");
     }

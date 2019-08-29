@@ -64,7 +64,7 @@ public class PermissionController {
      * 权限保存
      */
     @PostMapping("/save")
-    public Result save(@RequestBody PermissionDto permissionDto) {
+    public Result save(PermissionDto permissionDto) {
         permissionService.savePermission(permissionDto.toEntity());
         return Result.successMsg("保存成功");
     }
@@ -73,7 +73,7 @@ public class PermissionController {
      * 权限删除
      */
     @DeleteMapping("/del")
-    public Result delete(@RequestBody PermissionDto permissionDto) {
+    public Result delete(PermissionDto permissionDto) {
         permissionService.deletePermission(permissionDto.getId());
         return Result.successMsg("删除成功");
     }
