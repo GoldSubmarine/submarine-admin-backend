@@ -1,25 +1,27 @@
 package org.javahub.submarine.modules.system.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.javahub.submarine.base.BaseEntity;
-import org.javahub.submarine.common.constant.GlobalConst;
 import org.javahub.submarine.modules.system.dto.UserDto;
 import org.javahub.submarine.modules.system.mapstruct.UserMapStruct;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
 public class User extends BaseEntity {
 
     /**
-     * 用户名
+     * 登录名
      */
     private String username;
 
@@ -29,9 +31,9 @@ public class User extends BaseEntity {
     private String password;
 
     /**
-     * 昵称
+     * 姓名
      */
-    private String nickName;
+    private String name;
 
     /**
      * 手机号
@@ -56,22 +58,23 @@ public class User extends BaseEntity {
     /**
      * 头像
      */
-    private String avatar = GlobalConst.DEFAULT_AVATAR;
-
-    /**
-     * 用户类型
-     */
-    private UserType type = UserType.staff;
+    private String avatar;
 
     /**
      * 状态（启用禁用）
      */
-    private StatusType status = StatusType.on;
+    private String status;
 
     /**
      * 部门id
      */
-    private String deptId;
+    @JsonSerialize(using= ToStringSerializer.class)
+    private Long deptId;
+
+    /**
+     * 部门ids（包含自身）
+     */
+    private String deptIds;
 
     /**
      * 部门名称
@@ -79,42 +82,19 @@ public class User extends BaseEntity {
     private String deptName;
 
     /**
-     * 角色
+     * jwt密钥
      */
-//    private List<Role> roleList;
+    private String jwtSecret;
 
     /**
-     * 权限
+     * 角色
      */
-    private List<Permission> permissionList;
-
-
-    public enum StatusType {
-        /**
-         * 启用
-         */
-        on,
-
-        /**
-         * 禁用
-         */
-        off
-    }
-
-    public enum UserType {
-        /**
-         * 超级管理员
-         */
-        superAdmin,
-
-        /**
-         * 员工
-         */
-        staff
-    }
+    @TableField(exist = false)
+    private List<Role> roleList;
 
     public UserDto toDto() {
         UserMapStruct mapStruct = Mappers.getMapper( UserMapStruct.class );
         return mapStruct.toDto(this);
     }
+
 }

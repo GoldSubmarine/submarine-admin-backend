@@ -12,6 +12,8 @@ spring:
     password:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
+      validationQuery: SELECT 1
+      testWhileIdle: true
       stat-view-servlet:
         # 默认true 内置监控页面首页/druid/index.html
         enabled: true
@@ -24,6 +26,9 @@ spring:
         allow:
         # IP黑名单
         deny:
+  jackson:
+    serialization:
+      write_dates_as_timestamps: true
 mybatis-plus:
   mapper-locations: classpath:org/javahub/submarine/**/xml/*.xml
   type-aliases-package: org.javahub.submarine

@@ -1,5 +1,6 @@
 package org.javahub.submarine.common.util;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.javahub.submarine.base.BaseMapStruct;
 import org.mapstruct.factory.Mappers;
@@ -128,6 +129,13 @@ public class CommonUtil {
             e.printStackTrace();
         }
         return resultList;
+    }
+
+    /**
+     * 获取随机字符串
+     */
+    public static String getRandomString(int length) {
+        return RandomStringUtils.randomGraph(length);
     }
 
 }

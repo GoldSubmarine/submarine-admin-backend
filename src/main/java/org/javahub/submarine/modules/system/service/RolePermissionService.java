@@ -1,5 +1,6 @@
 package org.javahub.submarine.modules.system.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.modules.system.entity.RolePermission;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RolePermissionService extends ServiceImpl<RolePermissionMapper, RolePermission> {
@@ -27,9 +29,17 @@ public class RolePermissionService extends ServiceImpl<RolePermissionMapper, Rol
         return rolePermissionMapper.findList(rolePermission);
     }
 
+    /**
+     * 保存角色的权限
+     */
     @Transactional
-    public void saveRolePermission(RolePermission rolePermission) {
-        super.saveOrUpdate(rolePermission);
+    public void saveRolePermission(long roleId, List<Long> permissionIdList) {
+        // 删除旧的
+        super.remove(new QueryWrapper<>(new RolePermission()).lambda().eq(RolePermission::getRoleId, roleId));
+        List<RolePermission> rolePermissionList = permissionIdList.stream()
+                .map(item -> RolePermission.builder().permissionId(item).roleId(roleId).build())
+                .collect(Collectors.toList());
+        super.saveBatch(rolePermissionList);
     }
 
     @Transactional

@@ -6,16 +6,17 @@
         a.id,
         a.username,
         a.password,
-        a.nick_name,
+        a.name,
         a.phone,
         a.email,
         a.address,
         a.sex,
         a.avatar,
-        a.type,
         a.status,
         a.dept_id,
+        a.dept_ids,
         a.dept_name,
+        a.jwt_secret,
         a.remark,
         a.create_by,
         a.create_time,
@@ -24,8 +25,8 @@
         a.del_flag
     </sql>
 
-    <!--动态检索片段-->
-    <sql id="findUser">
+    <!--列表查询-->
+    <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
         FROM user a WHERE a.del_flag = #{user.delFlag}
@@ -33,22 +34,22 @@
             AND a.id = #{user.id}
         </if>
         <if test="user.username != null and user.username != ''">
-            AND a.username = #{user.username}
+            AND a.username LIKE concat('%',#{user.username},'%')
         </if>
-        <if test="user.password != null and user.password != ''">
-            AND a.password = #{user.password}
-        </if>
-        <if test="user.nickName != null and user.nickName != ''">
-            AND a.nick_name = #{user.nickName}
+        <!--<if test="user.password != null and user.password != ''">-->
+            <!--AND a.password = #{user.password}-->
+        <!--</if>-->
+        <if test="user.name != null and user.name != ''">
+            AND a.name LIKE concat('%',#{user.name},'%')
         </if>
         <if test="user.phone != null and user.phone != ''">
-            AND a.phone = #{user.phone}
+            AND a.phone LIKE concat('%',#{user.phone},'%')
         </if>
         <if test="user.email != null and user.email != ''">
-            AND a.email = #{user.email}
+            AND a.email LIKE concat('%',#{user.email},'%')
         </if>
         <if test="user.address != null and user.address != ''">
-            AND a.address = #{user.address}
+            AND a.address LIKE concat('%',#{user.address},'%')
         </if>
         <if test="user.sex != null and user.sex != ''">
             AND a.sex = #{user.sex}
@@ -56,20 +57,23 @@
         <if test="user.avatar != null and user.avatar != ''">
             AND a.avatar = #{user.avatar}
         </if>
-        <if test="user.type != null and user.type != ''">
-            AND a.type = #{user.type}
-        </if>
         <if test="user.status != null and user.status != ''">
             AND a.status = #{user.status}
         </if>
         <if test="user.deptId != null and user.deptId != ''">
             AND a.dept_id = #{user.deptId}
         </if>
+        <if test="user.deptIds != null and user.deptIds != ''">
+            AND a.dept_ids LIKE concat('%',#{user.deptIds},'%')
+        </if>
         <if test="user.deptName != null and user.deptName != ''">
-            AND a.dept_name = #{user.deptName}
+            AND a.dept_name LIKE concat('%',#{user.deptName},'%')
+        </if>
+        <if test="user.jwtSecret != null and user.jwtSecret != ''">
+            AND a.jwt_secret = #{user.jwtSecret}
         </if>
         <if test="user.remark != null and user.remark != ''">
-            AND a.remark = #{user.remark}
+            AND a.remark LIKE concat('%',#{user.remark},'%')
         </if>
         <if test="user.createBy != null and user.createBy != ''">
             AND a.create_by = #{user.createBy}
@@ -86,13 +90,13 @@
     </sql>
 
     <!--分页查询-->
-    <select id="findPage" resultType="org.javahub.submarine.modules.system.entity.User">
-        <include refid="findUser"/>
+    <select id="findPage" resultType="User">
+        <include refid="findList"/>
     </select>
 
     <!--列表查询-->
-    <select id="findList" resultType="org.javahub.submarine.modules.system.entity.User">
-        <include refid="findUser"/>
+    <select id="findList" resultType="User">
+        <include refid="findList"/>
     </select>
 
 </mapper>

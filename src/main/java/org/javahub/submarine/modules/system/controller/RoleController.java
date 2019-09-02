@@ -6,6 +6,8 @@ import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.RoleDto;
 import org.javahub.submarine.modules.system.entity.Role;
 import org.javahub.submarine.modules.system.mapstruct.RoleMapStruct;
+import org.javahub.submarine.modules.system.service.RoleMenuService;
+import org.javahub.submarine.modules.system.service.RolePermissionService;
 import org.javahub.submarine.modules.system.service.RoleService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,12 @@ public class RoleController {
 
     @Resource
     private RoleService roleService;
+
+    @Resource
+    private RoleMenuService roleMenuService;
+
+    @Resource
+    private RolePermissionService rolePermissionService;
 
     /**
      * 角色分页查询
@@ -63,7 +71,7 @@ public class RoleController {
      */
     @PostMapping("/permission/save")
     public Result saveRolePermission(long id, @RequestParam(value = "permissionList") List<Long> permissionList) {
-        roleService.saveRolePermission(id, permissionList);
+        rolePermissionService.saveRolePermission(id, permissionList);
         return Result.successMsg("保存成功");
     }
 
@@ -72,7 +80,7 @@ public class RoleController {
      */
     @PostMapping("/menu/save")
     public Result saveRoleMenu(long id, @RequestParam(value = "menuList") List<Long> menuList) {
-        roleService.saveRoleMenu(id, menuList);
+        roleMenuService.saveRoleMenu(id, menuList);
         return Result.successMsg("保存成功");
     }
 

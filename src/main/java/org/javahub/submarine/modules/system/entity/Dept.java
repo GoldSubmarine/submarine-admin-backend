@@ -48,6 +48,22 @@ public class Dept extends BaseEntity {
     @TableField(exist=false)
     private List<Dept> children;
 
+    /**
+     * 发布修改部门名称的事件
+     */
+    public UpdateName updateName() {
+        return new UpdateName();
+    }
+
+    public class UpdateName {
+        public String getName() {
+            return name;
+        }
+        public Long getId() {
+            return id;
+        }
+    }
+
     public DeptDto toDto() {
         DeptMapStruct mapStruct = Mappers.getMapper( DeptMapStruct.class );
         return mapStruct.toDto(this);

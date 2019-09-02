@@ -58,6 +58,10 @@
         {
             "template": "xml.ejs",
             "path": "../java/<%= packagePath %>/modules/<%= module %>/xml/<%= Entity %>Mapper.xml"
+        },
+        {
+            "template": "mapStruct.ejs",
+            "path": "../java/<%= packagePath %>/modules/<%= module %>/mapStruct/<%= Entity %>MapStruct.java"
         }
     ]
 }

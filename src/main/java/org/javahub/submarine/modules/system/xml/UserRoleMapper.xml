@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.javahub.submarine.modules.system.mapper.UserRoleMapper">
+
+    <sql id="SelectColumns">
+        a.id,
+        a.user_id,
+        a.role_id,
+        a.remark,
+        a.create_by,
+        a.create_time,
+        a.update_by,
+        a.update_time,
+        a.del_flag
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM user_role a WHERE a.del_flag = #{userRole.delFlag}
+        <if test="userRole.id != null and userRole.id != ''">
+            AND a.id = #{userRole.id}
+        </if>
+        <if test="userRole.userId != null and userRole.userId != ''">
+            AND a.user_id = #{userRole.userId}
+        </if>
+        <if test="userRole.roleId != null and userRole.roleId != ''">
+            AND a.role_id = #{userRole.roleId}
+        </if>
+        <if test="userRole.remark != null and userRole.remark != ''">
+            AND a.remark = #{userRole.remark}
+        </if>
+        <if test="userRole.createBy != null and userRole.createBy != ''">
+            AND a.create_by = #{userRole.createBy}
+        </if>
+        <if test="userRole.createTime != null and userRole.createTime != ''">
+            AND a.create_time = #{userRole.createTime}
+        </if>
+        <if test="userRole.updateBy != null and userRole.updateBy != ''">
+            AND a.update_by = #{userRole.updateBy}
+        </if>
+        <if test="userRole.updateTime != null and userRole.updateTime != ''">
+            AND a.update_time = #{userRole.updateTime}
+        </if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="UserRole">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="UserRole">
+        <include refid="findList"/>
+    </select>
+
+    <!--根据userid-->
+    <select id="getRoleById" resultType="Role">
+        SELECT b.* FROM
+            user_role a
+            LEFT JOIN role b ON a.role_id= b.id
+        WHERE
+            a.del_flag = 0 AND a.user_id = #{userId}
+    </select>
+
+</mapper>

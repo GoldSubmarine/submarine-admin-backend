@@ -20,32 +20,32 @@ public abstract class BaseDto implements Serializable {
      * 主键
      */
     @JsonSerialize(using= ToStringSerializer.class)
-    private Long id;
+    protected Long id;
 
     /**
      * 备注
      */
-    private String remark;
+    protected String remark;
 
     /**
      * 创建人
      */
-    private String createBy;
+    protected String createBy;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    protected Date createTime;
 
     /**
      * 更新人
      */
-    private String updateBy;
+    protected String updateBy;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    protected Date updateTime;
 
     /**
      * 逻辑删除（0未删除，1已删除）

@@ -25,7 +25,7 @@
             AND a.id = #{dept.id}
         </if>
         <if test="dept.name != null and dept.name != ''">
-            AND a.name = #{dept.name}
+            AND a.name LIKE concat('%',#{dept.name},'%')
         </if>
         <if test="dept.code != null and dept.code != ''">
             AND a.code = #{dept.code}

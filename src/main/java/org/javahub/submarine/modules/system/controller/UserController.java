@@ -40,7 +40,7 @@ public class UserController {
     }
 
     /**
-     * 用户分页查询
+     * 分页查询
      */
     @GetMapping("/list/page")
     public XPage<UserDto> findListByPage(UserDto userDto, XPage xPage) {
@@ -49,7 +49,7 @@ public class UserController {
     }
 
     /**
-     * 用户查询
+     * 查询
      */
     @GetMapping("/list/all")
     public List<UserDto> findList(UserDto userDto) {
@@ -58,17 +58,17 @@ public class UserController {
     }
 
     /**
-     * 用户详情
+     * 详情
      */
     @GetMapping("/detail")
-    public UserDto getById(Long id) {
+    public UserDto getById(long id) {
         User user = userService.getUserById(id);
         return user.toDto();
     }
 
     /**
 
-     * 用户保存
+     * 保存
      */
     @PostMapping("/save")
     public Result save(UserDto userDto) {
@@ -77,11 +77,11 @@ public class UserController {
     }
 
     /**
-     * 用户删除
+     * 删除
      */
     @DeleteMapping("/del")
-    public Result delete(Long id) {
-        userService.deleteUser(id);
+    public Result delete(UserDto userDto) {
+        userService.deleteUser(userDto.getId());
         return Result.successMsg("删除成功");
     }
 }

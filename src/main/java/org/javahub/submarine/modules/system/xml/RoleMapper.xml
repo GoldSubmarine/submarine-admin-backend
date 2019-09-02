@@ -23,13 +23,13 @@
             AND a.id = #{role.id}
         </if>
         <if test="role.name != null and role.name != ''">
-            AND a.name = #{role.name}
+            AND a.name LIKE concat('%',#{role.name},'%')
         </if>
         <if test="role.code != null and role.code != ''">
-            AND a.code = #{role.code}
+            AND a.code LIKE concat('%',#{role.code},'%')
         </if>
         <if test="role.remark != null and role.remark != ''">
-            AND a.remark = #{role.remark}
+            AND a.remark LIKE concat('%',#{role.remark},'%')
         </if>
         <if test="role.createBy != null and role.createBy != ''">
             AND a.create_by = #{role.createBy}

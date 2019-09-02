@@ -1,5 +1,6 @@
 package org.javahub.submarine.modules.system.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.modules.system.entity.RoleMenu;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleMenuService extends ServiceImpl<RoleMenuMapper, RoleMenu> {
@@ -27,9 +29,17 @@ public class RoleMenuService extends ServiceImpl<RoleMenuMapper, RoleMenu> {
         return roleMenuMapper.findList(roleMenu);
     }
 
+    /**
+     * 保存角色的菜单
+     */
     @Transactional
-    public void saveRoleMenu(RoleMenu roleMenu) {
-        super.saveOrUpdate(roleMenu);
+    public void saveRoleMenu(long roleId, List<Long> menuIdList) {
+        // 删除旧的
+        super.remove(new LambdaQueryWrapper<>(new RoleMenu()).eq(RoleMenu::getRoleId, roleId));
+        List<RoleMenu> roleMenuList = menuIdList.stream()
+                .map(item -> RoleMenu.builder().menuId(item).roleId(roleId).build())
+                .collect(Collectors.toList());
+        super.saveBatch(roleMenuList);
     }
 
     @Transactional

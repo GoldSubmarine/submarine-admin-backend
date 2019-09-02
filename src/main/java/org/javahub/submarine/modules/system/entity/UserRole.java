@@ -6,11 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.javahub.submarine.base.BaseEntity;
 
-@Data
-@Builder
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
+@Builder
 public class UserRole extends BaseEntity {
+
+    /**
+     * 用户id
+     */
+    private Long userId;
 
     /**
      * 角色id
@@ -18,7 +25,8 @@ public class UserRole extends BaseEntity {
     private Long roleId;
 
     /**
-     * 用户id
+     * 角色列表
      */
-    private Long userId;
+    private List<Role> roleList;
+
 }

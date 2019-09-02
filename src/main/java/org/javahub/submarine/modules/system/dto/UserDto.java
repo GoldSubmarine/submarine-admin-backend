@@ -1,5 +1,7 @@
 package org.javahub.submarine.modules.system.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,15 +11,16 @@ import org.javahub.submarine.modules.system.entity.User;
 import org.javahub.submarine.modules.system.mapstruct.UserMapStruct;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 public class UserDto extends BaseDto {
 
-
     /**
-     * 用户名
+     * 登录名
      */
     private String username;
 
@@ -27,9 +30,9 @@ public class UserDto extends BaseDto {
     private String password;
 
     /**
-     * 昵称
+     * 姓名
      */
-    private String nickName;
+    private String name;
 
     /**
      * 手机号
@@ -57,11 +60,6 @@ public class UserDto extends BaseDto {
     private String avatar;
 
     /**
-     * 用户类型
-     */
-    private String type;
-
-    /**
      * 状态（启用禁用）
      */
     private String status;
@@ -69,13 +67,28 @@ public class UserDto extends BaseDto {
     /**
      * 部门id
      */
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long deptId;
+
+    /**
+     * 部门ids（包含自身）
+     */
+    private String deptIds;
 
     /**
      * 部门名称
      */
     private String deptName;
 
+    /**
+     * 角色
+     */
+    private List<RoleDto> roleList;
+
+    /**
+     * 角色id逗号分隔
+     */
+    private String roleIdList;
 
     public User toEntity() {
         UserMapStruct mapStruct = Mappers.getMapper( UserMapStruct.class );
