@@ -138,4 +138,11 @@ public class CommonUtil {
         return RandomStringUtils.randomGraph(length);
     }
 
+    /**
+     * 获取随机数字
+     */
+    public static String getRandomNum(int length) {
+        return RandomStringUtils.random(length, "0123456789");
+    }
+
 }

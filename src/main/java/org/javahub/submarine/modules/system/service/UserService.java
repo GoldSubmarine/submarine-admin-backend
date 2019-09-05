@@ -3,16 +3,16 @@ package org.javahub.submarine.modules.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.javahub.submarine.base.BaseEntity;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
-import org.javahub.submarine.modules.system.entity.Dept;
-import org.javahub.submarine.modules.system.entity.Role;
-import org.javahub.submarine.modules.system.entity.User;
-import org.javahub.submarine.modules.system.entity.UserRole;
+import org.javahub.submarine.modules.system.entity.*;
+import org.javahub.submarine.modules.system.mapper.RolePermissionMapper;
 import org.javahub.submarine.modules.system.mapper.UserMapper;
 import org.javahub.submarine.modules.system.mapper.UserRoleMapper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -33,10 +33,16 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     private UserRoleMapper userRoleMapper;
 
     @Resource
+    private RolePermissionMapper rolePermissionMapper;
+
+    @Resource
     private DeptService deptService;
 
     @Resource
     private UserRoleService userRoleService;
+
+    @Resource
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(readOnly = true)
     public XPage<User> findUserList(User user, XPage xPage) {
@@ -50,27 +56,49 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     }
 
     @Transactional
-    public void saveUser(User user) {
+    public String saveUser(User user) {
+        String randomPass = null;
         Dept dept = deptService.getDeptById(user.getDeptId());
         user.setDeptIds(dept.getPids() + dept.getId() + ",");
         user.setDeptName(dept.getName());
         if(Objects.isNull(user.getId())) {
             //新建时创建
             user.setJwtSecret(CommonUtil.getRandomString(16));
+            //初始化密码
+            randomPass = CommonUtil.getRandomNum(6);
+            user.setPassword(bCryptPasswordEncoder.encode(randomPass));
         }
         super.saveOrUpdate(user);
         // 保存角色
         List<Long> roleIdList = user.getRoleList().stream().map(BaseEntity::getId).collect(Collectors.toList());
         userRoleService.saveUserRole(user.getId(), roleIdList);
+        return randomPass;
     }
 
     @Transactional
     public User getUserById(long id) {
         User user = userMapper.selectById(id);
-        List<Role> roleList = userRoleMapper.getRoleById(id);
-        user.setRoleList(roleList);
+        fillRoleAndPermission(user);
         return user;
     }
+
+    @Transactional
+    public User getByUsername(String username) {
+        User user = super.lambdaQuery().eq(User::getUsername, username).one();
+        fillRoleAndPermission(user);
+        return user;
+    }
+
+    private void fillRoleAndPermission(User user) {
+        if(Objects.nonNull(user)) {
+            List<Role> roleList = userRoleMapper.getRoleById(user.getId());
+            List<Permission> permissionList = rolePermissionMapper.getByRoleIds(roleList.stream().map(BaseEntity::getId).collect(Collectors.toList()))
+                                                .stream().filter(item -> StringUtils.isNotBlank(item.getValue())).collect(Collectors.toList());
+            user.setRoleList(roleList);
+            user.setPermissionList(permissionList);
+        }
+    }
+
 
     @Transactional
     public void deleteUser(Long id) {

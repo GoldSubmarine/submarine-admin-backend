@@ -48,12 +48,16 @@ public class Result<E> implements Serializable {
         return Result.<E>builder().code(200).msg("调用成功").data(data).build();
     }
 
-    public static <E> Result<E> success(int code, String msg) {
-        return Result.<E>builder().code(code).msg(msg).build();
+    public static <E> Result<E> success(String msg, E data) {
+        return Result.<E>builder().code(200).msg(msg).data(data).build();
     }
 
-    public static <E> Result<E> success(int code, E data, String msg) {
-        return Result.<E>builder().code(code).msg(msg).data(data).build();
+    public static <E> Result<?> success(int code, E data) {
+        return Result.<E>builder().data(data).code(code).msg("调用成功").build();
+    }
+
+    public static <E> Result<?> success(int code, String msg, E data) {
+        return Result.<E>builder().data(data).code(code).msg(msg).build();
     }
 
     public static <E> Result<E> fail() {

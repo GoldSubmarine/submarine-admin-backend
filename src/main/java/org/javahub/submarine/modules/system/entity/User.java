@@ -1,6 +1,7 @@
 package org.javahub.submarine.modules.system.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
@@ -63,7 +64,7 @@ public class User extends BaseEntity {
     /**
      * 状态（启用禁用）
      */
-    private String status;
+    private UserStatus status;
 
     /**
      * 部门id
@@ -84,6 +85,7 @@ public class User extends BaseEntity {
     /**
      * jwt密钥
      */
+    @JsonIgnore
     private String jwtSecret;
 
     /**
@@ -91,6 +93,17 @@ public class User extends BaseEntity {
      */
     @TableField(exist = false)
     private List<Role> roleList;
+
+    /**
+     * 权限
+     */
+    @TableField(exist = false)
+    private List<Permission> permissionList;
+
+    public enum UserStatus {
+        enable,
+        disable;
+    }
 
     public UserDto toDto() {
         UserMapStruct mapStruct = Mappers.getMapper( UserMapStruct.class );

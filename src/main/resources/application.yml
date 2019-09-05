@@ -32,5 +32,8 @@ spring:
 mybatis-plus:
   mapper-locations: classpath:org/javahub/submarine/**/xml/*.xml
   type-aliases-package: org.javahub.submarine
-#pagehelper:
-#  helperDialect: mysql
+
+jwt:
+  cookieKey: jwtToken
+  expiration: 14400000    # token 过期时间 4个小时
+  updateExpiration: 3600   # 1小时的时候更新一下token

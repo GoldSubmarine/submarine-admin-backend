@@ -62,7 +62,7 @@ public class UserDto extends BaseDto {
     /**
      * 状态（启用禁用）
      */
-    private String status;
+    private User.UserStatus status;
 
     /**
      * 部门id
@@ -89,6 +89,11 @@ public class UserDto extends BaseDto {
      * 角色id逗号分隔
      */
     private String roleIdList;
+
+    /**
+     * 权限
+     */
+    private List<PermissionDto> permissionList;
 
     public User toEntity() {
         UserMapStruct mapStruct = Mappers.getMapper( UserMapStruct.class );

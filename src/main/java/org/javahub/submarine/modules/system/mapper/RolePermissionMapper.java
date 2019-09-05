@@ -16,4 +16,6 @@ public interface RolePermissionMapper extends BaseMapper<RolePermission> {
 
     List<Permission> getByRoleId(long id);
 
+    List<Permission> getByRoleIds(@Param("ids") List<Long> ids);
+
 }

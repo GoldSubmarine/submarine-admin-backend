@@ -8,10 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * 拦截器
  */
 @Configuration
-public class InterceptorConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-
+//        registry.addInterceptor(loginInterceptor).addPathPatterns("/**");
     }
 }

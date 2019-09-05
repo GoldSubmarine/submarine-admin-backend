@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.javahub.submarine.modules.security.entity.JwtUser;
 
 @Data
 @AllArgsConstructor
@@ -11,4 +12,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Auth {
     private String token;
+    private JwtUser user;
 }

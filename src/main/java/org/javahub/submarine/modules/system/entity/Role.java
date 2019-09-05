@@ -40,6 +40,11 @@ public class Role extends BaseEntity {
     @TableField(exist=false)
     private List<Menu> menuList;
 
+    public enum RoleCode {
+        SuperAdmin,
+        Admin;
+    }
+
     public RoleDto toDto() {
         RoleMapStruct mapStruct = Mappers.getMapper( RoleMapStruct.class );
         return mapStruct.toDto(this);
