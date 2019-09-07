@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.base.CaseFormat;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
+import org.javahub.submarine.common.exception.ServiceException;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.springframework.beans.BeanUtils;
 
@@ -110,6 +111,7 @@ public class XPage<T> extends Page<T> {
     /**
      * page 转 dto
      */
+    @SuppressWarnings("unchecked")
     public <V> XPage<V> toDto() {
         XPage<V> target = new XPage<>();
         BeanUtils.copyProperties(this, target);
@@ -120,23 +122,9 @@ public class XPage<T> extends Page<T> {
             List<V> dtoList = this.getRecords().stream().map(item -> (V) CommonUtil.itemToDto(item)).collect(Collectors.toList());
             target.setList(dtoList);
         } catch (Exception e) {
-            return target;
+            throw new ServiceException("服务器错误");
         }
         return target;
     }
 
-
-    /**
-     * 单个 item 转 dto
-     */
-//    private static Object itemToDto(Object item) {
-//        try {
-//            Class<?> sourceClass = item.getClass();
-//            Method toDto = sourceClass.getMethod("toDto");
-//            toDto.setAccessible(true);
-//            return toDto.invoke(item);
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
 }

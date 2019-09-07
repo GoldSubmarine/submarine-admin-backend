@@ -33,6 +33,7 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 创建人
      */
+    @TableField(fill= FieldFill.INSERT)
     protected String createBy;
 
     /**
@@ -44,6 +45,7 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 更新人
      */
+    @TableField(fill= FieldFill.INSERT_UPDATE)
     protected String updateBy;
 
     /**

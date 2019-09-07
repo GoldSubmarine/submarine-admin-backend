@@ -106,11 +106,6 @@
             <version>${org.mapstruct.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>1</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
         <dependency>
@@ -118,7 +113,6 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
-
 
     </dependencies>
 
@@ -133,31 +127,22 @@
             </resource>
         </resources>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
             <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-compiler-plugin</artifactId>-->
-                <!--<version>3.8.0</version>-->
-                <!--<configuration>-->
-                    <!--<source>1.8</source>-->
-                    <!--<target>1.8</target>-->
-                    <!--<annotationProcessorPaths>-->
-                        <!--<path>-->
-                            <!--<groupId>org.mapstruct</groupId>-->
-                            <!--<artifactId>mapstruct-processor</artifactId>-->
-                            <!--<version>${org.mapstruct.version}</version>-->
-                        <!--</path>-->
-                        <!--<path>-->
-                            <!--<groupId>org.projectlombok</groupId>-->
-                            <!--<artifactId>lombok</artifactId>-->
-                            <!--<version>1.18.8</version>-->
-                        <!--</path>-->
-                    <!--</annotationProcessorPaths>-->
-                <!--</configuration>-->
+                <!--<groupId>org.springframework.boot</groupId>-->
+                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
             <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerArgs>
+                        <compilerArg>-Amapstruct.unmappedTargetPolicy=IGNORE</compilerArg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

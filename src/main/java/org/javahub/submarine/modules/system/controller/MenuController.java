@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @menu system
+ * @menu 菜单
  */
 @RestController
 @RequestMapping("/menu")

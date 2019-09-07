@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @menu system
+ * @menu 权限
  */
 @RestController
 @RequestMapping("/permission")

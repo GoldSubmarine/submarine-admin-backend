@@ -64,4 +64,16 @@
             a.del_flag = 0 AND a.role_id = #{id}
     </select>
 
+    <!--根据ids-->
+    <select id="getByRoleIds" resultType="Menu">
+        SELECT b.* FROM
+        role_menu a
+        LEFT JOIN menu b ON a.menu_id = b.id
+        WHERE
+        a.del_flag = 0 AND a.role_id IN
+        <foreach item="item" index="index" collection="ids"  open="(" separator="," close=")">
+            '${item}'
+        </foreach>
+    </select>
+
 </mapper>

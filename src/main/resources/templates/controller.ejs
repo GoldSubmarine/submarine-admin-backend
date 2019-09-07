@@ -25,7 +25,7 @@ public class <%= Entity %>Controller {
     /**
      * 分页查询
      */
-    @PreAuthorize("hasAnyAuthority('<%= entity %>.find')")
+    @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.find')")
     @GetMapping("/list/page")
     public XPage<<%= Entity %>Dto> findListByPage(<%= Entity %>Dto <%= entity %>Dto, XPage xPage) {
         XPage<<%= Entity %>> <%= entity %>Page = <%= entity %>Service.find<%= Entity %>List(<%= entity %>Dto.toEntity(), xPage);
@@ -35,7 +35,7 @@ public class <%= Entity %>Controller {
     /**
      * 查询
      */
-    @PreAuthorize("hasAnyAuthority('<%= entity %>.find')")
+    @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.find')")
     @GetMapping("/list/all")
     public List<<%= Entity %>Dto> findList(<%= Entity %>Dto <%= entity %>Dto) {
         List<<%= Entity %>> <%= entity %>List = <%= entity %>Service.find<%= Entity %>List(<%= entity %>Dto.toEntity());
@@ -45,7 +45,7 @@ public class <%= Entity %>Controller {
     /**
      * 详情
      */
-    @PreAuthorize("hasAnyAuthority('<%= entity %>.find')")
+    @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.find')")
     @GetMapping("/detail")
     public <%= Entity %>Dto getById(long id) {
         <%= Entity %> <%= entity %> = <%= entity %>Service.get<%= Entity %>ById(id);
@@ -55,7 +55,7 @@ public class <%= Entity %>Controller {
     /**
      * 保存
      */
-    @PreAuthorize("hasAnyAuthority('<%= entity %>.add', '<%= entity %>.edit')")
+    @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.add', '<%= entity %>.edit')")
     @PostMapping("/save")
     public Result save(<%= Entity %>Dto <%= entity %>Dto) {
         <%= entity %>Service.save<%= Entity %>(<%= entity %>Dto.toEntity());
@@ -65,7 +65,7 @@ public class <%= Entity %>Controller {
     /**
      * 删除
      */
-    @PreAuthorize("hasAnyAuthority('<%= entity %>.del')")
+    @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.del')")
     @DeleteMapping("/del")
     public Result delete(<%= Entity %>Dto <%= entity %>Dto) {
         <%= entity %>Service.delete<%= Entity %>(<%= entity %>Dto.getId());

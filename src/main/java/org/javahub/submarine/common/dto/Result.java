@@ -24,7 +24,7 @@ public class Result<E> implements Serializable {
     /**
      * 操作结果的状态码，200为成功，其余失败
      */
-    private Integer code = 200;
+    private Integer code;
 
     /**
      * 操作结果的描述信息，可作为页面提示信息使用

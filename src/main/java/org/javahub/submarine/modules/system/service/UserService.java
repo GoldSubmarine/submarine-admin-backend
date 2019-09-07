@@ -8,6 +8,7 @@ import org.javahub.submarine.base.BaseEntity;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.entity.*;
+import org.javahub.submarine.modules.system.mapper.RoleMenuMapper;
 import org.javahub.submarine.modules.system.mapper.RolePermissionMapper;
 import org.javahub.submarine.modules.system.mapper.UserMapper;
 import org.javahub.submarine.modules.system.mapper.UserRoleMapper;
@@ -34,6 +35,9 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     @Resource
     private RolePermissionMapper rolePermissionMapper;
+
+    @Resource
+    private RoleMenuMapper roleMenuMapper;
 
     @Resource
     private DeptService deptService;
@@ -78,24 +82,27 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     @Transactional
     public User getUserById(long id) {
         User user = userMapper.selectById(id);
-        fillRoleAndPermission(user);
+        fillRolePermissionMenu(user);
         return user;
     }
 
     @Transactional
     public User getByUsername(String username) {
         User user = super.lambdaQuery().eq(User::getUsername, username).one();
-        fillRoleAndPermission(user);
+        fillRolePermissionMenu(user);
         return user;
     }
 
-    private void fillRoleAndPermission(User user) {
+    private void fillRolePermissionMenu(User user) {
         if(Objects.nonNull(user)) {
             List<Role> roleList = userRoleMapper.getRoleById(user.getId());
-            List<Permission> permissionList = rolePermissionMapper.getByRoleIds(roleList.stream().map(BaseEntity::getId).collect(Collectors.toList()))
+            List<Long> roleIds = roleList.stream().map(BaseEntity::getId).collect(Collectors.toList());
+            List<Permission> permissionList = rolePermissionMapper.getByRoleIds(roleIds)
                                                 .stream().filter(item -> StringUtils.isNotBlank(item.getValue())).collect(Collectors.toList());
+            List<Menu> menuList = roleMenuMapper.getByRoleIds(roleIds);
             user.setRoleList(roleList);
             user.setPermissionList(permissionList);
+            user.setMenuList(menuList);
         }
     }
 

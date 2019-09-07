@@ -30,17 +30,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Result> handleAccessDeniedException(AccessDeniedException e){
         log.error("无权访问：{}", e.getMessage());
-        return new ResponseEntity<>(Result.fail("无权访问"), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(Result.fail(ResultCode.UNAUTHORIZED, "无权访问"), HttpStatus.UNAUTHORIZED);
     }
-
-    /**
-     * 账号过期
-     */
-//    @ExceptionHandler(value = AccountExpiredException.class)
-//    public Result badAccountExpiredException(AccountExpiredException e) {
-//        log.error(e.getMessage());
-//        return Result.fail(ResultCode.UNAUTHORIZED,"账户过期");
-//    }
 
     /**
      * 业务代码错误

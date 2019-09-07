@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @dept system
+ * @menu 部门
  */
 @RestController
 @RequestMapping("/dept")

@@ -100,6 +100,12 @@ public class User extends BaseEntity {
     @TableField(exist = false)
     private List<Permission> permissionList;
 
+    /**
+     * 菜单
+     */
+    @TableField(exist = false)
+    private List<Menu> menuList;
+
     public enum UserStatus {
         enable,
         disable;

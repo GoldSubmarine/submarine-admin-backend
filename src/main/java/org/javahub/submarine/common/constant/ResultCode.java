@@ -1,5 +1,8 @@
 package org.javahub.submarine.common.constant;
 
+/**
+ * 返回的业务状态码，非http状态码，大于等于400则为错误
+ */
 public interface ResultCode {
     int OK = 200;
     int CREATED = 201;

@@ -9,10 +9,16 @@ import org.springframework.context.annotation.Configuration;
 public class JwtConfig {
 
     /**
-     * cookie的key
+     * 前端传递过来的header
      */
-    @Value("${jwt.cookieKey}")
-    private String cookieKey;
+    @Value("${jwt.header}")
+    private String header;
+
+    /**
+     * 刷新token的header
+     */
+    @Value("${jwt.refreshHeader}")
+    private String refreshHeader;
 
     @Value("${jwt.expiration}")
     private Long expiration;

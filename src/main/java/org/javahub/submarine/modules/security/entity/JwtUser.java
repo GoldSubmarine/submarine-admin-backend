@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.javahub.submarine.base.BaseEntity;
 import org.javahub.submarine.modules.security.mapstruct.JwtUserMapStruct;
+import org.javahub.submarine.modules.system.entity.Menu;
 import org.javahub.submarine.modules.system.entity.Role;
 import org.javahub.submarine.modules.system.entity.User;
 import org.mapstruct.factory.Mappers;
@@ -98,6 +99,11 @@ public class JwtUser extends BaseEntity implements UserDetails {
      */
     private List<Role> roleList;
 
+    /**
+     * 角色
+     */
+    private List<Menu> menuList;
+
 
     @JsonIgnore
     private List<GrantedAuthority> authorities;
@@ -137,6 +143,10 @@ public class JwtUser extends BaseEntity implements UserDetails {
 
     public List<String> getPermissions() {
         return authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+    }
+
+    public List<String> getMenus() {
+        return menuList.stream().map(Menu::getValue).collect(Collectors.toList());
     }
 
     public Boolean isSuperAdmin() {

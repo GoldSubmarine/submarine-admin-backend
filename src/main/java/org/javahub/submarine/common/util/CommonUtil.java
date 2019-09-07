@@ -3,6 +3,7 @@ package org.javahub.submarine.common.util;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.javahub.submarine.base.BaseMapStruct;
+import org.javahub.submarine.common.exception.ServiceException;
 import org.mapstruct.factory.Mappers;
 import org.springframework.util.CollectionUtils;
 
@@ -19,6 +20,7 @@ public class CommonUtil {
     /**
      * 调用 list 的 toDto 方法
      */
+    @SuppressWarnings("unchecked")
     public static <V, T> List<V> toDto(List<T> source, Class<? extends BaseMapStruct> mapStruct) {
         BaseMapStruct mapper = Mappers.getMapper(mapStruct);
         return mapper.toDto(source);
@@ -27,6 +29,7 @@ public class CommonUtil {
     /**
      * 调用 list 的 toDto 方法
      */
+    @SuppressWarnings("unchecked")
     public static <V, T> List<V> toEntity(List<T> source, Class<? extends BaseMapStruct> mapStruct) {
         BaseMapStruct mapper = Mappers.getMapper(mapStruct);
         return mapper.toEntity(source);
@@ -35,6 +38,7 @@ public class CommonUtil {
     /**
      * list 转 dto
      */
+    @SuppressWarnings("unchecked")
     private static <V, T> List<V> invokeMethod(List<T> source, String methodName) {
         if(source == null) return null;
         List<V> targetList = new ArrayList<>();
@@ -42,7 +46,7 @@ public class CommonUtil {
         try {
             return source.stream().map(item -> (V) invokeMethod(item, methodName)).collect(Collectors.toList());
         } catch (Exception e) {
-            return targetList;
+            throw new ServiceException("服务器错误");
         }
     }
 
@@ -63,6 +67,7 @@ public class CommonUtil {
     /**
      * 反射调用 item 的方法，获取返回值
      */
+    @SuppressWarnings("unchecked")
     private static <V, T> V invokeMethod(T item, String methodName) {
         try {
             Class<?> sourceClass = item.getClass();
@@ -70,8 +75,7 @@ public class CommonUtil {
             toDto.setAccessible(true);
             return (V) toDto.invoke(item);
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new ServiceException("服务器错误");
         }
     }
 

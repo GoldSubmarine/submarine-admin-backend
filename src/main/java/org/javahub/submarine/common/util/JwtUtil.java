@@ -64,7 +64,7 @@ public class JwtUtil {
 
     public boolean shouldRefresh(String token) {
         Date expirationDate = getClaim(token, Claims::getExpiration);
-        return (expirationDate.getTime() - new Date().getTime()) < jwtConfig.getExpiration();
+        return (expirationDate.getTime() - new Date().getTime()) < jwtConfig.getUpdateExpiration();
     }
 
     /**
