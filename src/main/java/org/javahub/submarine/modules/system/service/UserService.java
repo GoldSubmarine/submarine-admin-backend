@@ -6,7 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.javahub.submarine.base.BaseEntity;
 import org.javahub.submarine.common.dto.XPage;
+import org.javahub.submarine.common.exception.ServiceException;
 import org.javahub.submarine.common.util.CommonUtil;
+import org.javahub.submarine.common.util.UserUtil;
+import org.javahub.submarine.modules.system.dto.ChangePassDto;
 import org.javahub.submarine.modules.system.entity.*;
 import org.javahub.submarine.modules.system.mapper.RoleMenuMapper;
 import org.javahub.submarine.modules.system.mapper.RolePermissionMapper;
@@ -21,6 +24,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -63,20 +67,42 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     public String saveUser(User user) {
         String randomPass = null;
         Dept dept = deptService.getDeptById(user.getDeptId());
-        user.setDeptIds(dept.getPids() + dept.getId() + ",");
+        user.setDeptIds(Optional.ofNullable(dept.getPids()).orElse("") + dept.getId() + ",");
         user.setDeptName(dept.getName());
         if(Objects.isNull(user.getId())) {
-            //新建时创建
+            //新建时创建jwt密钥和初始化密码
             user.setJwtSecret(CommonUtil.getRandomString(16));
-            //初始化密码
             randomPass = CommonUtil.getRandomNum(6);
             user.setPassword(bCryptPasswordEncoder.encode(randomPass));
+        } else {
+            User source = userMapper.selectById(user.getId());
+            user.setPassword(source.getPassword());
+            user.setJwtSecret(source.getJwtSecret());
         }
         super.saveOrUpdate(user);
         // 保存角色
         List<Long> roleIdList = user.getRoleList().stream().map(BaseEntity::getId).collect(Collectors.toList());
         userRoleService.saveUserRole(user.getId(), roleIdList);
         return randomPass;
+    }
+
+    @Transactional
+    public void changePass(ChangePassDto changePassDto) {
+        User source = userMapper.selectById(UserUtil.getJwtUser().getId());
+        if(!bCryptPasswordEncoder.matches(changePassDto.getOldPassword(), source.getPassword())) {
+            throw new ServiceException("原密码错误");
+        }
+        source.setPassword(bCryptPasswordEncoder.encode(changePassDto.getNewPassword()));
+        super.saveOrUpdate(source);
+    }
+
+    @Transactional
+    public String resetPass(Long id) {
+        User source = userMapper.selectById(id);
+        String pass = CommonUtil.getRandomNum(6);
+        source.setPassword(bCryptPasswordEncoder.encode(pass));
+        super.saveOrUpdate(source);
+        return pass;
     }
 
     @Transactional

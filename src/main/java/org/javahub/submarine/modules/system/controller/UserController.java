@@ -3,6 +3,7 @@ package org.javahub.submarine.modules.system.controller;
 import org.javahub.submarine.common.dto.Result;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
+import org.javahub.submarine.modules.system.dto.ChangePassDto;
 import org.javahub.submarine.modules.system.dto.UserDto;
 import org.javahub.submarine.modules.system.entity.User;
 import org.javahub.submarine.modules.system.mapstruct.UserMapStruct;
@@ -60,7 +61,25 @@ public class UserController {
     @PostMapping("/save")
     public Result save(UserDto userDto) {
         String pass = userService.saveUser(userDto.toEntity());
-        return Result.success(pass, "保存成功");
+        return Result.success("保存成功", pass);
+    }
+
+    /**
+     * 修改密码
+     */
+    @PostMapping("/changePass")
+    public Result changePass(ChangePassDto changePassDto) {
+        userService.changePass(changePassDto);
+        return Result.successMsg("保存成功");
+    }
+
+    /**
+     * 重置密码
+     */
+    @PostMapping("/resetPass")
+    public Result resetPass(Long id) {
+        String pass = userService.resetPass(id);
+        return Result.success("重置成功", pass);
     }
 
     /**

@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Result> handleException(Exception e){
-        log.error("", e);
+        log.error("异常", e);
         return new ResponseEntity<>(Result.fail(ResultCode.BAD_REQUEST,"服务器异常，请稍后重试"), HttpStatus.BAD_REQUEST);
     }
 
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Result> handleAccessDeniedException(AccessDeniedException e){
-        log.error("无权访问：{}", e.getMessage());
+        log.error("无权访问", e);
         return new ResponseEntity<>(Result.fail(ResultCode.UNAUTHORIZED, "无权访问"), HttpStatus.UNAUTHORIZED);
     }
 
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = ServiceException.class)
     public ResponseEntity<Result> serviceException(ServiceException e) {
-        log.error(e.getMessage());
+        log.error("业务代码异常", e);
         Result result = Result.fail();
         if(Objects.nonNull(e.getCode())) {
             result.setCode(e.getCode());
@@ -46,9 +46,6 @@ public class GlobalExceptionHandler {
         if(Objects.nonNull(e.getMessage())) {
             result.setMsg(e.getMessage());
         }
-        if(Objects.nonNull(e.getHttpStatus())) {
-            return new ResponseEntity<>(result, e.getHttpStatus());
-        }
-        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(result, e.getHttpStatus());
     }
 }

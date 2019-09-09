@@ -1,5 +1,6 @@
 package org.javahub.submarine.modules.system.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class UserDto extends BaseDto {
     /**
      * 密码
      */
+    @JsonIgnore
     private String password;
 
     /**
