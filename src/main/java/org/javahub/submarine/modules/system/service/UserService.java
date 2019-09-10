@@ -93,6 +93,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
             throw new ServiceException("原密码错误");
         }
         source.setPassword(bCryptPasswordEncoder.encode(changePassDto.getNewPassword()));
+        source.setJwtSecret(CommonUtil.getRandomString(16));
         super.saveOrUpdate(source);
     }
 
@@ -101,6 +102,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         User source = userMapper.selectById(id);
         String pass = CommonUtil.getRandomNum(6);
         source.setPassword(bCryptPasswordEncoder.encode(pass));
+        source.setJwtSecret(CommonUtil.getRandomString(16));
         super.saveOrUpdate(source);
         return pass;
     }
