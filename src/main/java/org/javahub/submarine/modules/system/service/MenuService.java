@@ -7,6 +7,9 @@ import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.modules.system.entity.Menu;
 import org.javahub.submarine.modules.system.entity.RoleMenu;
 import org.javahub.submarine.modules.system.mapper.MenuMapper;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@CacheConfig(cacheNames="MenuService")
 public class MenuService extends ServiceImpl<MenuMapper, Menu> {
 
     @Resource
@@ -25,17 +29,20 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
     private RoleMenuService roleMenuService;
 
     @Transactional(readOnly = true)
+    @Cacheable
     public XPage<Menu> findMenuList(Menu menu, XPage xPage) {
         XPage<Menu> menuXPage = menuMapper.findPage(xPage, menu);
         return menuXPage;
     }
 
     @Transactional(readOnly = true)
+    @Cacheable
     public List<Menu> findMenuList(Menu menu) {
         return menuMapper.findList(menu);
     }
 
     @Transactional
+    @CacheEvict(allEntries = true)
     public void saveMenu(Menu menu) {
         Menu parent = super.getById(menu.getPid());
         if(parent != null) {
@@ -45,11 +52,13 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
     }
 
     @Transactional
+    @Cacheable
     public Menu getMenuById(Long id) {
         return menuMapper.selectById(id);
     }
 
     @Transactional
+    @CacheEvict(allEntries = true)
     public void deleteMenu(Long id) {
         // 删除角色的关联表
         roleMenuService.remove(new LambdaQueryWrapper<>(new RoleMenu()).eq(RoleMenu::getMenuId, id));

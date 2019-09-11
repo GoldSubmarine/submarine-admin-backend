@@ -16,3 +16,12 @@ spring:
         reset-enable: true
         login-username: root
         login-password:
+
+  redis:
+    database: 5
+    host: 192.168.39.36
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        max-active: 8

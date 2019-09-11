@@ -7,6 +7,9 @@ import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.modules.system.entity.Permission;
 import org.javahub.submarine.modules.system.entity.RolePermission;
 import org.javahub.submarine.modules.system.mapper.PermissionMapper;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@CacheConfig(cacheNames="PermissionService")
 public class PermissionService extends ServiceImpl<PermissionMapper, Permission> {
 
     @Resource
@@ -25,17 +29,20 @@ public class PermissionService extends ServiceImpl<PermissionMapper, Permission>
     private RolePermissionService rolePermissionService;
 
     @Transactional(readOnly = true)
+    @Cacheable
     public XPage<Permission> findPermissionList(Permission permission, XPage xPage) {
         XPage<Permission> permissionXPage = permissionMapper.findPage(xPage, permission);
         return permissionXPage;
     }
 
     @Transactional(readOnly = true)
+    @Cacheable
     public List<Permission> findPermissionList(Permission permission) {
         return permissionMapper.findList(permission);
     }
 
     @Transactional
+    @CacheEvict(allEntries = true)
     public void savePermission(Permission permission) {
         Permission parent = super.getById(permission.getPid());
         if(parent != null) {
@@ -45,11 +52,13 @@ public class PermissionService extends ServiceImpl<PermissionMapper, Permission>
     }
 
     @Transactional
+    @Cacheable
     public Permission getPermissionById(Long id) {
         return permissionMapper.selectById(id);
     }
 
     @Transactional
+    @CacheEvict(allEntries = true)
     public void deletePermission(long id) {
         // 删除角色的关联表
         rolePermissionService.remove(new LambdaQueryWrapper<>(new RolePermission()).eq(RolePermission::getPermissionId, id));

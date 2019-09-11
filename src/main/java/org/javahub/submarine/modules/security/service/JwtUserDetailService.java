@@ -4,6 +4,8 @@ import org.javahub.submarine.common.exception.ServiceException;
 import org.javahub.submarine.modules.security.entity.JwtUser;
 import org.javahub.submarine.modules.system.entity.User;
 import org.javahub.submarine.modules.system.service.UserService;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Objects;
 
+@CacheConfig(cacheNames = "JwtUserDetailService")
 @Service
 public class JwtUserDetailService implements UserDetailsService {
 
@@ -19,6 +22,7 @@ public class JwtUserDetailService implements UserDetailsService {
     private UserService userService;
 
     @Override
+    @Cacheable
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.getByUsername(username);
         if(Objects.isNull(user)) {

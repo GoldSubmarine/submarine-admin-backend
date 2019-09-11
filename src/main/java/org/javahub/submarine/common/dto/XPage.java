@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.base.CaseFormat;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.javahub.submarine.common.exception.ServiceException;
 import org.javahub.submarine.common.util.CommonUtil;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 @JsonIgnoreProperties({"records", "size", "current", "orders", "searchCount", "pages"})
+@ToString(callSuper=false)
 public class XPage<T> extends Page<T> {
     private static final long serialVersionUID = 5194933845448697148L;
 
