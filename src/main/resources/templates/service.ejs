@@ -10,39 +10,33 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
-@CacheConfig(cacheNames = "<%= Entity %>Service")
 @Service
 public class <%= Entity %>Service extends ServiceImpl<<%= Entity %>Mapper, <%= Entity %>> {
 
     @Resource
     private <%= Entity %>Mapper <%= entity %>Mapper;
 
-    @Cacheable
     @Transactional(readOnly = true)
     public XPage<<%= Entity %>> find<%= Entity %>List(<%= Entity %> <%= entity %>, XPage xPage) {
         XPage<<%= Entity %>> <%= entity %>XPage = <%= entity %>Mapper.findPage(xPage, <%= entity %>);
         return <%= entity %>XPage;
     }
 
-    @Cacheable
     @Transactional(readOnly = true)
     public List<<%= Entity %>> find<%= Entity %>List(<%= Entity %> <%= entity %>) {
         return <%= entity %>Mapper.findList(<%= entity %>);
     }
 
-    @CacheEvict(allEntries = true)
     @Transactional
     public void save<%= Entity %>(<%= Entity %> <%= entity %>) {
         super.saveOrUpdate(<%= entity %>);
     }
 
-    @Cacheable
     @Transactional
     public <%= Entity %> get<%= Entity %>ById(long id) {
         return <%= entity %>Mapper.selectById(id);
     }
 
-    @CacheEvict(allEntries = true)
     @Transactional
     public void delete<%= Entity %>(Long id) {
         super.removeById(id);

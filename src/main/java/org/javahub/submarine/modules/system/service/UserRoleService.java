@@ -16,27 +16,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@CacheConfig(cacheNames="UserRoleService")
 public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRole> {
 
     @Resource
     private UserRoleMapper userRoleMapper;
 
     @Transactional(readOnly = true)
-    @Cacheable
     public XPage<UserRole> findUserRoleList(UserRole userRole, XPage xPage) {
         XPage<UserRole> userRoleXPage = userRoleMapper.findPage(xPage, userRole);
         return userRoleXPage;
     }
 
     @Transactional(readOnly = true)
-    @Cacheable
     public List<UserRole> findUserRoleList(UserRole userRole) {
         return userRoleMapper.findList(userRole);
     }
 
     @Transactional
-    @CacheEvict(allEntries = true)
     public void saveUserRole(long userId, List<Long> roleIdList) {
         // 删除旧的
         super.remove(new LambdaQueryWrapper<>(new UserRole()).eq(UserRole::getUserId, userId));
@@ -46,13 +42,11 @@ public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRole> {
     }
 
     @Transactional
-    @Cacheable
     public UserRole getUserRoleById(long id) {
         return userRoleMapper.selectById(id);
     }
 
     @Transactional
-    @CacheEvict(allEntries = true)
     public void deleteUserRole(Long id) {
         super.removeById(id);
     }

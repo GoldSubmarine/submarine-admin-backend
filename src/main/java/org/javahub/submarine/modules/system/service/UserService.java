@@ -56,14 +56,12 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(readOnly = true)
-    @Cacheable
     public XPage<User> findUserList(User user, XPage xPage) {
         XPage<User> userXPage = userMapper.findPage(xPage, user);
         return userXPage;
     }
 
     @Transactional(readOnly = true)
-    @Cacheable
     public List<User> findUserList(User user) {
         return userMapper.findList(user);
     }
@@ -116,7 +114,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     }
 
     @Transactional
-    @Cacheable
     public User getUserById(long id) {
         User user = userMapper.selectById(id);
         fillRolePermissionMenu(user);

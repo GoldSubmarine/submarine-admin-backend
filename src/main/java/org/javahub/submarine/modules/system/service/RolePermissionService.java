@@ -16,21 +16,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@CacheConfig(cacheNames="RolePermissionService")
 public class RolePermissionService extends ServiceImpl<RolePermissionMapper, RolePermission> {
 
     @Resource
     private RolePermissionMapper rolePermissionMapper;
 
     @Transactional(readOnly = true)
-    @Cacheable
     public XPage<RolePermission> findRolePermissionList(RolePermission rolePermission, XPage xPage) {
         XPage<RolePermission> rolePermissionXPage = rolePermissionMapper.findPage(xPage, rolePermission);
         return rolePermissionXPage;
     }
 
     @Transactional(readOnly = true)
-    @Cacheable
     public List<RolePermission> findRolePermissionList(RolePermission rolePermission) {
         return rolePermissionMapper.findList(rolePermission);
     }
@@ -39,7 +36,6 @@ public class RolePermissionService extends ServiceImpl<RolePermissionMapper, Rol
      * 保存角色的权限
      */
     @Transactional
-    @CacheEvict(allEntries = true)
     public void saveRolePermission(long roleId, List<Long> permissionIdList) {
         // 删除旧的
         super.remove(new QueryWrapper<>(new RolePermission()).lambda().eq(RolePermission::getRoleId, roleId));
@@ -50,13 +46,11 @@ public class RolePermissionService extends ServiceImpl<RolePermissionMapper, Rol
     }
 
     @Transactional
-    @Cacheable
     public RolePermission getRolePermissionById(Long id) {
         return rolePermissionMapper.selectById(id);
     }
 
     @Transactional
-    @CacheEvict(allEntries = true)
     public void deleteRolePermission(Long id) {
         super.removeById(id);
     }
