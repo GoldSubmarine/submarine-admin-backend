@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.javahub.submarine.base.BaseDto;
+import org.javahub.submarine.common.base.BaseDto;
 import org.javahub.submarine.modules.system.entity.Role;
 import org.javahub.submarine.modules.system.mapstruct.RoleMapStruct;
 import org.mapstruct.factory.Mappers;
@@ -38,9 +38,14 @@ public class RoleDto extends BaseDto {
      */
     private List<MenuDto> menuList;
 
-    public Role toEntity() {
+    public static Role toEntity(RoleDto roleDto) {
         RoleMapStruct mapStruct = Mappers.getMapper( RoleMapStruct.class );
-        return mapStruct.toEntity(this);
+        return mapStruct.toEntity(roleDto);
+    }
+
+    public static RoleDto toDto(Role role) {
+        RoleMapStruct mapStruct = Mappers.getMapper( RoleMapStruct.class );
+        return mapStruct.toDto(role);
     }
 
 }

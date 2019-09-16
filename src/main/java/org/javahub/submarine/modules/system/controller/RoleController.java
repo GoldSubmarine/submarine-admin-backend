@@ -35,7 +35,7 @@ public class RoleController {
      */
     @GetMapping("/list/page")
     public XPage<RoleDto> findListByPage(RoleDto roleDto, XPage<RoleDto> xPage) {
-        XPage<Role> rolePage = roleService.findRoleList(roleDto.toEntity(), xPage);
+        XPage<Role> rolePage = roleService.findRoleList(RoleDto.toEntity(roleDto), xPage);
         return rolePage.toDto();
     }
 
@@ -44,7 +44,7 @@ public class RoleController {
      */
     @GetMapping("/list/all")
     public List<RoleDto> findList(RoleDto roleDto) {
-        List<Role> roleList = roleService.findRoleList(roleDto.toEntity());
+        List<Role> roleList = roleService.findRoleList(RoleDto.toEntity(roleDto));
         return CommonUtil.toDto(roleList, RoleMapStruct.class);
     }
 
@@ -54,7 +54,7 @@ public class RoleController {
     @GetMapping("/detail")
     public RoleDto getById(long id) {
         Role role = roleService.getRoleById(id);
-        return role.toDto();
+        return RoleDto.toDto(role);
     }
 
     /**
@@ -62,7 +62,7 @@ public class RoleController {
      */
     @PostMapping("/save")
     public Result save(RoleDto roleDto) {
-        roleService.saveRole(roleDto.toEntity());
+        roleService.saveRole(RoleDto.toEntity(roleDto));
         return Result.successMsg("保存成功");
     }
 

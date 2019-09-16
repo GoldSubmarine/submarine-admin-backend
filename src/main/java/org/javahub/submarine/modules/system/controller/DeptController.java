@@ -27,7 +27,7 @@ public class DeptController {
      */
     @GetMapping("/list/page")
     public XPage<DeptDto> findListByPage(DeptDto deptDto, XPage xPage) {
-       XPage<Dept> deptPage = deptService.findDeptList(deptDto.toEntity(), xPage);
+       XPage<Dept> deptPage = deptService.findDeptList(DeptDto.toEntity(deptDto), xPage);
         return deptPage.toDto();
     }
 
@@ -36,7 +36,7 @@ public class DeptController {
      */
     @GetMapping("/list/all")
     public List<DeptDto> findList(DeptDto deptDto) {
-        List<Dept> deptList = deptService.findDeptList(deptDto.toEntity());
+        List<Dept> deptList = deptService.findDeptList(DeptDto.toEntity(deptDto));
         return CommonUtil.toDto(deptList, DeptMapStruct.class);
     }
 
@@ -46,7 +46,7 @@ public class DeptController {
     @GetMapping("/detail")
     public DeptDto getById(Long id) {
         Dept dept = deptService.getDeptById(id);
-        return dept.toDto();
+        return DeptDto.toDto(dept);
     }
 
     /**
@@ -65,7 +65,7 @@ public class DeptController {
      */
     @PostMapping("/save")
     public Result save(DeptDto deptDto) {
-        deptService.saveDept(deptDto.toEntity());
+        deptService.saveDept(DeptDto.toEntity(deptDto));
         return Result.successMsg("保存成功");
     }
 

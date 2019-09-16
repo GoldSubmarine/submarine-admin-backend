@@ -8,10 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.javahub.submarine.base.BaseEntity;
-import org.javahub.submarine.modules.system.dto.UserDto;
-import org.javahub.submarine.modules.system.mapstruct.UserMapStruct;
-import org.mapstruct.factory.Mappers;
+import org.javahub.submarine.common.base.BaseEntity;
 
 import java.util.List;
 
@@ -110,11 +107,6 @@ public class User extends BaseEntity {
     public enum UserStatus {
         enable,
         disable;
-    }
-
-    public UserDto toDto() {
-        UserMapStruct mapStruct = Mappers.getMapper( UserMapStruct.class );
-        return mapStruct.toDto(this);
     }
 
 }

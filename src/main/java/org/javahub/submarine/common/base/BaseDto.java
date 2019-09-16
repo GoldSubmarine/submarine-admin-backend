@@ -1,4 +1,4 @@
-package org.javahub.submarine.base;
+package org.javahub.submarine.common.base;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;

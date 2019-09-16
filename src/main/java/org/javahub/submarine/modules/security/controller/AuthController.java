@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 import java.util.Objects;
 
 /**
- * @menu 用户
+ * @menu 登录校验
  */
 @RestController
 @RequestMapping("/auth")
@@ -42,7 +42,7 @@ public class AuthController {
      * 用户登录
      */
     @PostMapping("/login")
-    public Result login(UserDto userDto) {
+    public Result<Auth> login(UserDto userDto) {
         JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(userDto.getUsername());
         if(Objects.isNull(jwtUser)) {
             throw new ServiceException("用户不存在");
@@ -61,7 +61,7 @@ public class AuthController {
      * 用户信息
      */
     @GetMapping("/info")
-    public Result info() {
+    public Result<JwtUser> info() {
         User user = userService.getUserById(UserUtil.getJwtUser().getId());
         return Result.success(JwtUser.createByUser(user));
     }

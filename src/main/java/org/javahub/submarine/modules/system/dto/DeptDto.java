@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.javahub.submarine.base.BaseDto;
+import org.javahub.submarine.common.base.BaseDto;
 import org.javahub.submarine.modules.system.entity.Dept;
 import org.javahub.submarine.modules.system.mapstruct.DeptMapStruct;
 import org.mapstruct.factory.Mappers;
@@ -41,9 +41,14 @@ public class DeptDto extends BaseDto {
      */
     private List<DeptDto> children;
 
-    public Dept toEntity() {
+    public static Dept toEntity(DeptDto deptDto) {
         DeptMapStruct mapStruct = Mappers.getMapper( DeptMapStruct.class );
-        return mapStruct.toEntity(this);
+        return mapStruct.toEntity(deptDto);
+    }
+
+    public static DeptDto toDto(Dept dept) {
+        DeptMapStruct mapStruct = Mappers.getMapper( DeptMapStruct.class );
+        return mapStruct.toDto(dept);
     }
 
 }

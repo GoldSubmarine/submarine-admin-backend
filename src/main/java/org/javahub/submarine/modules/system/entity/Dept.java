@@ -7,10 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.javahub.submarine.base.BaseEntity;
-import org.javahub.submarine.modules.system.dto.DeptDto;
-import org.javahub.submarine.modules.system.mapstruct.DeptMapStruct;
-import org.mapstruct.factory.Mappers;
+import org.javahub.submarine.common.base.BaseEntity;
 
 import java.util.List;
 
@@ -62,11 +59,6 @@ public class Dept extends BaseEntity {
         public Long getId() {
             return id;
         }
-    }
-
-    public DeptDto toDto() {
-        DeptMapStruct mapStruct = Mappers.getMapper( DeptMapStruct.class );
-        return mapStruct.toDto(this);
     }
 
 }

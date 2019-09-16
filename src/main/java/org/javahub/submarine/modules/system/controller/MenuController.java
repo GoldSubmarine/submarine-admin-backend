@@ -27,7 +27,7 @@ public class MenuController {
      */
     @GetMapping("/list/page")
     public XPage<MenuDto> findListByPage(MenuDto menuDto, XPage xPage) {
-       XPage<Menu> menuPage = menuService.findMenuList(menuDto.toEntity(), xPage);
+       XPage<Menu> menuPage = menuService.findMenuList(MenuDto.toEntity(menuDto), xPage);
         return menuPage.toDto();
     }
 
@@ -36,7 +36,7 @@ public class MenuController {
      */
     @GetMapping("/list/all")
     public List<MenuDto> findList(MenuDto menuDto) {
-        List<Menu> menuList = menuService.findMenuList(menuDto.toEntity());
+        List<Menu> menuList = menuService.findMenuList(MenuDto.toEntity(menuDto));
         return CommonUtil.toDto(menuList, MenuMapStruct.class);
     }
 
@@ -46,7 +46,7 @@ public class MenuController {
     @GetMapping("/detail")
     public MenuDto getById(Long id) {
         Menu menu = menuService.getMenuById(id);
-        return menu.toDto();
+        return MenuDto.toDto(menu);
     }
 
     /**
@@ -65,7 +65,7 @@ public class MenuController {
      */
     @PostMapping("/save")
     public Result save(MenuDto menuDto) {
-        menuService.saveMenu(menuDto.toEntity());
+        menuService.saveMenu(MenuDto.toEntity(menuDto));
         return Result.successMsg("保存成功");
     }
 

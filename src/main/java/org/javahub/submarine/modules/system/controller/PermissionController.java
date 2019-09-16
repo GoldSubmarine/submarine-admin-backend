@@ -27,7 +27,7 @@ public class PermissionController {
      */
     @GetMapping("/list/page")
     public XPage<PermissionDto> findListByPage(PermissionDto permissionDto, XPage xPage) {
-       XPage<Permission> permissionPage = permissionService.findPermissionList(permissionDto.toEntity(), xPage);
+       XPage<Permission> permissionPage = permissionService.findPermissionList(PermissionDto.toEntity(permissionDto), xPage);
         return permissionPage.toDto();
     }
 
@@ -36,7 +36,7 @@ public class PermissionController {
      */
     @GetMapping("/list/all")
     public List<PermissionDto> findList(PermissionDto permissionDto) {
-        List<Permission> permissionList = permissionService.findPermissionList(permissionDto.toEntity());
+        List<Permission> permissionList = permissionService.findPermissionList(PermissionDto.toEntity(permissionDto));
         return CommonUtil.toDto(permissionList, PermissionMapStruct.class);
     }
 
@@ -46,7 +46,7 @@ public class PermissionController {
     @GetMapping("/detail")
     public PermissionDto getById(Long id) {
         Permission permission = permissionService.getPermissionById(id);
-        return permission.toDto();
+        return PermissionDto.toDto(permission);
     }
 
     /**
@@ -65,7 +65,7 @@ public class PermissionController {
      */
     @PostMapping("/save")
     public Result save(PermissionDto permissionDto) {
-        permissionService.savePermission(permissionDto.toEntity());
+        permissionService.savePermission(PermissionDto.toEntity(permissionDto));
         return Result.successMsg("保存成功");
     }
 

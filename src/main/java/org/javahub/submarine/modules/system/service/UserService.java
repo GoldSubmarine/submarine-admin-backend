@@ -4,12 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.javahub.submarine.base.BaseEntity;
+import org.javahub.submarine.common.base.BaseEntity;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.exception.ServiceException;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.common.util.UserUtil;
-import org.javahub.submarine.modules.system.dto.ChangePassDto;
 import org.javahub.submarine.modules.system.entity.*;
 import org.javahub.submarine.modules.system.mapper.RoleMenuMapper;
 import org.javahub.submarine.modules.system.mapper.RolePermissionMapper;
@@ -95,12 +94,12 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     @Transactional
     @CacheEvict(allEntries = true)
-    public void changePass(ChangePassDto changePassDto) {
+    public void changePass(String oldPassword, String newPassword ) {
         User source = userMapper.selectById(UserUtil.getJwtUser().getId());
-        if(!bCryptPasswordEncoder.matches(changePassDto.getOldPassword(), source.getPassword())) {
+        if(!bCryptPasswordEncoder.matches(oldPassword, source.getPassword())) {
             throw new ServiceException("原密码错误");
         }
-        source.setPassword(bCryptPasswordEncoder.encode(changePassDto.getNewPassword()));
+        source.setPassword(bCryptPasswordEncoder.encode(newPassword));
         source.setJwtSecret(CommonUtil.getRandomString(16));
         super.saveOrUpdate(source);
     }

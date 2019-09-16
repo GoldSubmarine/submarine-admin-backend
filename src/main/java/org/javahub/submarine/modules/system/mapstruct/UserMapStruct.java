@@ -1,7 +1,7 @@
 package org.javahub.submarine.modules.system.mapstruct;
 
 import org.apache.commons.lang3.StringUtils;
-import org.javahub.submarine.base.BaseMapStruct;
+import org.javahub.submarine.common.base.BaseMapStruct;
 import org.javahub.submarine.modules.system.dto.UserDto;
 import org.javahub.submarine.modules.system.entity.Role;
 import org.javahub.submarine.modules.system.entity.User;

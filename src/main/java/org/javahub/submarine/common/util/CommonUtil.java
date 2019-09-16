@@ -2,7 +2,7 @@ package org.javahub.submarine.common.util;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.javahub.submarine.base.BaseMapStruct;
+import org.javahub.submarine.common.base.BaseMapStruct;
 import org.javahub.submarine.common.exception.ServiceException;
 import org.mapstruct.factory.Mappers;
 import org.springframework.util.CollectionUtils;

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.javahub.submarine.base.BaseEntity;
+import org.javahub.submarine.common.base.BaseEntity;
 import org.javahub.submarine.modules.security.mapstruct.JwtUserMapStruct;
 import org.javahub.submarine.modules.system.entity.Menu;
 import org.javahub.submarine.modules.system.entity.Role;
@@ -157,7 +157,7 @@ public class JwtUser extends BaseEntity implements UserDetails {
         return roleList.stream().map(Role::getCode).anyMatch(item -> Role.RoleCode.Admin.toString().equals(item));
     }
 
-    public static UserDetails createByUser(User user) {
+    public static JwtUser createByUser(User user) {
         JwtUserMapStruct mapper = Mappers.getMapper(JwtUserMapStruct.class);
         JwtUser jwtUser = mapper.toDto(user);
         jwtUser.authorities = user.getPermissionList().stream()

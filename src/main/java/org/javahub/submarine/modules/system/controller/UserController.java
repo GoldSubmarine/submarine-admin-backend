@@ -3,7 +3,6 @@ package org.javahub.submarine.modules.system.controller;
 import org.javahub.submarine.common.dto.Result;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
-import org.javahub.submarine.modules.system.dto.ChangePassDto;
 import org.javahub.submarine.modules.system.dto.UserDto;
 import org.javahub.submarine.modules.system.entity.User;
 import org.javahub.submarine.modules.system.mapstruct.UserMapStruct;
@@ -30,7 +29,7 @@ public class UserController {
     @GetMapping("/list/page")
     @PreAuthorize("hasAnyAuthority('user.find')")
     public XPage<UserDto> findListByPage(UserDto userDto, XPage xPage) {
-        XPage<User> userPage = userService.findUserList(userDto.toEntity(), xPage);
+        XPage<User> userPage = userService.findUserList(UserDto.toEntity(userDto), xPage);
         return userPage.toDto();
     }
 
@@ -40,7 +39,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('user.find')")
     @GetMapping("/list/all")
     public List<UserDto> findList(UserDto userDto) {
-        List<User> userList = userService.findUserList(userDto.toEntity());
+        List<User> userList = userService.findUserList(UserDto.toEntity(userDto));
         return CommonUtil.toDto(userList, UserMapStruct.class);
     }
 
@@ -51,7 +50,7 @@ public class UserController {
     @GetMapping("/detail")
     public UserDto getById(long id) {
         User user = userService.getUserById(id);
-        return user.toDto();
+        return UserDto.toDto(user);
     }
 
     /**
@@ -60,7 +59,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/save")
     public Result save(UserDto userDto) {
-        String pass = userService.saveUser(userDto.toEntity());
+        String pass = userService.saveUser(UserDto.toEntity(userDto));
         return Result.success("保存成功", pass);
     }
 
@@ -68,8 +67,8 @@ public class UserController {
      * 修改密码
      */
     @PostMapping("/changePass")
-    public Result changePass(ChangePassDto changePassDto) {
-        userService.changePass(changePassDto);
+    public Result changePass(String oldPassword, String newPassword) {
+        userService.changePass(oldPassword, newPassword);
         return Result.successMsg("保存成功");
     }
 

@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.javahub.submarine.base.BaseDto;
+import org.javahub.submarine.common.base.BaseDto;
 import org.javahub.submarine.modules.system.entity.User;
 import org.javahub.submarine.modules.system.mapstruct.UserMapStruct;
 import org.mapstruct.factory.Mappers;
@@ -97,9 +97,14 @@ public class UserDto extends BaseDto {
      */
     private List<PermissionDto> permissionList;
 
-    public User toEntity() {
+    public static User toEntity(UserDto userDto) {
         UserMapStruct mapStruct = Mappers.getMapper( UserMapStruct.class );
-        return mapStruct.toEntity(this);
+        return mapStruct.toEntity(userDto);
+    }
+
+    public static UserDto toDto(User user) {
+        UserMapStruct mapStruct = Mappers.getMapper( UserMapStruct.class );
+        return mapStruct.toDto(user);
     }
 
 }

@@ -2,7 +2,7 @@ package org.javahub.submarine.modules.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.javahub.submarine.base.BaseEntity;
+import org.javahub.submarine.common.base.BaseEntity;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.modules.system.entity.Permission;
 import org.javahub.submarine.modules.system.entity.RolePermission;

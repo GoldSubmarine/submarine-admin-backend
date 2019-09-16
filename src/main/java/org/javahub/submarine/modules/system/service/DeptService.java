@@ -2,7 +2,7 @@ package org.javahub.submarine.modules.system.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.javahub.submarine.base.BaseEntity;
+import org.javahub.submarine.common.base.BaseEntity;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.modules.system.entity.Dept;
 import org.javahub.submarine.modules.system.mapper.DeptMapper;

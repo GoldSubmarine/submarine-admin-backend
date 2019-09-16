@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.javahub.submarine.base.BaseEntity;
-import org.javahub.submarine.modules.system.dto.RoleDto;
-import org.javahub.submarine.modules.system.mapstruct.RoleMapStruct;
-import org.mapstruct.factory.Mappers;
+import org.javahub.submarine.common.base.BaseEntity;
 
 import java.util.List;
 
@@ -43,11 +40,6 @@ public class Role extends BaseEntity {
     public enum RoleCode {
         SuperAdmin,
         Admin;
-    }
-
-    public RoleDto toDto() {
-        RoleMapStruct mapStruct = Mappers.getMapper( RoleMapStruct.class );
-        return mapStruct.toDto(this);
     }
 
 }
