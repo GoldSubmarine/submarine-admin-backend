@@ -53,7 +53,7 @@ public class AuthController {
         if(!bCryptPasswordEncoder.matches(userDto.getPassword(), jwtUser.getPassword())) {
             throw new ServiceException("密码错误");
         }
-        String token = jwtUtil.create(jwtUser.getUsername(), jwtUser.getJwtSecret());
+        String token = jwtUtil.create(jwtUser.getUsername());
         return Result.success(new Auth(token, jwtUser));
     }
 

@@ -3,7 +3,6 @@ package org.javahub.submarine.common.util;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClock;
 import io.jsonwebtoken.impl.TextCodec;
-import org.apache.commons.lang3.StringUtils;
 import org.javahub.submarine.common.constant.ResultCode;
 import org.javahub.submarine.common.exception.ServiceException;
 import org.javahub.submarine.modules.security.config.JwtConfig;
@@ -12,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -28,18 +25,13 @@ public class JwtUtil {
     @Resource
     private JwtConfig jwtConfig;
 
-    /**
-     * 缓存密钥，防止重复查询
-     */
-    private String jwtSecret;
-
-    public String create(String username, String secret) {
+    public String create(String username) {
         final Date createdDate = clock.now();
         Date expirationDate = new Date(createdDate.getTime() + jwtConfig.getExpiration());
         return Jwts.builder()
             .setSubject(username)
             .setIssuedAt(createdDate)
-            .signWith(SignatureAlgorithm.HS256, secret)
+            .signWith(SignatureAlgorithm.HS256, new MySigningKeyResolver().resolveSigningKeyBytes(username))
             .setExpiration(expirationDate)
             .compact();
     }
@@ -53,13 +45,7 @@ public class JwtUtil {
         if(isExpired(token)) {
             throw new ServiceException("登录已过期");
         }
-        Claims body = getAllClaim(token);
-        body.setIssuedAt(clock.now());
-        body.setExpiration(new Date(clock.now().getTime() + jwtConfig.getExpiration()));
-        return Jwts.builder()
-                .setClaims(body)
-                .signWith(SignatureAlgorithm.HS256, jwtSecret)
-                .compact();
+        return create(getUsername(token));
     }
 
     public boolean shouldRefresh(String token) {
@@ -99,14 +85,15 @@ public class JwtUtil {
      */
     private class MySigningKeyResolver extends SigningKeyResolverAdapter {
         @Override
-        public Key resolveSigningKey(JwsHeader jwsHeader, Claims claims) {
-            if(StringUtils.isBlank(jwtSecret)) {
-                String username = claims.getSubject();
-                JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
-                jwtSecret = jwtUser.getJwtSecret();
-            }
-            byte[] secret = TextCodec.BASE64URL.decode(jwtSecret);
-            return new SecretKeySpec(secret, jwsHeader.getAlgorithm());
+        public byte[] resolveSigningKeyBytes(JwsHeader jwsHeader, Claims claims) {
+            String username = claims.getSubject();
+            JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
+            return TextCodec.BASE64URL.decode(jwtUser.getJwtSecret());
+        }
+
+        public byte[] resolveSigningKeyBytes(String username) {
+            JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
+            return TextCodec.BASE64URL.decode(jwtUser.getJwtSecret());
         }
     }
 }
