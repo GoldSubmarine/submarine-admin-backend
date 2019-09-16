@@ -28,7 +28,7 @@ public class MenuController {
     @GetMapping("/list/page")
     public XPage<MenuDto> findListByPage(MenuDto menuDto, XPage xPage) {
        XPage<Menu> menuPage = menuService.findMenuList(MenuDto.toEntity(menuDto), xPage);
-        return menuPage.toDto();
+        return menuPage.toDto(MenuMapStruct.class);
     }
 
     /**

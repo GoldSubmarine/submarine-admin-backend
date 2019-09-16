@@ -9,11 +9,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class CommonUtil {
 
@@ -33,50 +29,6 @@ public class CommonUtil {
     public static <V, T> List<V> toEntity(List<T> source, Class<? extends BaseMapStruct> mapStruct) {
         BaseMapStruct mapper = Mappers.getMapper(mapStruct);
         return mapper.toEntity(source);
-    }
-
-    /**
-     * list 转 dto
-     */
-    @SuppressWarnings("unchecked")
-    private static <V, T> List<V> invokeMethod(List<T> source, String methodName) {
-        if(source == null) return null;
-        List<V> targetList = new ArrayList<>();
-        if(source.isEmpty()) return targetList;
-        try {
-            return source.stream().map(item -> (V) invokeMethod(item, methodName)).collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new ServiceException("服务器错误");
-        }
-    }
-
-    /**
-     * 反射调用 item 的 toDto 方法
-     */
-    public static <V, T> V itemToDto(T item) {
-        return invokeMethod(item, "toDto");
-    }
-
-    /**
-     * 反射调用 item 的 toDto 方法
-     */
-    public static <V, T> V itemToEntity(T item) {
-        return invokeMethod(item, "toEntity");
-    }
-
-    /**
-     * 反射调用 item 的方法，获取返回值
-     */
-    @SuppressWarnings("unchecked")
-    private static <V, T> V invokeMethod(T item, String methodName) {
-        try {
-            Class<?> sourceClass = item.getClass();
-            Method toDto = sourceClass.getMethod(methodName);
-            toDto.setAccessible(true);
-            return (V) toDto.invoke(item);
-        } catch (Exception e) {
-            throw new ServiceException("服务器错误");
-        }
     }
 
     /**
@@ -102,14 +54,14 @@ public class CommonUtil {
             Method getPid = sourceClass.getMethod(String.format("get%s", StringUtils.capitalize(pid)));
             Method setChildren = sourceClass.getMethod(String.format("set%s", StringUtils.capitalize(children)), List.class);
             Map<Object, List<T>> listMap = new HashMap<>();
-            List<Object> idList = new ArrayList<>();
-            List<Object> pidList = new ArrayList<>();
+            Set<Object> idSet = new HashSet<>();
+            Set<Object> pidSet = new HashSet<>();
             // 循环将自己放入父级的list中
             for (T item : list) {
                 Object itemId = getId.invoke(item);
-                idList.add(itemId);
+                idSet.add(itemId);
                 Object itemPid = getPid.invoke(item);
-                pidList.add(itemPid);
+                pidSet.add(itemPid);
                 List<T> itemParentList = listMap.get(itemPid);
                 if(itemParentList == null) {
                     List<T> itemList = new ArrayList<>();
@@ -119,20 +71,17 @@ public class CommonUtil {
                     itemParentList.add(item);
                 }
             }
-            // 获取到root节点的pid
-            pidList.removeAll(idList);
             for (T item : list) {
                 Object itemId = getId.invoke(item);
                 Object itemPid = getPid.invoke(item);
-                if(pidList.contains(itemPid)) resultList.add(item);
+                if(pidSet.contains(itemPid) && !idSet.contains(itemPid)) resultList.add(item);
                 List<T> itemChild = listMap.get(itemId);
                 setChildren.invoke(item, itemChild);
             }
             return resultList;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            throw new ServiceException();
         }
-        return resultList;
     }
 
     /**

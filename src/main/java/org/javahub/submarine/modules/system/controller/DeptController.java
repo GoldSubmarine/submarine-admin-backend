@@ -28,7 +28,7 @@ public class DeptController {
     @GetMapping("/list/page")
     public XPage<DeptDto> findListByPage(DeptDto deptDto, XPage xPage) {
        XPage<Dept> deptPage = deptService.findDeptList(DeptDto.toEntity(deptDto), xPage);
-        return deptPage.toDto();
+        return deptPage.toDto(DeptMapStruct.class);
     }
 
     /**

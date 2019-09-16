@@ -36,7 +36,7 @@ public class RoleController {
     @GetMapping("/list/page")
     public XPage<RoleDto> findListByPage(RoleDto roleDto, XPage<RoleDto> xPage) {
         XPage<Role> rolePage = roleService.findRoleList(RoleDto.toEntity(roleDto), xPage);
-        return rolePage.toDto();
+        return rolePage.toDto(RoleMapStruct.class);
     }
 
     /**

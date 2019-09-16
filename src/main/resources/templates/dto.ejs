@@ -36,9 +36,14 @@ public class <%= Entity %>Dto extends BaseDto {
     <%_ } -%>
 <% }); -%>
 
-    public <%= Entity %> toEntity() {
+    public static <%= Entity %> toEntity(<%= Entity %>Dto <%= entity %>Dto) {
         <%= Entity %>MapStruct mapStruct = Mappers.getMapper( <%= Entity %>MapStruct.class );
-        return mapStruct.toEntity(this);
+        return mapStruct.toEntity(<%= entity %>Dto);
+    }
+
+    public static <%= Entity %>Dto toDto(<%= Entity %> <%= entity %>) {
+        <%= Entity %>MapStruct mapStruct = Mappers.getMapper( <%= Entity %>MapStruct.class );
+        return mapStruct.toDto(<%= entity %>);
     }
 
 }

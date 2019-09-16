@@ -28,8 +28,8 @@ public class <%= Entity %>Controller {
     @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.find')")
     @GetMapping("/list/page")
     public XPage<<%= Entity %>Dto> findListByPage(<%= Entity %>Dto <%= entity %>Dto, XPage xPage) {
-        XPage<<%= Entity %>> <%= entity %>Page = <%= entity %>Service.find<%= Entity %>List(<%= entity %>Dto.toEntity(), xPage);
-        return <%= entity %>Page.toDto();
+        XPage<<%= Entity %>> <%= entity %>Page = <%= entity %>Service.find<%= Entity %>List(<%= Entity %>Dto.toEntity(<%= entity %>Dto), xPage);
+        return <%= entity %>Page.toDto(<%= Entity %>MapStruct.class);
     }
 
     /**
@@ -49,7 +49,7 @@ public class <%= Entity %>Controller {
     @GetMapping("/detail")
     public <%= Entity %>Dto getById(long id) {
         <%= Entity %> <%= entity %> = <%= entity %>Service.get<%= Entity %>ById(id);
-        return <%= entity %>.toDto();
+        return <%= Entity %>.toDto(<%= entity %>);
     }
 
     /**
@@ -58,7 +58,7 @@ public class <%= Entity %>Controller {
     @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.add', '<%= entity %>.edit')")
     @PostMapping("/save")
     public Result save(<%= Entity %>Dto <%= entity %>Dto) {
-        <%= entity %>Service.save<%= Entity %>(<%= entity %>Dto.toEntity());
+        <%= entity %>Service.save<%= Entity %>(<%= Entity %>Dto.toEntity(<%= entity %>Dto));
         return Result.successMsg("保存成功");
     }
 

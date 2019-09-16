@@ -35,9 +35,4 @@ public class <%= Entity %> extends BaseEntity {
     <%_ } -%>
 <% }); -%>
 
-    public <%= Entity %>Dto toDto() {
-        <%= Entity %>MapStruct mapStruct = Mappers.getMapper( <%= Entity %>MapStruct.class );
-        return mapStruct.toDto(this);
-    }
-
 }

@@ -7,15 +7,13 @@ import com.google.common.base.CaseFormat;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
-import org.javahub.submarine.common.exception.ServiceException;
-import org.javahub.submarine.common.util.CommonUtil;
-import org.springframework.beans.BeanUtils;
+import org.javahub.submarine.common.base.BaseMapStruct;
+import org.mapstruct.factory.Mappers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 @JsonIgnoreProperties({"records", "size", "current", "orders", "searchCount", "pages"})
@@ -26,17 +24,17 @@ public class XPage<T> extends Page<T> {
     /**
      * 当前页码
      */
-    private Integer pageNum;
+    private Long pageNum;
 
     /**
      * 每页数量
      */
-    private Integer pageSize;
+    private Long pageSize;
 
     /**
      * 总条数
      */
-    private Integer total;
+    private Long total;
 
     /**
      * 排序字段
@@ -63,7 +61,7 @@ public class XPage<T> extends Page<T> {
         return super.getCurrent();
     }
 
-    public void setPageNum(Integer pageNum) {
+    public void setPageNum(long pageNum) {
         super.setCurrent(pageNum);
     }
 
@@ -71,7 +69,7 @@ public class XPage<T> extends Page<T> {
         return super.getSize();
     }
 
-    public void setPageSize(Integer pageSize) {
+    public void setPageSize(long pageSize) {
         super.setSize(pageSize);
     }
 
@@ -114,19 +112,15 @@ public class XPage<T> extends Page<T> {
      * page 转 dto
      */
     @SuppressWarnings("unchecked")
-    public <V> XPage<V> toDto() {
-        XPage<V> target = new XPage<>();
-        BeanUtils.copyProperties(this, target);
-        if(this.getRecords().isEmpty()) {
-            return target;
-        }
-        try {
-            List<V> dtoList = this.getRecords().stream().map(item -> (V) CommonUtil.itemToDto(item)).collect(Collectors.toList());
-            target.setList(dtoList);
-        } catch (Exception e) {
-            throw new ServiceException("服务器错误");
-        }
-        return target;
+    public <V> XPage<V> toDto(Class<? extends BaseMapStruct> mapStruct) {
+        XPage<V> resultPage = new XPage<>();
+        resultPage.setPageNum(getPageNum());
+        resultPage.setPageSize(getPageSize());
+        resultPage.setTotal(getTotal());
+        resultPage.setSortable(getSortable());
+        BaseMapStruct mapper = Mappers.getMapper(mapStruct);
+        resultPage.setList(mapper.toDto(getList()));
+        return resultPage;
     }
 
 }

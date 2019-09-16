@@ -30,7 +30,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('user.find')")
     public XPage<UserDto> findListByPage(UserDto userDto, XPage xPage) {
         XPage<User> userPage = userService.findUserList(UserDto.toEntity(userDto), xPage);
-        return userPage.toDto();
+        return userPage.toDto(UserMapStruct.class);
     }
 
     /**

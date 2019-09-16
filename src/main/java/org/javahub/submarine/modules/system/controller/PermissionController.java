@@ -28,7 +28,7 @@ public class PermissionController {
     @GetMapping("/list/page")
     public XPage<PermissionDto> findListByPage(PermissionDto permissionDto, XPage xPage) {
        XPage<Permission> permissionPage = permissionService.findPermissionList(PermissionDto.toEntity(permissionDto), xPage);
-        return permissionPage.toDto();
+        return permissionPage.toDto(PermissionMapStruct.class);
     }
 
     /**
