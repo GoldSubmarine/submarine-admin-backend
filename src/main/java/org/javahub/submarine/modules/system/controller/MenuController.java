@@ -1,6 +1,5 @@
 package org.javahub.submarine.modules.system.controller;
 
-import org.javahub.submarine.common.dto.Result;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.MenuDto;
@@ -64,17 +63,15 @@ public class MenuController {
      * 菜单保存
      */
     @PostMapping("/save")
-    public Result save(MenuDto menuDto) {
+    public void save(MenuDto menuDto) {
         menuService.saveMenu(MenuDto.toEntity(menuDto));
-        return Result.successMsg("保存成功");
     }
 
     /**
      * 菜单删除
      */
     @DeleteMapping("/del")
-    public Result delete(MenuDto menuDto) {
+    public void delete(MenuDto menuDto) {
         menuService.deleteMenu(menuDto.getId());
-        return Result.successMsg("删除成功");
     }
 }

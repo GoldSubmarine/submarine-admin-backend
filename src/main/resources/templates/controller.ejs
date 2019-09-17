@@ -57,9 +57,8 @@ public class <%= Entity %>Controller {
      */
     @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.add', '<%= entity %>.edit')")
     @PostMapping("/save")
-    public Result save(<%= Entity %>Dto <%= entity %>Dto) {
+    public void save(<%= Entity %>Dto <%= entity %>Dto) {
         <%= entity %>Service.save<%= Entity %>(<%= Entity %>Dto.toEntity(<%= entity %>Dto));
-        return Result.successMsg("保存成功");
     }
 
     /**
@@ -67,8 +66,7 @@ public class <%= Entity %>Controller {
      */
     @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.del')")
     @DeleteMapping("/del")
-    public Result delete(<%= Entity %>Dto <%= entity %>Dto) {
+    public void delete(<%= Entity %>Dto <%= entity %>Dto) {
         <%= entity %>Service.delete<%= Entity %>(<%= entity %>Dto.getId());
-        return Result.successMsg("删除成功");
     }
 }

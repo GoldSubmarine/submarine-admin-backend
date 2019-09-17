@@ -1,6 +1,5 @@
 package org.javahub.submarine.modules.system.controller;
 
-import org.javahub.submarine.common.dto.Result;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.UserDto;
@@ -58,27 +57,24 @@ public class UserController {
      */
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/save")
-    public Result save(UserDto userDto) {
-        String pass = userService.saveUser(UserDto.toEntity(userDto));
-        return Result.success("保存成功", pass);
+    public String save(UserDto userDto) {
+        return userService.saveUser(UserDto.toEntity(userDto));
     }
 
     /**
      * 修改密码
      */
     @PostMapping("/changePass")
-    public Result changePass(String oldPassword, String newPassword) {
+    public void changePass(String oldPassword, String newPassword) {
         userService.changePass(oldPassword, newPassword);
-        return Result.successMsg("保存成功");
     }
 
     /**
      * 重置密码
      */
     @PostMapping("/resetPass")
-    public Result resetPass(Long id) {
-        String pass = userService.resetPass(id);
-        return Result.success("重置成功", pass);
+    public String resetPass(Long id) {
+        return userService.resetPass(id);
     }
 
     /**
@@ -86,8 +82,7 @@ public class UserController {
      */
     @PreAuthorize("hasAnyAuthority('user.del')")
     @DeleteMapping("/del")
-    public Result delete(UserDto userDto) {
+    public void delete(UserDto userDto) {
         userService.deleteUser(userDto.getId());
-        return Result.successMsg("删除成功");
     }
 }

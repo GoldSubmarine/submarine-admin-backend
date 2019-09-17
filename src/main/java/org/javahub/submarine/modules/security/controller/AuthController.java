@@ -1,7 +1,6 @@
 package org.javahub.submarine.modules.security.controller;
 
 import org.javahub.submarine.common.dto.Auth;
-import org.javahub.submarine.common.dto.Result;
 import org.javahub.submarine.common.exception.ServiceException;
 import org.javahub.submarine.common.util.JwtUtil;
 import org.javahub.submarine.common.util.UserUtil;
@@ -42,7 +41,7 @@ public class AuthController {
      * 用户登录
      */
     @PostMapping("/login")
-    public Result<Auth> login(UserDto userDto) {
+    public Auth login(UserDto userDto) {
         JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(userDto.getUsername());
         if(Objects.isNull(jwtUser)) {
             throw new ServiceException("用户不存在");
@@ -54,24 +53,24 @@ public class AuthController {
             throw new ServiceException("密码错误");
         }
         String token = jwtUtil.create(jwtUser.getUsername());
-        return Result.success(new Auth(token, jwtUser));
+        return new Auth(token, jwtUser);
     }
 
     /**
      * 用户信息
      */
     @GetMapping("/info")
-    public Result<JwtUser> info() {
+    public JwtUser info() {
         User user = userService.getUserById(UserUtil.getJwtUser().getId());
-        return Result.success(JwtUser.createByUser(user));
+        return JwtUser.createByUser(user);
     }
 
     /**
      * 用户登出
      */
     @PostMapping("/logout")
-    public Result logout() {
-        return Result.success();
+    public void logout() {
+
     }
 
 }

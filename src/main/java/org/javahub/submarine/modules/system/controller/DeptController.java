@@ -64,17 +64,15 @@ public class DeptController {
      * 部门保存
      */
     @PostMapping("/save")
-    public Result save(DeptDto deptDto) {
+    public void save(DeptDto deptDto) {
         deptService.saveDept(DeptDto.toEntity(deptDto));
-        return Result.successMsg("保存成功");
     }
 
     /**
      * 部门删除
      */
     @DeleteMapping("/del")
-    public Result delete(DeptDto deptDto) {
+    public void delete(DeptDto deptDto) {
         deptService.deleteDept(deptDto.getId());
-        return Result.successMsg("删除成功");
     }
 }

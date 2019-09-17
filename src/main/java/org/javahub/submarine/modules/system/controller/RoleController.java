@@ -1,6 +1,5 @@
 package org.javahub.submarine.modules.system.controller;
 
-import org.javahub.submarine.common.dto.Result;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.RoleDto;
@@ -61,35 +60,31 @@ public class RoleController {
      * 角色保存
      */
     @PostMapping("/save")
-    public Result save(RoleDto roleDto) {
+    public void save(RoleDto roleDto) {
         roleService.saveRole(RoleDto.toEntity(roleDto));
-        return Result.successMsg("保存成功");
     }
 
     /**
      * 角色的权限保存
      */
     @PostMapping("/permission/save")
-    public Result saveRolePermission(long id, @RequestParam(value = "permissionList") List<Long> permissionList) {
+    public void saveRolePermission(long id, @RequestParam(value = "permissionList") List<Long> permissionList) {
         rolePermissionService.saveRolePermission(id, permissionList);
-        return Result.successMsg("保存成功");
     }
 
     /**
      * 角色的菜单保存
      */
     @PostMapping("/menu/save")
-    public Result saveRoleMenu(long id, @RequestParam(value = "menuList") List<Long> menuList) {
+    public void saveRoleMenu(long id, @RequestParam(value = "menuList") List<Long> menuList) {
         roleMenuService.saveRoleMenu(id, menuList);
-        return Result.successMsg("保存成功");
     }
 
     /**
      * 角色删除
      */
     @DeleteMapping("/del")
-    public Result delete(RoleDto roleDto) {
+    public void delete(RoleDto roleDto) {
         roleService.deleteRole(roleDto.getId());
-        return Result.successMsg("删除成功");
     }
 }

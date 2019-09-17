@@ -1,6 +1,5 @@
 package org.javahub.submarine.modules.system.controller;
 
-import org.javahub.submarine.common.dto.Result;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.PermissionDto;
@@ -64,17 +63,15 @@ public class PermissionController {
      * 权限保存
      */
     @PostMapping("/save")
-    public Result save(PermissionDto permissionDto) {
+    public void save(PermissionDto permissionDto) {
         permissionService.savePermission(PermissionDto.toEntity(permissionDto));
-        return Result.successMsg("保存成功");
     }
 
     /**
      * 权限删除
      */
     @DeleteMapping("/del")
-    public Result delete(PermissionDto permissionDto) {
+    public void delete(PermissionDto permissionDto) {
         permissionService.deletePermission(permissionDto.getId());
-        return Result.successMsg("删除成功");
     }
 }
