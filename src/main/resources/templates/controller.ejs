@@ -7,6 +7,7 @@ import <%= package %>.modules.<%= module %>.mapstruct.<%= Entity %>MapStruct;
 import <%= package %>.modules.<%= module %>.dto.<%= Entity %>Dto;
 import <%= package %>.modules.<%= module %>.entity.<%= Entity %>;
 import <%= package %>.modules.<%= module %>.service.<%= Entity %>Service;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -38,7 +39,7 @@ public class <%= Entity %>Controller {
     @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.find')")
     @GetMapping("/list/all")
     public List<<%= Entity %>Dto> findList(<%= Entity %>Dto <%= entity %>Dto) {
-        List<<%= Entity %>> <%= entity %>List = <%= entity %>Service.find<%= Entity %>List(<%= entity %>Dto.toEntity());
+        List<<%= Entity %>> <%= entity %>List = <%= entity %>Service.find<%= Entity %>List(<%= Entity %>Dto.toEntity(<%= entity %>Dto));
         return CommonUtil.toDto(<%= entity %>List, <%= Entity %>MapStruct.class);
     }
 
@@ -49,7 +50,7 @@ public class <%= Entity %>Controller {
     @GetMapping("/detail")
     public <%= Entity %>Dto getById(long id) {
         <%= Entity %> <%= entity %> = <%= entity %>Service.get<%= Entity %>ById(id);
-        return <%= Entity %>.toDto(<%= entity %>);
+        return <%= Entity %>Dto.toDto(<%= entity %>);
     }
 
     /**
