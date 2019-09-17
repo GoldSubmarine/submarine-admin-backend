@@ -21,6 +21,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private JwtAuthFilter jwtAuthFilter;
 
+    @Resource
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -30,6 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         //  允许所有用户访问"/"和"/index.html"
         httpSecurity.csrf().disable()   // 禁用 CSRF
+            // jwt的异常将在这里捕获
+            .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
             //因为使用JWT，所以不需要HttpSession
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
