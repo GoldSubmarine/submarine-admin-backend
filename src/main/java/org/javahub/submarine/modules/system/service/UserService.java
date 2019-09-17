@@ -14,9 +14,6 @@ import org.javahub.submarine.modules.system.mapper.RoleMenuMapper;
 import org.javahub.submarine.modules.system.mapper.RolePermissionMapper;
 import org.javahub.submarine.modules.system.mapper.UserMapper;
 import org.javahub.submarine.modules.system.mapper.UserRoleMapper;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +28,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@CacheConfig(cacheNames="UserService")
 public class UserService extends ServiceImpl<UserMapper, User> {
 
     @Resource
@@ -67,7 +63,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     }
 
     @Transactional
-    @CacheEvict(allEntries = true)
     public String saveUser(User user) {
         String randomPass = null;
         Dept dept = deptService.getDeptById(user.getDeptId());
@@ -91,7 +86,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     }
 
     @Transactional
-    @CacheEvict(allEntries = true)
     public void changePass(String oldPassword, String newPassword ) {
         User source = userMapper.selectById(UserUtil.getJwtUser().getId());
         if(!bCryptPasswordEncoder.matches(oldPassword, source.getPassword())) {
@@ -103,7 +97,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     }
 
     @Transactional
-    @CacheEvict(allEntries = true)
     public String resetPass(Long id) {
         User source = userMapper.selectById(id);
         String pass = CommonUtil.getRandomNum(6);
@@ -121,7 +114,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     }
 
     @Transactional
-    @Cacheable
     public User getByUsername(String username) {
         User user = super.lambdaQuery().eq(User::getUsername, username).one();
         fillRolePermissionMenu(user);
@@ -143,7 +135,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
 
     @Transactional
-    @CacheEvict(allEntries = true)
     public void deleteUser(Long id) {
         // 删除用户角色关联表
         userRoleService.remove(new LambdaQueryWrapper<>(new UserRole()).eq(UserRole::getUserId, id));
@@ -155,7 +146,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     @Async
     @TransactionalEventListener
     @Transactional
-    @CacheEvict(allEntries = true)
     public void updateOrgName(Dept.UpdateName UpdateName) {
         User user = new User();
         user.setDeptName(UpdateName.getName());

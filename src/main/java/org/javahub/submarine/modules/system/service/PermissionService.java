@@ -7,9 +7,6 @@ import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.modules.system.entity.Permission;
 import org.javahub.submarine.modules.system.entity.RolePermission;
 import org.javahub.submarine.modules.system.mapper.PermissionMapper;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -91,7 +91,7 @@ public class JwtUtil {
             return TextCodec.BASE64URL.decode(jwtUser.getJwtSecret());
         }
 
-        public byte[] resolveSigningKeyBytes(String username) {
+        private byte[] resolveSigningKeyBytes(String username) {
             JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
             return TextCodec.BASE64URL.decode(jwtUser.getJwtSecret());
         }
