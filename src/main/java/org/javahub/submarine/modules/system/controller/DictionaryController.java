@@ -1,11 +1,10 @@
 package org.javahub.submarine.modules.system.controller;
 
-import org.javahub.submarine.common.dto.Result;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
-import org.javahub.submarine.modules.system.mapstruct.DictionaryMapStruct;
 import org.javahub.submarine.modules.system.dto.DictionaryDto;
 import org.javahub.submarine.modules.system.entity.Dictionary;
+import org.javahub.submarine.modules.system.mapstruct.DictionaryMapStruct;
 import org.javahub.submarine.modules.system.service.DictionaryService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

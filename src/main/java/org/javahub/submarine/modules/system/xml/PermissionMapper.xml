@@ -22,10 +22,10 @@
             <include refid="SelectColumns"/>
         FROM permission a WHERE a.del_flag = #{permission.delFlag}
         <if test="permission.name != null and permission.name != ''">
-            AND a.name = #{permission.name}
+            AND a.name LIKE concat('%',#{permission.name},'%')
         </if>
         <if test="permission.value != null and permission.value != ''">
-            AND a.value = #{permission.value}
+            AND a.value LIKE concat('%',#{permission.value},'%')
         </if>
         <if test="permission.pid != null and permission.pid != ''">
             AND a.pid = #{permission.pid}

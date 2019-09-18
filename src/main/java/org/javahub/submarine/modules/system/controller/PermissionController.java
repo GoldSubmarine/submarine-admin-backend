@@ -53,8 +53,8 @@ public class PermissionController {
      * @return List<PermissionDto>: 返回值为list，可能有多个root节点
      */
     @GetMapping("/tree/list")
-    public List<PermissionDto> getPermissionTree() {
-        List<Permission> permissionList = permissionService.findPermissionList(new Permission());
+    public List<PermissionDto> getPermissionTree(PermissionDto permissionDto) {
+        List<Permission> permissionList = permissionService.findPermissionList(PermissionDto.toEntity(permissionDto));
         List<Permission> treeList = CommonUtil.listToTree(permissionList);
         return CommonUtil.toDto(treeList, PermissionMapStruct.class);
     }
