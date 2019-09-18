@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.javahub.submarine.modules.system.mapper.DictionaryMapper">
+
+    <sql id="SelectColumns">
+        a.id,
+        a.name,
+        a.remark,
+        a.create_by,
+        a.create_time,
+        a.update_by,
+        a.update_time,
+        a.del_flag
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM dictionary a WHERE a.del_flag = #{dictionary.delFlag}
+        <if test="dictionary.id != null and dictionary.id != ''">
+            AND a.id = #{dictionary.id}
+        </if>
+        <if test="dictionary.name != null and dictionary.name != ''">
+            AND a.name LIKE concat('%',#{dictionary.name},'%')
+        </if>
+        <if test="dictionary.remark != null and dictionary.remark != ''">
+            AND a.remark LIKE concat('%',#{dictionary.remark},'%')
+        </if>
+        <if test="dictionary.createBy != null and dictionary.createBy != ''">
+            AND a.create_by = #{dictionary.createBy}
+        </if>
+        <if test="dictionary.createTime != null and dictionary.createTime != ''">
+            AND a.create_time = #{dictionary.createTime}
+        </if>
+        <if test="dictionary.updateBy != null and dictionary.updateBy != ''">
+            AND a.update_by = #{dictionary.updateBy}
+        </if>
+        <if test="dictionary.updateTime != null and dictionary.updateTime != ''">
+            AND a.update_time = #{dictionary.updateTime}
+        </if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="Dictionary">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="Dictionary">
+        <include refid="findList"/>
+    </select>
+
+</mapper>
