@@ -25,10 +25,10 @@
             AND a.id = #{menu.id}
         </if>
         <if test="menu.name != null and menu.name != ''">
-            AND a.name = #{menu.name}
+            AND a.name LIKE concat('%',#{menu.name},'%')
         </if>
         <if test="menu.value != null and menu.value != ''">
-            AND a.value = #{menu.value}
+            AND a.value LIKE concat('%',#{menu.value},'%')
         </if>
         <if test="menu.pid != null and menu.pid != ''">
             AND a.pid = #{menu.pid}
@@ -37,7 +37,7 @@
             AND a.pids = #{menu.pids}
         </if>
         <if test="menu.remark != null and menu.remark != ''">
-            AND a.remark = #{menu.remark}
+            AND a.remark LIKE concat('%',#{menu.remark},'%')
         </if>
         <if test="menu.createBy != null and menu.createBy != ''">
             AND a.create_by = #{menu.createBy}

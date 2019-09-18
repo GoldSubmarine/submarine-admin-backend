@@ -28,7 +28,7 @@
             AND a.name LIKE concat('%',#{dept.name},'%')
         </if>
         <if test="dept.code != null and dept.code != ''">
-            AND a.code = #{dept.code}
+            AND a.code LIKE concat('%',#{dept.code},'%')
         </if>
         <if test="dept.pid != null and dept.pid != ''">
             AND a.pid = #{dept.pid}
@@ -37,7 +37,7 @@
             AND a.pids = #{dept.pids}
         </if>
         <if test="dept.remark != null and dept.remark != ''">
-            AND a.remark = #{dept.remark}
+            AND a.remark LIKE concat('%',#{dept.remark},'%')
         </if>
         <if test="dept.createBy != null and dept.createBy != ''">
             AND a.create_by = #{dept.createBy}

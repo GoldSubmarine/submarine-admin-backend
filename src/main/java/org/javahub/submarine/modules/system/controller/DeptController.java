@@ -1,6 +1,5 @@
 package org.javahub.submarine.modules.system.controller;
 
-import org.javahub.submarine.common.dto.Result;
 import org.javahub.submarine.common.dto.XPage;
 import org.javahub.submarine.common.util.CommonUtil;
 import org.javahub.submarine.modules.system.dto.DeptDto;
@@ -54,8 +53,8 @@ public class DeptController {
      * @return List<DeptDto>: 返回值为list，可能有多个root节点
      */
     @GetMapping("/tree/list")
-    public List<DeptDto> getDeptTree() {
-        List<Dept> deptList = deptService.findDeptList(new Dept());
+    public List<DeptDto> getDeptTree(DeptDto deptDto) {
+        List<Dept> deptList = deptService.findDeptList(DeptDto.toEntity(deptDto));
         List<Dept> treeList = CommonUtil.listToTree(deptList);
         return CommonUtil.toDto(treeList, DeptMapStruct.class);
     }

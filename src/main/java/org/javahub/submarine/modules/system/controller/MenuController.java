@@ -53,8 +53,8 @@ public class MenuController {
      * @return List<MenuDto>: 返回值为list，可能有多个root节点
      */
     @GetMapping("/tree/list")
-    public List<MenuDto> getMenuTree() {
-        List<Menu> menuList = menuService.findMenuList(new Menu());
+    public List<MenuDto> getMenuTree(MenuDto menuDto) {
+        List<Menu> menuList = menuService.findMenuList(MenuDto.toEntity(menuDto));
         List<Menu> treeList = CommonUtil.listToTree(menuList);
         return CommonUtil.toDto(treeList, MenuMapStruct.class);
     }
