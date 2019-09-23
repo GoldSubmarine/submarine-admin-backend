@@ -8,6 +8,7 @@ import <%= package %>.common.base.BaseEntity;
 import <%= package %>.modules.<%= module %>.dto.<%= Entity %>Dto;
 import <%= package %>.modules.<%= module %>.mapstruct.<%= Entity %>MapStruct;
 import org.mapstruct.factory.Mappers;
+import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +20,8 @@ public class <%= Entity %> extends BaseEntity {
         if(str == 'varchar') return 'String';
         if(str == 'text') return 'String';
         if(str == 'bigint') return 'Long';
+        if(str == 'double') return 'Double';
+        if(str == 'decimal') return 'BigDecimal';
         if(str == 'datetime') return 'Date';
         if(str == 'int') return 'Integer';
     }
