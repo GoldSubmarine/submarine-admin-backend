@@ -9,7 +9,9 @@ import org.javahub.submarine.modules.system.service.PermissionService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @menu 权限
@@ -65,6 +67,27 @@ public class PermissionController {
     @PostMapping("/save")
     public void save(PermissionDto permissionDto) {
         permissionService.savePermission(PermissionDto.toEntity(permissionDto));
+    }
+
+    /**
+     * 模块权限保存
+     */
+    @PostMapping("/save/module")
+    public void saveModule(PermissionDto permissionDto) {
+        Permission permission = PermissionDto.toEntity(permissionDto);
+        permissionService.savePermission(permission);
+        Map<String, String> map = new HashMap<>();
+        map.put("查询", ".find");
+        map.put("新增", ".add");
+        map.put("编辑", ".edit");
+        map.put("删除", ".del");
+        map.forEach((name, value) -> {
+            permissionService.savePermission(Permission.builder()
+                .name(name)
+                .value(permission.getValue() + value)
+                .pid(permission.getId())
+                .build());
+        });
     }
 
     /**
