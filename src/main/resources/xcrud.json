@@ -61,7 +61,7 @@
         },
         {
             "template": "mapStruct.ejs",
-            "path": "../java/<%= packagePath %>/modules/<%= module %>/mapStruct/<%= Entity %>MapStruct.java"
+            "path": "../java/<%= packagePath %>/modules/<%= module %>/mapstruct/<%= Entity %>MapStruct.java"
         }
     ]
 }

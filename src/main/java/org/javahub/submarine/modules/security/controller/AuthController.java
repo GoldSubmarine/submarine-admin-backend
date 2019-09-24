@@ -1,6 +1,5 @@
 package org.javahub.submarine.modules.security.controller;
 
-import org.javahub.submarine.common.dto.Auth;
 import org.javahub.submarine.common.exception.ServiceException;
 import org.javahub.submarine.common.util.JwtUtil;
 import org.javahub.submarine.common.util.UserUtil;
@@ -41,7 +40,7 @@ public class AuthController {
      * 用户登录
      */
     @PostMapping("/login")
-    public Auth login(UserDto userDto) {
+    public String login(UserDto userDto) {
         JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(userDto.getUsername());
         if(Objects.isNull(jwtUser)) {
             throw new ServiceException("用户不存在");
@@ -52,8 +51,7 @@ public class AuthController {
         if(!bCryptPasswordEncoder.matches(userDto.getPassword(), jwtUser.getPassword())) {
             throw new ServiceException("密码错误");
         }
-        String token = jwtUtil.create(jwtUser.getUsername());
-        return new Auth(token, jwtUser);
+        return jwtUtil.create(jwtUser.getUsername());
     }
 
     /**
