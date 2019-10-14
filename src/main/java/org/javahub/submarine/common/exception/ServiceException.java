@@ -4,46 +4,36 @@
 package org.javahub.submarine.common.exception;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 /**
  * Service层公用的Exception, 从由Spring管理事务的函数中抛出时会触发事务回滚.
  */
 @Data
-@NoArgsConstructor
 public class ServiceException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 业务代码code
-	 */
-	private Integer code;
+	private String extCode;
 
-	/**
-	 * http协议的status
-	 */
-	private HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-
-	public ServiceException(String msg) {
-		super(msg);
+	public ServiceException() {
+		super();
 	}
 
-	public ServiceException(int resultCode, String msg) {
-		super(msg);
-		this.code = resultCode;
+	public ServiceException(String message) {
+		super(message);
 	}
 
-	public ServiceException(HttpStatus httpStatus, String msg) {
-		super(msg);
-		this.httpStatus = httpStatus;
+	public ServiceException(String extCode, String message) {
+		super(message);
+		this.extCode = extCode;
 	}
 
-	public ServiceException(HttpStatus httpStatus, int resultCode, String msg) {
-		super(msg);
-		this.httpStatus = httpStatus;
-		this.code = resultCode;
+	public ServiceException(Throwable cause) {
+		super(cause);
+	}
+
+	public ServiceException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
 }
