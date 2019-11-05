@@ -1,5 +1,5 @@
 server:
-  port: 1968
+  port: 19687
   servlet:
     context-path: /submarine
 
