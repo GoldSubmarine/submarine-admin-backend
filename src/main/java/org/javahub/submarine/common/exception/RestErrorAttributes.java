@@ -37,6 +37,7 @@ public class RestErrorAttributes implements ErrorAttributes, HandlerExceptionRes
         return exception;
     }
 
+    @SuppressWarnings("unchecked")
     private   <T> T getAttribute(RequestAttributes requestAttributes, String name) {
         return (T)requestAttributes.getAttribute(name, 0);
     }

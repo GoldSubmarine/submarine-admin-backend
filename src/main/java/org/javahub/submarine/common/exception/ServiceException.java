@@ -13,7 +13,7 @@ public class ServiceException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	private String extCode;
+	private Integer code;
 
 	public ServiceException() {
 		super();
@@ -23,9 +23,9 @@ public class ServiceException extends RuntimeException {
 		super(message);
 	}
 
-	public ServiceException(String extCode, String message) {
+	public ServiceException(Integer code, String message) {
 		super(message);
-		this.extCode = extCode;
+		this.code = code;
 	}
 
 	public ServiceException(Throwable cause) {

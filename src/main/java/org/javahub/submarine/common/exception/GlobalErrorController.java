@@ -1,5 +1,6 @@
 package org.javahub.submarine.common.exception;
 
+import org.javahub.submarine.common.dto.Result;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -62,40 +63,39 @@ public class GlobalErrorController implements ErrorController {
 
 
 	@RequestMapping
-	public ResponseEntity<ErrorResponse> error(HttpServletRequest request) {
+	public ResponseEntity<Result> error(HttpServletRequest request) {
 		HttpStatus status = this.getStatus(request);
-		ErrorResponse errorResponse = getErrorMessage(request, status);
-		return new ResponseEntity<>(errorResponse, status);
+		Result result = getErrorMessage(request, status);
+		return new ResponseEntity<>(result, status);
 	}
 
-	private ErrorResponse getErrorMessage(HttpServletRequest request, HttpStatus status){
-		ErrorResponse errorResponse = new ErrorResponse();
-		errorResponse.setExtCode("");
+	private Result getErrorMessage(HttpServletRequest request, HttpStatus status){
+		Result result = Result.fail();
 		Throwable error = this.errorAttributes.getError(new ServletWebRequest(request));
 		if(error != null) {
 			while(true) {
 				if(!(error instanceof ServletException) || error.getCause() == null) {
-					BindingResult result = this.extractBindingResult(error);
-					if(result != null){
-						if(result.hasErrors()) {
+					BindingResult bindingResult = this.extractBindingResult(error);
+					if(bindingResult != null){
+						if(bindingResult.hasErrors()) {
 							// TODO: 10/12/19 这里把 message填充成 校验的错误信息
-							errorResponse.setMessage("Validation failed for object=\'" + result.getObjectName() + "\'. Error count: " + result.getErrorCount());
+							result.setMsg("Validation failed for object=\'" + bindingResult.getObjectName() + "\'. Error count: " + bindingResult.getErrorCount());
 						} else {
-							errorResponse.setMessage("No errors");
+							result.setMsg("No errors");
 						}
 					}else {
 						if(error instanceof AuthenticationException){
-							errorResponse.setMessage("无效的token,请重新登录");
+							result.setMsg("无效的token,请重新登录");
 						}else if(error instanceof AccessDeniedException){
-							errorResponse.setMessage("未授权的访问");
+							result.setMsg("未授权的访问");
 						}else if(error instanceof ServiceException){
-							errorResponse.setMessage(error.getMessage());
+							result.setMsg(error.getMessage());
 						}else {
-							errorResponse.setMessage("请求异常，请稍后重试");
+							result.setMsg("请求异常，请稍后重试");
 						}
 					}
 					if(error instanceof ServiceException){
-						errorResponse.setExtCode(((ServiceException)error).getExtCode());
+						result.setCode(((ServiceException)error).getCode());
 					}
 					break;
 				}
@@ -103,10 +103,10 @@ public class GlobalErrorController implements ErrorController {
 			}
 		}
 		String message = this.getAttribute(new ServletWebRequest(request), "javax.servlet.error.message");
-		if((!StringUtils.isEmpty(message) || StringUtils.isEmpty(errorResponse.getMessage())) && !(error instanceof BindingResult)) {
-			errorResponse.setMessage(StringUtils.isEmpty(message)?"":message);
+		if((!StringUtils.isEmpty(message) || StringUtils.isEmpty(result.getMsg())) && !(error instanceof BindingResult)) {
+			result.setMsg(StringUtils.isEmpty(message)?"":message);
 		}
-		return errorResponse;
+		return result;
 	}
 
 
@@ -114,6 +114,7 @@ public class GlobalErrorController implements ErrorController {
 		return error instanceof BindingResult?(BindingResult)error:(error instanceof MethodArgumentNotValidException ?((MethodArgumentNotValidException)error).getBindingResult():null);
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T> T getAttribute(RequestAttributes requestAttributes, String name) {
 		return (T)requestAttributes.getAttribute(name, 0);
 	}
