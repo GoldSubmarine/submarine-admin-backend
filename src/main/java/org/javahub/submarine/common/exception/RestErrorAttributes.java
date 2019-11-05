@@ -1,6 +1,8 @@
 package org.javahub.submarine.common.exception;
 
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class RestErrorAttributes implements ErrorAttributes, HandlerExceptionResolver {
     private static final String ERROR_ATTRIBUTE = RestErrorAttributes.class.getName() + ".ERROR";
 

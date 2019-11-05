@@ -16,6 +16,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 @RequestMapping({"${server.error.path:${error.path:/error}}"})
 public class GlobalErrorController implements ErrorController {
@@ -78,8 +79,8 @@ public class GlobalErrorController implements ErrorController {
 					BindingResult bindingResult = this.extractBindingResult(error);
 					if(bindingResult != null){
 						if(bindingResult.hasErrors()) {
-							// TODO: 10/12/19 这里把 message填充成 校验的错误信息
-							result.setMsg("Validation failed for object=\'" + bindingResult.getObjectName() + "\'. Error count: " + bindingResult.getErrorCount());
+							result.setMsg(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage());
+//							result.setMsg("Validation failed for object=\'" + bindingResult.getObjectName() + "\'. Error count: " + bindingResult.getErrorCount());
 						} else {
 							result.setMsg("No errors");
 						}
