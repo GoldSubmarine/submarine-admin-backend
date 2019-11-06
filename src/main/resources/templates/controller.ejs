@@ -1,15 +1,16 @@
-package <%= package %>.modules.<%= module %>.controller;
+package org.javahub.submarine.modules.<%= module %>.controller;
 
-import <%= package %>.common.dto.Result;
-import <%= package %>.common.dto.XPage;
-import <%= package %>.common.util.CommonUtil;
-import <%= package %>.modules.<%= module %>.mapstruct.<%= Entity %>MapStruct;
-import <%= package %>.modules.<%= module %>.dto.<%= Entity %>Dto;
-import <%= package %>.modules.<%= module %>.entity.<%= Entity %>;
-import <%= package %>.modules.<%= module %>.service.<%= Entity %>Service;
+import org.javahub.submarine.common.dto.Result;
+import org.javahub.submarine.common.dto.XPage;
+import org.javahub.submarine.common.util.CommonUtil;
+import org.javahub.submarine.modules.<%= module %>.mapstruct.<%= Entity %>MapStruct;
+import org.javahub.submarine.modules.<%= module %>.dto.<%= Entity %>Dto;
+import org.javahub.submarine.modules.<%= module %>.entity.<%= Entity %>;
+import org.javahub.submarine.modules.<%= module %>.service.<%= Entity %>Service;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class <%= Entity %>Controller {
      */
     @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.add', '<%= entity %>.edit')")
     @PostMapping("/save")
-    public void save(<%= Entity %>Dto <%= entity %>Dto) {
+    public void save(@Valid <%= Entity %>Dto <%= entity %>Dto) {
         <%= entity %>Service.save<%= Entity %>(<%= Entity %>Dto.toEntity(<%= entity %>Dto));
     }
 

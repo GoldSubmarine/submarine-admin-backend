@@ -1,22 +1,26 @@
-package <%= package %>.modules.<%= module %>.entity;
+package org.javahub.submarine.modules.<%= module %>.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import <%= package %>.common.base.BaseEntity;
-import <%= package %>.modules.<%= module %>.dto.<%= Entity %>Dto;
-import <%= package %>.modules.<%= module %>.mapstruct.<%= Entity %>MapStruct;
+import org.javahub.submarine.common.base.BaseEntity;
+import org.javahub.submarine.modules.<%= module %>.dto.<%= Entity %>Dto;
+import org.javahub.submarine.modules.<%= module %>.mapstruct.<%= Entity %>MapStruct;
 import org.mapstruct.factory.Mappers;
 import java.math.BigDecimal;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
+@TableName("<%= StrUtil.camelToUnderscore(tableName) %>")
 public class <%= Entity %> extends BaseEntity {
 <%
+    var baseField = ['id', 'remark', 'createBy', 'createTime', 'updateBy', 'updateTime', 'delFlag'];
     function getType(str) {
         if(str == 'varchar') return 'String';
         if(str == 'text') return 'String';
@@ -26,17 +30,28 @@ public class <%= Entity %> extends BaseEntity {
         if(str == 'datetime') return 'Date';
         if(str == 'int') return 'Integer';
     }
+    function genStr(fields) {
+        let result = "";
+        fields.forEach(function(field){
+            if(!baseField.includes(field.field)) {
+                if(field.comment) {
+                    result += "\n\n\t/**"
+                    result += `\n\t* ${field.comment}`
+                    result += `\n\t*/`
+                }
+                result += `\n\tprivate ${getType(field.type)} ${field.field};`
+
+                if(field.sqlType === 'BETWEEN') {
+                    result += `\n\n\t@TableField(exist=false)`
+                    result += `\n\tprivate ${getType(field.type)} begin${ StrUtil.initialUpperCase(field.field) };`
+                    result += `\n\n\t@TableField(exist=false)`
+                    result += `\n\tprivate ${getType(field.type)} end${ StrUtil.initialUpperCase(field.field) };`
+                }
+            }
+        })
+        return result;
+    }
 -%>
-<% baseField = ['id', 'remark', 'createBy', 'createTime', 'updateBy', 'updateTime', 'delFlag']; -%>
-
-<% fields.forEach(function(field){ -%>
-    <%_ if( !baseField.includes(field.field) ) { -%>
-    /**
-     * <%= field.comment %>
-     */
-    private <%= getType(field.type) %> <%= field.field %>;
-
-    <%_ } -%>
-<% }); -%>
+    <%= genStr(fields) %>
 
 }

@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="<%= package %>.modules.<%= module %>.mapper.<%= Entity %>Mapper">
+<mapper namespace="org.javahub.submarine.modules.<%= module %>.mapper.<%= Entity %>Mapper">
+<%
+    function genSqlFields(fields) {
+        let result = "";
+        fields.forEach(field => {
+            result += `\n\t\ta.${StrUtil.camelToUnderscore(field.field)},`
+        })
+        result = result.slice(0, -1)
+        return result;
+    }
 
+    function genSqlSearch(fields) {
+        let result = "";
+        fields.forEach(field => {
+            let initialUpperField = StrUtil.initialUpperCase(field.field)
+            let underscoreField = StrUtil.camelToUnderscore(field.field)
+            result += `\n\t\t<if test="${ entity }.${ field.field } != null and ${ entity }.${ field.field } != ''">`
+            if(field.sqlType === 'BETWEEN') {
+                result += `\n\t\t\tAND a.${ underscoreField } = #{${ entity }.${ field.field }}`
+                result += `\n\t\t</if>`
+                result += `\n\t\t<if test="${ entity }.begin${ initialUpperField } != null and ${ entity }.begin${ initialUpperField } != '' and ${ entity }.end${ initialUpperField } != null and ${ entity }.end${ initialUpperField } != ''">`
+                result += `\n\t\t\tAND a.${ underscoreField } BETWEEN #{${ entity }.begin${ initialUpperField }} AND #{${ entity }.end${ initialUpperField }}`
+            } else if(field.sqlType === 'LIKE') {
+                result += `\n\t\t\tAND a.${ underscoreField } ${field.sqlType} concat('%', #{${ entity }.${ field.field }}, '%')`
+            } else {
+                result += `\n\t\t\tAND a.${ underscoreField } ${field.sqlType} #{${ entity }.${ field.field }}`
+            }
+            result += "\n\t\t</if>"
+        })
+        return result;
+    }
+-%>
     <sql id="SelectColumns">
-<% fields.forEach(function(field, index){ -%>
-    <%_ if( fields.length != index+1 ) { -%>
-        a.<%= StrUtil.camelToUnderscore(field.field) %>,
-    <%_ } else { -%>
-        a.<%= StrUtil.camelToUnderscore(field.field) %>
-    <%_ } -%>
-<% }); -%>
+        <%- genSqlFields(fields) %>
     </sql>
 
     <!--列表查询-->
@@ -17,13 +41,7 @@
         SELECT
             <include refid="SelectColumns"/>
         FROM <%= StrUtil.camelToUnderscore(tableName) %> a WHERE a.del_flag = #{<%= entity %>.delFlag}
-<% fields.forEach(function(field, index){ -%>
-    <%_ if( field.field != 'delFlag' ) { -%>
-        <if test="<%= entity %>.<%= field.field %> != null and <%= entity %>.<%= field.field %> != ''">
-            AND a.<%= StrUtil.camelToUnderscore(field.field) %> = #{<%= entity %>.<%= field.field %>}
-        </if>
-    <%_ } -%>
-<% }); -%>
+            <%- genSqlSearch(fields) %>
     </sql>
 
     <!--分页查询-->
