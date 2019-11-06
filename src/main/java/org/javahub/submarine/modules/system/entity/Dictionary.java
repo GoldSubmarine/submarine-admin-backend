@@ -1,18 +1,15 @@
 package org.javahub.submarine.modules.system.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.javahub.submarine.common.base.BaseEntity;
-import org.javahub.submarine.modules.system.dto.DictionaryDto;
-import org.javahub.submarine.modules.system.mapstruct.DictionaryMapStruct;
-import org.mapstruct.factory.Mappers;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class Dictionary extends BaseEntity {
 
     /**

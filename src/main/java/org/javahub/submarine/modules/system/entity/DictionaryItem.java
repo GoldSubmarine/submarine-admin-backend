@@ -3,15 +3,15 @@ package org.javahub.submarine.modules.system.entity;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.javahub.submarine.common.base.BaseEntity;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class DictionaryItem extends BaseEntity {
 
 

@@ -1,7 +1,7 @@
 package org.javahub.submarine.modules.<%= module %>.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.javahub.submarine.common.base.BaseEntity;
@@ -16,7 +16,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 @TableName("<%= StrUtil.camelToUnderscore(tableName) %>")
 public class <%= Entity %> extends BaseEntity {
 <%

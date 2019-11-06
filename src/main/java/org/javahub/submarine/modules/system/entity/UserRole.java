@@ -1,9 +1,9 @@
 package org.javahub.submarine.modules.system.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.javahub.submarine.common.base.BaseEntity;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class UserRole extends BaseEntity {
 
     /**

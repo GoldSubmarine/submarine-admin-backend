@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.javahub.submarine.common.base.BaseEntity;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class Dept extends BaseEntity {
 
     /**
