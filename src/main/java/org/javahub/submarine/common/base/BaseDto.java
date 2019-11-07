@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.javahub.submarine.common.constant.GlobalConst;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,6 +14,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder(toBuilder = true)
 public abstract class BaseDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,6 +53,6 @@ public abstract class BaseDto implements Serializable {
     /**
      * 逻辑删除（0未删除，1已删除）
      */
-//    private Integer delFlag = GlobalConst.UNDEL_FLAG;
+    private Integer delFlag = GlobalConst.UNDEL_FLAG;
 
 }

@@ -35,8 +35,23 @@ submarine 是一个前后端分离的后台管理系统
 - 菜单管理
 
 ## 前端预览
-
-![rbac](./doc/images/rbac.jpg)
+<table>
+    <tr>
+        <td><img src="./doc/images/permission.png"/></td>
+        <td><img src="./doc/images/menu.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="./doc/images/dept.png"/></td>
+        <td><img src="./doc/images/role.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="./doc/images/user.png"/></td>
+        <td><img src="./doc/images/dictionary.png"/></td>
+    </tr>
+    <tr>   
+        <td><img src="./doc/images/personal.png"/></td>
+    </tr>
+</table>
 
 ## 使用说明
 
