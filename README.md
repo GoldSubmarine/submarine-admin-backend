@@ -2,7 +2,7 @@
 
 ## 项目简介
 
-submarine 是一个前后端分离的后台管理系统
+submarine 是一个前后端分离的后台管理系统，配后前端项目 [submarine-admin-frontend](https://github.com/GoldSubmarine/submarine-admin-frontend) 可快速开发后台项目。
 
 致力于使用最流行最主流的前后端技术，对于各种使用场景都有相应的解决方案，对需求的变化充满信心。
 
@@ -37,19 +37,19 @@ submarine 是一个前后端分离的后台管理系统
 ## 前端预览
 <table>
     <tr>
-        <td><img src="./doc/images/permission.png"/></td>
-        <td><img src="./doc/images/menu.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/permission.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/menu.png"/></td>
     </tr>
     <tr>
-        <td><img src="./doc/images/dept.png"/></td>
-        <td><img src="./doc/images/role.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/dept.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/role.png"/></td>
     </tr>
     <tr>
-        <td><img src="./doc/images/user.png"/></td>
-        <td><img src="./doc/images/dictionary.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/user.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/dictionary.png"/></td>
     </tr>
     <tr>   
-        <td><img src="./doc/images/personal.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/personal.png"/></td>
     </tr>
 </table>
 
