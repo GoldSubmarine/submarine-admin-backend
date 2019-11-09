@@ -1,7 +1,7 @@
 server:
   port: 19687
   servlet:
-    context-path: /submarine
+    context-path: /scaffold
 
 spring:
   profiles:

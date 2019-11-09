@@ -7,15 +7,15 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 
 @SpringBootApplication
-public class SubmarineApplication extends SpringBootServletInitializer {
+public class ScaffoldApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(SubmarineApplication.class, args);
+        SpringApplication.run(ScaffoldApplication.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(SubmarineApplication.class);
+        return application.sources(ScaffoldApplication.class);
     }
 
 }

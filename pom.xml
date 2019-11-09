@@ -11,7 +11,7 @@
     <groupId>com.htnova</groupId>
     <artifactId>scaffold</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>submarine</name>
+    <name>scaffold</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
