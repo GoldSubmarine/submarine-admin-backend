@@ -46,7 +46,7 @@ public class RolePermissionService extends ServiceImpl<RolePermissionMapper, Rol
     @Transactional
     public void saveRolePermission(long roleId, Permission.PermissionType type, List<Long> permissionIdList) {
         // 删除旧的
-        super.remove(new QueryWrapper<>(new RolePermission()).lambda().eq(RolePermission::getRoleId, roleId));
+        super.remove(new QueryWrapper<>(new RolePermission()).lambda().eq(RolePermission::getRoleId, roleId).eq(RolePermission::getType, type));
         List<RolePermission> rolePermissionList = permissionIdList.stream()
                 .map(item -> RolePermission.builder().permissionId(item).roleId(roleId).type(type).build())
                 .collect(Collectors.toList());
