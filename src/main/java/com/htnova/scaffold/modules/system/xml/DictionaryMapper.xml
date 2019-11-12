@@ -30,13 +30,13 @@
         <if test="dictionary.createBy != null and dictionary.createBy != ''">
             AND a.create_by = #{dictionary.createBy}
         </if>
-        <if test="dictionary.createTime != null and dictionary.createTime != ''">
+        <if test="dictionary.createTime != null">
             AND a.create_time = #{dictionary.createTime}
         </if>
         <if test="dictionary.updateBy != null and dictionary.updateBy != ''">
             AND a.update_by = #{dictionary.updateBy}
         </if>
-        <if test="dictionary.updateTime != null and dictionary.updateTime != ''">
+        <if test="dictionary.updateTime != null">
             AND a.update_time = #{dictionary.updateTime}
         </if>
     </sql>

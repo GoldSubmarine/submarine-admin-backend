@@ -34,13 +34,13 @@
         <if test="userRole.createBy != null and userRole.createBy != ''">
             AND a.create_by = #{userRole.createBy}
         </if>
-        <if test="userRole.createTime != null and userRole.createTime != ''">
+        <if test="userRole.createTime != null">
             AND a.create_time = #{userRole.createTime}
         </if>
         <if test="userRole.updateBy != null and userRole.updateBy != ''">
             AND a.update_by = #{userRole.updateBy}
         </if>
-        <if test="userRole.updateTime != null and userRole.updateTime != ''">
+        <if test="userRole.updateTime != null">
             AND a.update_time = #{userRole.updateTime}
         </if>
     </sql>
@@ -56,7 +56,7 @@
     </select>
 
     <!--根据userid-->
-    <select id="getRoleById" resultType="Role">
+    <select id="getRoleByUserId" resultType="Role">
         SELECT b.* FROM
             user_role a
             LEFT JOIN role b ON a.role_id= b.id

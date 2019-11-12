@@ -2,13 +2,13 @@ package com.htnova.scaffold.modules.system.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.htnova.scaffold.common.base.BaseDto;
+import com.htnova.scaffold.modules.system.entity.Permission;
+import com.htnova.scaffold.modules.system.mapstruct.PermissionMapStruct;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.htnova.scaffold.common.base.BaseDto;
-import com.htnova.scaffold.modules.system.entity.Permission;
-import com.htnova.scaffold.modules.system.mapstruct.PermissionMapStruct;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -18,6 +18,11 @@ import java.util.List;
 @Data
 @Builder
 public class PermissionDto extends BaseDto {
+
+    /**
+     * 类型
+     */
+    private Permission.PermissionType type;
 
     /**
      * 名称（中文）

@@ -3,6 +3,7 @@ package com.htnova.scaffold.modules.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.scaffold.common.dto.XPage;
+import com.htnova.scaffold.modules.system.entity.Permission;
 import com.htnova.scaffold.modules.system.entity.RolePermission;
 import com.htnova.scaffold.modules.system.mapper.RolePermissionMapper;
 import org.springframework.stereotype.Service;
@@ -29,15 +30,25 @@ public class RolePermissionService extends ServiceImpl<RolePermissionMapper, Rol
         return rolePermissionMapper.findList(rolePermission);
     }
 
+    @Transactional
+    public List<Permission> findPermissionList(List<Long> roleIds, Permission.PermissionType permissionType) {
+        return findPermissionList(roleIds).stream().filter(item -> permissionType.equals(item.getType())).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<Permission> findPermissionList(List<Long> roleIds) {
+        return rolePermissionMapper.getByRoleIds(roleIds);
+    }
+
     /**
      * 保存角色的权限
      */
     @Transactional
-    public void saveRolePermission(long roleId, List<Long> permissionIdList) {
+    public void saveRolePermission(long roleId, Permission.PermissionType type, List<Long> permissionIdList) {
         // 删除旧的
         super.remove(new QueryWrapper<>(new RolePermission()).lambda().eq(RolePermission::getRoleId, roleId));
         List<RolePermission> rolePermissionList = permissionIdList.stream()
-                .map(item -> RolePermission.builder().permissionId(item).roleId(roleId).build())
+                .map(item -> RolePermission.builder().permissionId(item).roleId(roleId).type(type).build())
                 .collect(Collectors.toList());
         super.saveBatch(rolePermissionList);
     }

@@ -36,7 +36,7 @@ public class RoleDto extends BaseDto {
     /**
      * 菜单
      */
-    private List<MenuDto> menuList;
+    private List<PermissionDto> menuList;
 
     public static Role toEntity(RoleDto roleDto) {
         RoleMapStruct mapStruct = Mappers.getMapper( RoleMapStruct.class );

@@ -34,13 +34,13 @@
         <if test="role.createBy != null and role.createBy != ''">
             AND a.create_by = #{role.createBy}
         </if>
-        <if test="role.createTime != null and role.createTime != ''">
+        <if test="role.createTime != null">
             AND a.create_time = #{role.createTime}
         </if>
         <if test="role.updateBy != null and role.updateBy != ''">
             AND a.update_by = #{role.updateBy}
         </if>
-        <if test="role.updateTime != null and role.updateTime != ''">
+        <if test="role.updateTime != null">
             AND a.update_time = #{role.updateTime}
         </if>
     </sql>

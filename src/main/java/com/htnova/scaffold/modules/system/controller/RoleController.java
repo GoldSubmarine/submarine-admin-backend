@@ -3,9 +3,9 @@ package com.htnova.scaffold.modules.system.controller;
 import com.htnova.scaffold.common.dto.XPage;
 import com.htnova.scaffold.common.util.CommonUtil;
 import com.htnova.scaffold.modules.system.dto.RoleDto;
+import com.htnova.scaffold.modules.system.entity.Permission;
 import com.htnova.scaffold.modules.system.entity.Role;
 import com.htnova.scaffold.modules.system.mapstruct.RoleMapStruct;
-import com.htnova.scaffold.modules.system.service.RoleMenuService;
 import com.htnova.scaffold.modules.system.service.RolePermissionService;
 import com.htnova.scaffold.modules.system.service.RoleService;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +22,6 @@ public class RoleController {
 
     @Resource
     private RoleService roleService;
-
-    @Resource
-    private RoleMenuService roleMenuService;
 
     @Resource
     private RolePermissionService rolePermissionService;
@@ -68,16 +65,8 @@ public class RoleController {
      * 角色的权限保存
      */
     @PostMapping("/permission/save")
-    public void saveRolePermission(long id, @RequestParam(value = "permissionList") List<Long> permissionList) {
-        rolePermissionService.saveRolePermission(id, permissionList);
-    }
-
-    /**
-     * 角色的菜单保存
-     */
-    @PostMapping("/menu/save")
-    public void saveRoleMenu(long id, @RequestParam(value = "menuList") List<Long> menuList) {
-        roleMenuService.saveRoleMenu(id, menuList);
+    public void saveRolePermission(long id, Permission.PermissionType type, @RequestParam(value = "permissionList") List<Long> permissionList) {
+        rolePermissionService.saveRolePermission(id, type, permissionList);
     }
 
     /**

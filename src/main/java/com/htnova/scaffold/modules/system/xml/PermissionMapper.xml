@@ -4,6 +4,7 @@
 
     <sql id="SelectColumns">
         a.id,
+        a.type,
         a.name,
         a.value,
         a.pid,
@@ -23,6 +24,9 @@
         FROM permission a WHERE a.del_flag = #{permission.delFlag}
         <if test="permission.name != null and permission.name != ''">
             AND a.name LIKE concat('%',#{permission.name},'%')
+        </if>
+        <if test="permission.type != null">
+            AND a.type = #{permission.type}
         </if>
         <if test="permission.value != null and permission.value != ''">
             AND a.value LIKE concat('%',#{permission.value},'%')

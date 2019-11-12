@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.htnova.scaffold.common.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import com.htnova.scaffold.common.base.BaseEntity;
 
 import java.util.List;
 
@@ -97,12 +97,6 @@ public class User extends BaseEntity {
      */
     @TableField(exist = false)
     private List<Permission> permissionList;
-
-    /**
-     * 菜单
-     */
-    @TableField(exist = false)
-    private List<Menu> menuList;
 
     public enum UserStatus {
         enable,

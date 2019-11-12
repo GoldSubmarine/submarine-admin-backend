@@ -2,18 +2,18 @@ package com.htnova.scaffold.modules.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import com.htnova.scaffold.common.base.BaseEntity;
 import com.htnova.scaffold.common.dto.XPage;
 import com.htnova.scaffold.common.exception.ServiceException;
 import com.htnova.scaffold.common.util.CommonUtil;
 import com.htnova.scaffold.common.util.UserUtil;
-import com.htnova.scaffold.modules.system.entity.*;
-import com.htnova.scaffold.modules.system.mapper.RoleMenuMapper;
-import com.htnova.scaffold.modules.system.mapper.RolePermissionMapper;
+import com.htnova.scaffold.modules.system.entity.Dept;
+import com.htnova.scaffold.modules.system.entity.Role;
+import com.htnova.scaffold.modules.system.entity.User;
+import com.htnova.scaffold.modules.system.entity.UserRole;
 import com.htnova.scaffold.modules.system.mapper.UserMapper;
 import com.htnova.scaffold.modules.system.mapper.UserRoleMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,10 +37,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     private UserRoleMapper userRoleMapper;
 
     @Resource
-    private RolePermissionMapper rolePermissionMapper;
-
-    @Resource
-    private RoleMenuMapper roleMenuMapper;
+    private RolePermissionService rolePermissionService;
 
     @Resource
     private DeptService deptService;
@@ -109,27 +106,23 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     @Transactional
     public User getUserById(long id) {
         User user = userMapper.selectById(id);
-        fillRolePermissionMenu(user);
+        fillRolePermission(user);
         return user;
     }
 
     @Transactional
     public User getByUsername(String username) {
         User user = super.lambdaQuery().eq(User::getUsername, username).one();
-        fillRolePermissionMenu(user);
+        fillRolePermission(user);
         return user;
     }
 
-    private void fillRolePermissionMenu(User user) {
+    private void fillRolePermission(User user) {
         if(Objects.nonNull(user)) {
-            List<Role> roleList = userRoleMapper.getRoleById(user.getId());
+            List<Role> roleList = userRoleMapper.getRoleByUserId(user.getId());
             List<Long> roleIds = roleList.stream().map(BaseEntity::getId).collect(Collectors.toList());
-            List<Permission> permissionList = rolePermissionMapper.getByRoleIds(roleIds)
-                                                .stream().filter(item -> StringUtils.isNotBlank(item.getValue())).collect(Collectors.toList());
-            List<Menu> menuList = roleMenuMapper.getByRoleIds(roleIds);
             user.setRoleList(roleList);
-            user.setPermissionList(permissionList);
-            user.setMenuList(menuList);
+            user.setPermissionList(rolePermissionService.findPermissionList(roleIds));
         }
     }
 

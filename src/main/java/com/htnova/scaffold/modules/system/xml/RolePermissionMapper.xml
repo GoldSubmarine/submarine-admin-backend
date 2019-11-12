@@ -4,6 +4,7 @@
 
     <sql id="SelectColumns">
         a.id,
+        a.type,
         a.permission_id,
         a.role_id,
         a.remark,
@@ -22,6 +23,9 @@
         <if test="rolePermission.id != null and rolePermission.id != ''">
             AND a.id = #{rolePermission.id}
         </if>
+        <if test="rolePermission.type != null">
+            AND a.type = #{rolePermission.type}
+        </if>
         <if test="rolePermission.permissionId != null and rolePermission.permissionId != ''">
             AND a.permission_id = #{rolePermission.permissionId}
         </if>
@@ -34,13 +38,13 @@
         <if test="rolePermission.createBy != null and rolePermission.createBy != ''">
             AND a.create_by = #{rolePermission.createBy}
         </if>
-        <if test="rolePermission.createTime != null and rolePermission.createTime != ''">
+        <if test="rolePermission.createTime != null">
             AND a.create_time = #{rolePermission.createTime}
         </if>
         <if test="rolePermission.updateBy != null and rolePermission.updateBy != ''">
             AND a.update_by = #{rolePermission.updateBy}
         </if>
-        <if test="rolePermission.updateTime != null and rolePermission.updateTime != ''">
+        <if test="rolePermission.updateTime != null">
             AND a.update_time = #{rolePermission.updateTime}
         </if>
     </sql>

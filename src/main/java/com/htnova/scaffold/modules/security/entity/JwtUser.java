@@ -3,14 +3,14 @@ package com.htnova.scaffold.modules.security.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.htnova.scaffold.common.base.BaseEntity;
+import com.htnova.scaffold.modules.security.mapstruct.JwtUserMapStruct;
+import com.htnova.scaffold.modules.system.entity.Permission;
+import com.htnova.scaffold.modules.system.entity.Role;
+import com.htnova.scaffold.modules.system.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.htnova.scaffold.common.base.BaseEntity;
-import com.htnova.scaffold.modules.security.mapstruct.JwtUserMapStruct;
-import com.htnova.scaffold.modules.system.entity.Menu;
-import com.htnova.scaffold.modules.system.entity.Role;
-import com.htnova.scaffold.modules.system.entity.User;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -100,9 +100,9 @@ public class JwtUser extends BaseEntity implements UserDetails {
     private List<Role> roleList;
 
     /**
-     * 角色
+     * 权限
      */
-    private List<Menu> menuList;
+    private List<Permission> permissionList;
 
 
     @JsonIgnore
@@ -142,11 +142,11 @@ public class JwtUser extends BaseEntity implements UserDetails {
     }
 
     public List<String> getPermissions() {
-        return authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        return permissionList.stream().filter(item -> Permission.PermissionType.button.equals(item.getType())).map(Permission::getValue).collect(Collectors.toList());
     }
 
     public List<String> getMenus() {
-        return menuList.stream().map(Menu::getValue).collect(Collectors.toList());
+        return permissionList.stream().filter(item -> Permission.PermissionType.menu.equals(item.getType())).map(Permission::getValue).collect(Collectors.toList());
     }
 
     public Boolean isSuperAdmin() {
@@ -160,9 +160,14 @@ public class JwtUser extends BaseEntity implements UserDetails {
     public static JwtUser createByUser(User user) {
         JwtUserMapStruct mapper = Mappers.getMapper(JwtUserMapStruct.class);
         JwtUser jwtUser = mapper.toDto(user);
-        jwtUser.authorities = user.getPermissionList().stream()
+        jwtUser.authorities = user.getPermissionList()
+                .stream()
+                .filter(item -> Permission.PermissionType.button.equals(item.getType()))
                 .map(permission -> new SimpleGrantedAuthority(permission.getValue()))
                 .collect(Collectors.toList());
+//        jwtUser.authorities = user.getPermissionList().stream()
+//                .map(permission -> new SimpleGrantedAuthority(permission.getValue()))
+//                .collect(Collectors.toList());
         return jwtUser;
     }
 }

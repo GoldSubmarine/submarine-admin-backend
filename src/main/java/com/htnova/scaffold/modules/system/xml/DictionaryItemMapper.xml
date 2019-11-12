@@ -42,13 +42,13 @@
         <if test="dictionaryItem.createBy != null and dictionaryItem.createBy != ''">
             AND a.create_by = #{dictionaryItem.createBy}
         </if>
-        <if test="dictionaryItem.createTime != null and dictionaryItem.createTime != ''">
+        <if test="dictionaryItem.createTime != null">
             AND a.create_time = #{dictionaryItem.createTime}
         </if>
         <if test="dictionaryItem.updateBy != null and dictionaryItem.updateBy != ''">
             AND a.update_by = #{dictionaryItem.updateBy}
         </if>
-        <if test="dictionaryItem.updateTime != null and dictionaryItem.updateTime != ''">
+        <if test="dictionaryItem.updateTime != null">
             AND a.update_time = #{dictionaryItem.updateTime}
         </if>
     </sql>

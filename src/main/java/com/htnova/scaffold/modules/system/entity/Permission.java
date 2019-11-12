@@ -3,11 +3,11 @@ package com.htnova.scaffold.modules.system.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.htnova.scaffold.common.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import com.htnova.scaffold.common.base.BaseEntity;
 
 import java.util.List;
 
@@ -16,6 +16,11 @@ import java.util.List;
 @Data
 @SuperBuilder
 public class Permission extends BaseEntity {
+
+    /**
+     * 类型
+     */
+    private PermissionType type;
 
     /**
      * 名称（中文）
@@ -44,5 +49,18 @@ public class Permission extends BaseEntity {
      */
     @TableField(exist=false)
     private List<Permission> children;
+
+    public enum PermissionType {
+
+        /**
+         * 菜单
+         */
+        menu,
+
+        /**
+         * 按钮
+         */
+        button
+    }
 
 }

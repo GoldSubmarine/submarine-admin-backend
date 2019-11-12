@@ -42,13 +42,13 @@
         <if test="dept.createBy != null and dept.createBy != ''">
             AND a.create_by = #{dept.createBy}
         </if>
-        <if test="dept.createTime != null and dept.createTime != ''">
+        <if test="dept.createTime != null">
             AND a.create_time = #{dept.createTime}
         </if>
         <if test="dept.updateBy != null and dept.updateBy != ''">
             AND a.update_by = #{dept.updateBy}
         </if>
-        <if test="dept.updateTime != null and dept.updateTime != ''">
+        <if test="dept.updateTime != null">
             AND a.update_time = #{dept.updateTime}
         </if>
     </sql>

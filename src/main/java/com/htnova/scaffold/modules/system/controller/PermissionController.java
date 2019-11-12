@@ -83,6 +83,7 @@ public class PermissionController {
         map.put("删除", ".del");
         map.forEach((name, value) -> {
             permissionService.savePermission(Permission.builder()
+                .type(Permission.PermissionType.button)
                 .name(name)
                 .value(permission.getValue() + value)
                 .pid(permission.getId())

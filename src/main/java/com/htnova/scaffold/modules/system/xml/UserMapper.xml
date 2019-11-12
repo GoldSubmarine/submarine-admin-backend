@@ -57,7 +57,7 @@
         <if test="user.avatar != null and user.avatar != ''">
             AND a.avatar = #{user.avatar}
         </if>
-        <if test="user.status != null and user.status != ''">
+        <if test="user.status != null">
             AND a.status = #{user.status}
         </if>
         <if test="user.deptId != null and user.deptId != ''">
@@ -78,13 +78,13 @@
         <if test="user.createBy != null and user.createBy != ''">
             AND a.create_by = #{user.createBy}
         </if>
-        <if test="user.createTime != null and user.createTime != ''">
+        <if test="user.createTime != null">
             AND a.create_time = #{user.createTime}
         </if>
         <if test="user.updateBy != null and user.updateBy != ''">
             AND a.update_by = #{user.updateBy}
         </if>
-        <if test="user.updateTime != null and user.updateTime != ''">
+        <if test="user.updateTime != null">
             AND a.update_time = #{user.updateTime}
         </if>
     </sql>
