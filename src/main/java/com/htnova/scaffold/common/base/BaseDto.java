@@ -2,11 +2,12 @@ package com.htnova.scaffold.common.base;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.htnova.scaffold.common.constant.GlobalConst;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import com.htnova.scaffold.common.constant.GlobalConst;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -53,6 +54,7 @@ public abstract class BaseDto implements Serializable {
     /**
      * 逻辑删除（0未删除，1已删除）
      */
+    @Builder.Default
     private Integer delFlag = GlobalConst.UNDEL_FLAG;
 
 }

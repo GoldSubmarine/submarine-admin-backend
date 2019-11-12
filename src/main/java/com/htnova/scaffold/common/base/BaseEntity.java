@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -60,6 +61,7 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 逻辑删除（0未删除，1已删除）
      */
+    @Builder.Default
     @TableLogic
     protected Integer delFlag = GlobalConst.UNDEL_FLAG;
 
