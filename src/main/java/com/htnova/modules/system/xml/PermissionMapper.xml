@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.modules.system.mapper.PermissionMapper">
+
+    <sql id="SelectColumns">
+        a.id,
+        a.type,
+        a.name,
+        a.value,
+        a.pid,
+        a.pids,
+        a.remark,
+        a.create_by,
+        a.create_time,
+        a.update_by,
+        a.update_time,
+        a.del_flag
+    </sql>
+
+    <!--动态检索片段-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM permission a WHERE a.del_flag = #{permission.delFlag}
+        <if test="permission.name != null and permission.name != ''">
+            AND a.name LIKE concat('%',#{permission.name},'%')
+        </if>
+        <if test="permission.type != null">
+            AND a.type = #{permission.type}
+        </if>
+        <if test="permission.value != null and permission.value != ''">
+            AND a.value LIKE concat('%',#{permission.value},'%')
+        </if>
+        <if test="permission.pid != null and permission.pid != ''">
+            AND a.pid = #{permission.pid}
+        </if>
+        <if test="permission.pids != null and permission.pids != ''">
+            AND a.pids = #{permission.pids}
+        </if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="Permission">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="Permission">
+        <include refid="findList"/>
+    </select>
+
+
+</mapper>

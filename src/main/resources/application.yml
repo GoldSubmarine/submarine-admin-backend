@@ -11,8 +11,8 @@ spring:
     timeZone: GMT+8
 
 mybatis-plus:
-  mapper-locations: classpath:com/htnova/scaffold/**/xml/*.xml
-  type-aliases-package: com.htnova.scaffold
+  mapper-locations: classpath:com/htnova/**/xml/*.xml
+  type-aliases-package: com.htnova
   global-config:
     db-config:
       update-strategy: IGNORED  # 编辑时全字段更新
