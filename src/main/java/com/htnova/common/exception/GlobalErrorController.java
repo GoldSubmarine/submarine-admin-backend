@@ -1,5 +1,6 @@
 package com.htnova.common.exception;
 
+import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.Result;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -16,7 +17,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 
 @RequestMapping({"${server.error.path:${error.path:/error}}"})
 public class GlobalErrorController implements ErrorController {
@@ -71,7 +71,7 @@ public class GlobalErrorController implements ErrorController {
 	}
 
 	private Result getErrorMessage(HttpServletRequest request, HttpStatus status){
-		Result result = Result.fail();
+		Result result = null;
 		Throwable error = this.errorAttributes.getError(new ServletWebRequest(request));
 		if(error != null) {
 			while(true) {
@@ -79,20 +79,21 @@ public class GlobalErrorController implements ErrorController {
 					BindingResult bindingResult = this.extractBindingResult(error);
 					if(bindingResult != null){
 						if(bindingResult.hasErrors()) {
-							result.setMsg(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage());
-//							result.setMsg("Validation failed for object=\'" + bindingResult.getObjectName() + "\'. Error count: " + bindingResult.getErrorCount());
+							result = Result.build(ResultStatus.BIND_ERROR);
+//							result = result.setMsg(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage());
 						} else {
-							result.setMsg("No errors");
+							result = Result.build(ResultStatus.NO_ERROR);
 						}
 					}else {
 						if(error instanceof AuthenticationException){
-							result.setMsg("无效的token,请重新登录");
+							result = Result.build(ResultStatus.INVALID_TOKEN);
 						}else if(error instanceof AccessDeniedException){
-							result.setMsg("未授权的访问");
+							result = Result.build(ResultStatus.UNAUTHORIZED);
 						}else if(error instanceof ServiceException){
-							result.setMsg(error.getMessage());
+							ServiceException serviceException = (ServiceException) error;
+							result = Result.build(serviceException.getCode(), serviceException.getMessage(), serviceException.getData());
 						}else {
-							result.setMsg("请求异常，请稍后重试");
+							result = Result.build(ResultStatus.SERVER_ERROR);
 						}
 					}
 					if(error instanceof ServiceException){

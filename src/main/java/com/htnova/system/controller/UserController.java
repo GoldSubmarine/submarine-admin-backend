@@ -1,5 +1,7 @@
 package com.htnova.system.controller;
 
+import com.htnova.common.constant.ResultStatus;
+import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.util.CommonUtil;
 import com.htnova.system.dto.UserDto;
@@ -57,24 +59,27 @@ public class UserController {
      */
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/save")
-    public String save(UserDto userDto) {
-        return userService.saveUser(UserDto.toEntity(userDto));
+    public Result save(UserDto userDto) {
+        String randomPass = userService.saveUser(UserDto.toEntity(userDto));
+        return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
     }
 
     /**
      * 修改密码
      */
     @PostMapping("/changePass")
-    public void changePass(String oldPassword, String newPassword) {
+    public Result changePass(String oldPassword, String newPassword) {
         userService.changePass(oldPassword, newPassword);
+        return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
     /**
      * 重置密码
      */
     @PostMapping("/resetPass")
-    public String resetPass(Long id) {
-        return userService.resetPass(id);
+    public Result resetPass(Long id) {
+        String pass = userService.resetPass(id);
+        return Result.build(ResultStatus.SAVE_SUCCESS, pass);
     }
 
     /**
@@ -82,7 +87,8 @@ public class UserController {
      */
     @PreAuthorize("hasAnyAuthority('user.del')")
     @DeleteMapping("/del")
-    public void delete(UserDto userDto) {
+    public Result delete(UserDto userDto) {
         userService.deleteUser(userDto.getId());
+        return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 }

@@ -1,5 +1,7 @@
 package com.htnova.system.controller;
 
+import com.htnova.common.constant.ResultStatus;
+import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.util.CommonUtil;
 import com.htnova.system.mapstruct.DeptMapStruct;
@@ -63,15 +65,17 @@ public class DeptController {
      * 部门保存
      */
     @PostMapping("/save")
-    public void save(DeptDto deptDto) {
+    public Result save(DeptDto deptDto) {
         deptService.saveDept(DeptDto.toEntity(deptDto));
+        return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
     /**
      * 部门删除
      */
     @DeleteMapping("/del")
-    public void delete(DeptDto deptDto) {
+    public Result delete(DeptDto deptDto) {
         deptService.deleteDept(deptDto.getId());
+        return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 }

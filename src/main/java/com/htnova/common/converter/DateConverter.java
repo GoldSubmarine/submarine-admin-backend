@@ -1,5 +1,6 @@
 package com.htnova.common.converter;
 
+import com.htnova.common.constant.ResultStatus;
 import org.apache.commons.lang3.StringUtils;
 import com.htnova.common.exception.ServiceException;
 import org.springframework.core.convert.converter.Converter;
@@ -7,6 +8,9 @@ import org.springframework.core.convert.converter.Converter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * 自定义前端参数转 Date 对象的实现
+ */
 public class DateConverter implements Converter<String, Date> {
     private static final String dateFormat = "yyyy-MM-dd HH:mm:ss";
     private static final String shortDateFormat = "yyyy-MM-dd";
@@ -35,9 +39,9 @@ public class DateConverter implements Converter<String, Date> {
                 return new Date(lDate);
             }
         } catch (Exception e) {
-            throw new ServiceException(String.format("格式化时间 %s 失败", value));
+            throw new ServiceException(ResultStatus.FORMAT_ERROR);
         }
-        throw new ServiceException(String.format("格式化时间 %s 失败", value));
+        throw new ServiceException(ResultStatus.FORMAT_ERROR);
     }
 
 }

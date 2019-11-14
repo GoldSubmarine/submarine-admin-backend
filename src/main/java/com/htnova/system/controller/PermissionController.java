@@ -1,5 +1,7 @@
 package com.htnova.system.controller;
 
+import com.htnova.common.constant.ResultStatus;
+import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.util.CommonUtil;
 import com.htnova.system.dto.PermissionDto;
@@ -65,15 +67,16 @@ public class PermissionController {
      * 权限保存
      */
     @PostMapping("/save")
-    public void save(PermissionDto permissionDto) {
+    public Result save(PermissionDto permissionDto) {
         permissionService.savePermission(PermissionDto.toEntity(permissionDto));
+        return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
     /**
      * 模块权限保存
      */
     @PostMapping("/save/module")
-    public void saveModule(PermissionDto permissionDto) {
+    public Result saveModule(PermissionDto permissionDto) {
         Permission permission = PermissionDto.toEntity(permissionDto);
         permissionService.savePermission(permission);
         Map<String, String> map = new HashMap<>();
@@ -89,13 +92,15 @@ public class PermissionController {
                 .pid(permission.getId())
                 .build());
         });
+        return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
     /**
      * 权限删除
      */
     @DeleteMapping("/del")
-    public void delete(PermissionDto permissionDto) {
+    public Result delete(PermissionDto permissionDto) {
         permissionService.deletePermission(permissionDto.getId());
+        return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 }

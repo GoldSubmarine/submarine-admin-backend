@@ -1,8 +1,6 @@
-/**
- * Copyright &copy; 2015-2020 <a href="http://www.jeeplus.org/">JeePlus</a> All rights reserved.
- */
 package com.htnova.common.exception;
 
+import com.htnova.common.constant.ResultStatus;
 import lombok.Data;
 
 /**
@@ -15,17 +13,28 @@ public class ServiceException extends RuntimeException {
 
 	private Integer code;
 
+	private Object data;
+
+	/**
+	 * 默认为 ResultStatus.SERVER_ERROR 错误
+	 */
 	public ServiceException() {
-		super();
+		super(ResultStatus.SERVER_ERROR.getMsg());
+		this.code = ResultStatus.SERVER_ERROR.getCode();
 	}
 
-	public ServiceException(String message) {
-		super(message);
+	public ServiceException(ResultStatus resultStatus) {
+		super(resultStatus.getMsg());
+		this.code = resultStatus.getCode();
 	}
 
-	public ServiceException(Integer code, String message) {
-		super(message);
-		this.code = code;
+	/**
+	 * @param objects:传入要拼接的字符
+	 */
+	public ServiceException(ResultStatus resultStatus, Object ...objects) {
+		super(resultStatus.getMsg());
+		this.code = resultStatus.getCode();
+		this.data = objects;
 	}
 
 	public ServiceException(Throwable cause) {

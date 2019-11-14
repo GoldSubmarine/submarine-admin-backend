@@ -1,5 +1,7 @@
 package com.htnova.system.controller;
 
+import com.htnova.common.constant.ResultStatus;
+import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.util.CommonUtil;
 import com.htnova.system.mapstruct.DictionaryMapStruct;
@@ -57,8 +59,9 @@ public class DictionaryController {
      */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.add', 'dictionary.edit')")
     @PostMapping("/save")
-    public void save(DictionaryDto dictionaryDto) {
+    public Result save(DictionaryDto dictionaryDto) {
         dictionaryService.saveDictionary(DictionaryDto.toEntity(dictionaryDto));
+        return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
     /**
@@ -66,7 +69,8 @@ public class DictionaryController {
      */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.del')")
     @DeleteMapping("/del")
-    public void delete(DictionaryDto dictionaryDto) {
+    public Result delete(DictionaryDto dictionaryDto) {
         dictionaryService.deleteDictionary(dictionaryDto.getId());
+        return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 }

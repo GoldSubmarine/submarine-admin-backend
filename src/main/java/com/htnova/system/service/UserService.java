@@ -3,6 +3,7 @@ package com.htnova.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.common.base.BaseEntity;
+import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.util.CommonUtil;
 import com.htnova.common.util.UserUtil;
@@ -86,7 +87,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     public void changePass(String oldPassword, String newPassword ) {
         User source = userMapper.selectById(UserUtil.getJwtUser().getId());
         if(!bCryptPasswordEncoder.matches(oldPassword, source.getPassword())) {
-            throw new ServiceException("原密码错误");
+            throw new ServiceException(ResultStatus.OLD_PASSWORD_WRONG);
         }
         source.setPassword(bCryptPasswordEncoder.encode(newPassword));
         source.setJwtSecret(CommonUtil.getRandomString(16));

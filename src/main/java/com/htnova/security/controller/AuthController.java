@@ -1,8 +1,9 @@
 package com.htnova.security.controller;
 
-import com.htnova.common.util.UserUtil;
+import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.exception.ServiceException;
 import com.htnova.common.util.JwtUtil;
+import com.htnova.common.util.UserUtil;
 import com.htnova.security.entity.JwtUser;
 import com.htnova.system.dto.UserDto;
 import com.htnova.system.entity.User;
@@ -43,13 +44,13 @@ public class AuthController {
     public String login(UserDto userDto) {
         JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(userDto.getUsername());
         if(Objects.isNull(jwtUser)) {
-            throw new ServiceException("用户不存在");
+            throw new ServiceException(ResultStatus.USER_NOT_EXIST);
         }
         if(!jwtUser.isEnabled()) {
-            throw new ServiceException("当前账号已冻结，请联系管理员");
+            throw new ServiceException(ResultStatus.ACCOUNT_FREEZE);
         }
         if(!bCryptPasswordEncoder.matches(userDto.getPassword(), jwtUser.getPassword())) {
-            throw new ServiceException("密码错误");
+            throw new ServiceException(ResultStatus.PASSWORD_WRONG);
         }
         return jwtUtil.create(jwtUser);
     }
