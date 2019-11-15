@@ -141,14 +141,6 @@ public class JwtUser extends BaseEntity implements UserDetails {
         return roleList.stream().map(Role::getCode).collect(Collectors.toList());
     }
 
-    public List<String> getPermissions() {
-        return permissionList.stream().filter(item -> Permission.PermissionType.button.equals(item.getType())).map(Permission::getValue).collect(Collectors.toList());
-    }
-
-    public List<String> getMenus() {
-        return permissionList.stream().filter(item -> Permission.PermissionType.menu.equals(item.getType())).map(Permission::getValue).collect(Collectors.toList());
-    }
-
     public Boolean isSuperAdmin() {
         return roleList.stream().map(Role::getCode).anyMatch(item -> Role.RoleCode.SuperAdmin.toString().equals(item));
     }
