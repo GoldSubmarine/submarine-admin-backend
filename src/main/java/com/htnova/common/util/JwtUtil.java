@@ -2,11 +2,12 @@ package com.htnova.common.util;
 
 import com.htnova.security.config.JwtConfig;
 import com.htnova.security.entity.JwtUser;
+import com.htnova.system.entity.User;
+import com.htnova.system.service.UserService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClock;
 import io.jsonwebtoken.impl.TextCodec;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -17,7 +18,7 @@ import java.util.Date;
 public class JwtUtil {
 
     @Resource
-    private UserDetailsService userDetailsService;
+    private UserService userService;
 
     private Clock clock = DefaultClock.INSTANCE;
 
@@ -46,13 +47,13 @@ public class JwtUtil {
                                         @Override
                                         public byte[] resolveSigningKeyBytes(JwsHeader jwsHeader, Claims claims) {
                                             String username = claims.getSubject();
-                                            JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
-                                            return TextCodec.BASE64URL.decode(jwtUser.getJwtSecret());
+                                            User user = userService.getByUsername(username);
+                                            return TextCodec.BASE64URL.decode(user.getJwtSecret());
                                         }
                                         @Override
                                         public byte[] resolveSigningKeyBytes(JwsHeader header, String payload) {
-                                            JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(payload);
-                                            return TextCodec.BASE64URL.decode(jwtUser.getJwtSecret());
+                                            User user = userService.getByUsername(payload);
+                                            return TextCodec.BASE64URL.decode(user.getJwtSecret());
                                         }})
                                     .parseClaimsJws(token)
                                     .getBody()

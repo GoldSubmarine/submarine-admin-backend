@@ -114,11 +114,11 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     @Transactional
     public User getByUsername(String username) {
         User user = super.lambdaQuery().eq(User::getUsername, username).one();
-        fillRolePermission(user);
         return user;
     }
 
-    private void fillRolePermission(User user) {
+    @Transactional
+    public void fillRolePermission(User user) {
         if(Objects.nonNull(user)) {
             List<Role> roleList = userRoleMapper.getRoleByUserId(user.getId());
             List<Long> roleIds = roleList.stream().map(BaseEntity::getId).collect(Collectors.toList());
