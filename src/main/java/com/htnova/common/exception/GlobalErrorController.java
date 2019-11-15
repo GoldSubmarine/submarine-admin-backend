@@ -71,7 +71,7 @@ public class GlobalErrorController implements ErrorController {
 	}
 
 	private Result getErrorMessage(HttpServletRequest request, HttpStatus status){
-		Result result = null;
+		Result result = new Result();
 		Throwable error = this.errorAttributes.getError(new ServletWebRequest(request));
 		if(error != null) {
 			while(true) {
