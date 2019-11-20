@@ -1,12 +1,12 @@
-package com.htnova.modules.<%= module %>.entity;
+package com.htnova.<%= module %>.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import BaseEntity;
-import com.htnova.modules.<%= module %>.dto.<%= Entity %>Dto;
-import com.htnova.modules.<%= module %>.mapstruct.<%= Entity %>MapStruct;
+import com.htnova.common.base.BaseEntity;
+import com.htnova.<%= module %>.dto.<%= Entity %>Dto;
+import com.htnova.<%= module %>.mapstruct.<%= Entity %>MapStruct;
 import org.mapstruct.factory.Mappers;
 import java.math.BigDecimal;
 import java.util.Date;

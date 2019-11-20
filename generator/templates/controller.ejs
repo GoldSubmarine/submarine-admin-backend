@@ -1,12 +1,12 @@
-package com.htnova.modules.<%= module %>.controller;
+package com.htnova.<%= module %>.controller;
 
-import Result;
-import XPage;
-import CommonUtil;
-import com.htnova.modules.<%= module %>.mapstruct.<%= Entity %>MapStruct;
-import com.htnova.modules.<%= module %>.dto.<%= Entity %>Dto;
-import com.htnova.modules.<%= module %>.entity.<%= Entity %>;
-import com.htnova.modules.<%= module %>.service.<%= Entity %>Service;
+import com.htnova.common.dto.Result;
+import com.htnova.common.dto.XPage;
+import com.htnova.common.util.CommonUtil;
+import com.htnova.<%= module %>.mapstruct.<%= Entity %>MapStruct;
+import com.htnova.<%= module %>.dto.<%= Entity %>Dto;
+import com.htnova.<%= module %>.entity.<%= Entity %>;
+import com.htnova.<%= module %>.service.<%= Entity %>Service;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

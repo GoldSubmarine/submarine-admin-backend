@@ -1,0 +1,11 @@
+package com.htnova.<%= module %>.mapstruct;
+
+import com.htnova.common.base.BaseMapStruct;
+import com.htnova.<%= module %>.dto.<%= Entity %>Dto;
+import com.htnova.<%= module %>.entity.<%= Entity %>;
+import org.mapstruct.Mapper;
+
+@Mapper
+public interface <%= Entity %>MapStruct extends BaseMapStruct<<%= Entity %>Dto, <%= Entity %>> {
+
+}
