@@ -106,7 +106,7 @@ public class GlobalErrorController implements ErrorController {
 			}
 		}
 		String message = this.getAttribute(new ServletWebRequest(request), "javax.servlet.error.message");
-		if((!StringUtils.isEmpty(message) || StringUtils.isEmpty(result.getMsg())) && !(error instanceof BindingResult)) {
+		if((!StringUtils.isEmpty(message) || StringUtils.isEmpty(result.getMsg())) && !(error instanceof BindingResult) && StringUtils.isEmpty(result.getMsg())) {
 			result.setMsg(StringUtils.isEmpty(message)?"":message);
 		}
 		return result;

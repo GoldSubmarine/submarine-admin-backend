@@ -1,5 +1,6 @@
 package com.htnova.<%= module %>.controller;
 
+import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.util.CommonUtil;
@@ -59,8 +60,9 @@ public class <%= Entity %>Controller {
      */
     @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.add', '<%= entity %>.edit')")
     @PostMapping("/save")
-    public void save(@Valid <%= Entity %>Dto <%= entity %>Dto) {
+    public Result save(@Valid <%= Entity %>Dto <%= entity %>Dto) {
         <%= entity %>Service.save<%= Entity %>(<%= Entity %>Dto.toEntity(<%= entity %>Dto));
+        return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
     /**
@@ -68,7 +70,8 @@ public class <%= Entity %>Controller {
      */
     @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.del')")
     @DeleteMapping("/del")
-    public void delete(<%= Entity %>Dto <%= entity %>Dto) {
+    public Result delete(<%= Entity %>Dto <%= entity %>Dto) {
         <%= entity %>Service.delete<%= Entity %>(<%= entity %>Dto.getId());
+        return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 }
