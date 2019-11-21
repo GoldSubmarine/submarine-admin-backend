@@ -22,6 +22,8 @@ public enum ResultStatus {
     LOGOUT_SUCCESS(20002, "成功退出登录"),
 
 
+    NOT_FOUND(40004, "接口不存在"),
+
     //================fail================
     SERVER_ERROR(50000, "请求异常，请稍后重试"),
     INVALID_TOKEN(50001, "无效的token,请重新登录"),

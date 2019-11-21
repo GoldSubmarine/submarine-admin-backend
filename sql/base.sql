@@ -284,7 +284,6 @@ CREATE TABLE `user`  (
 INSERT INTO `user` VALUES (1, 'admin', '$2a$10$LZIWw.1hMkKRM3D87blxvOkGc.I14HxHd/LNylxkz3cZLDcjkD8l2', '超级管理员', '13000000000', '123124@qq.com', NULL, 'male', 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png', 'enable', 1, '1,', '根节点', '$\\;\\huA4k#zHCOYS', NULL, NULL, NULL, 'admin', '2019-10-31 15:36:55', 0);
 INSERT INTO `user` VALUES (1191559879739359233, 'test', '$2a$10$s7E5gK6hLDKtyWWNMSN2lO6lOcbgb1K5xyTofNxn2/oa3hpOgPByC', 'asf', '15732636972', NULL, NULL, 'male', NULL, 'enable', 1, '1,', '根节点', '0bj8{LP@*`oQnQam', NULL, 'admin', '2019-11-05 11:36:28', 'admin', '2019-11-07 12:07:44', 0);
 INSERT INTO `user` VALUES (1191605917275664385, 'test2', '$2a$10$gLJMcZeDvkFPSiiiRPKoyeJShl.SjOyxALH0T4uLXsnpxofnRbQKS', 'qwew', '15732636876', NULL, NULL, 'female', NULL, 'enable', 1, '1,', '根节点', '(6gkz:i8N^/Vz_t%', NULL, 'admin', '2019-11-05 14:39:24', 'admin', '2019-11-07 12:07:37', 0);
-INSERT INTO `user` VALUES (1191608745696198658, '阿斯蒂', '$2a$10$6LZ1RblvCUwCUoJeyiOSr.bAdTrMbgSfxDtTHfkcdXO7E8zxnDv5q', '求安慰', '15732636253', NULL, NULL, 'male', NULL, 'enable', 1, '1,', '根节点', '8N\'r2C&^xL1CU{@/', NULL, 'admin', '2019-11-05 14:50:39', 'admin', '2019-11-07 12:07:27', 0);
 
 -- ----------------------------
 -- Table structure for user_role
