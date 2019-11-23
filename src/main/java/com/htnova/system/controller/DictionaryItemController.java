@@ -18,7 +18,7 @@ import java.util.List;
  * @menu 字典详情
  */
 @RestController
-@RequestMapping("/dictionaryItem")
+@RequestMapping("/dictionary-item")
 public class DictionaryItemController {
 
     @Resource
