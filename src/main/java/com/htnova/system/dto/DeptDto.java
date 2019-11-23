@@ -1,8 +1,6 @@
 package com.htnova.system.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.htnova.common.base.BaseDto;
+import com.htnova.common.base.BaseTree;
 import com.htnova.system.entity.Dept;
 import com.htnova.system.mapstruct.DeptMapStruct;
 import lombok.AllArgsConstructor;
@@ -11,35 +9,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class DeptDto extends BaseDto {
+public class DeptDto extends BaseTree<DeptDto> {
 
     /**
      * 名称（中文）
      */
     private String name;
 
-
     /**
      * 编码
      */
     private String code;
-
-    /**
-     * 父级id
-     */
-    @JsonSerialize(using= ToStringSerializer.class)
-    private Long pid;
-
-    /**
-     * 子节点
-     */
-    private List<DeptDto> children;
 
     public static Dept toEntity(DeptDto deptDto) {
         DeptMapStruct mapStruct = Mappers.getMapper( DeptMapStruct.class );

@@ -1,6 +1,6 @@
 package com.htnova.system.dto;
 
-import com.htnova.common.base.BaseDto;
+import com.htnova.common.base.BaseEntity;
 import com.htnova.system.entity.Dictionary;
 import com.htnova.system.mapstruct.DictionaryMapStruct;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import org.mapstruct.factory.Mappers;
 @NoArgsConstructor
 @Data
 @Builder
-public class DictionaryDto extends BaseDto {
+public class DictionaryDto extends BaseEntity {
 
 
     /**

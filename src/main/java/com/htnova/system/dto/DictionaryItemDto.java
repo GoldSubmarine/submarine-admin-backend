@@ -2,7 +2,7 @@ package com.htnova.system.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.htnova.common.base.BaseDto;
+import com.htnova.common.base.BaseEntity;
 import com.htnova.system.entity.DictionaryItem;
 import com.htnova.system.mapstruct.DictionaryItemMapStruct;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import org.mapstruct.factory.Mappers;
 @NoArgsConstructor
 @Data
 @Builder
-public class DictionaryItemDto extends BaseDto {
+public class DictionaryItemDto extends BaseEntity {
 
 
     /**

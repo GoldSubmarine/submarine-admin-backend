@@ -1,21 +1,16 @@
 package com.htnova.system.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.htnova.common.base.BaseEntity;
+import com.htnova.common.base.BaseTree;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @SuperBuilder
-public class Permission extends BaseEntity {
+public class Permission extends BaseTree<Permission> {
 
     /**
      * 类型
@@ -27,28 +22,10 @@ public class Permission extends BaseEntity {
      */
     private String name;
 
-
     /**
      * 权限值
      */
     private String value;
-
-    /**
-     * 父级id
-     */
-    @JsonSerialize(using= ToStringSerializer.class)
-    private Long pid;
-
-    /**
-     * 父级ids
-     */
-    private String pids;
-
-    /**
-     * 子节点
-     */
-    @TableField(exist=false)
-    private List<Permission> children;
 
     public enum PermissionType {
 

@@ -1,15 +1,14 @@
 package com.htnova.common.util;
 
+import com.htnova.common.base.BaseEntity;
 import com.htnova.common.base.BaseMapStruct;
+import com.htnova.common.base.BaseTree;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-import com.htnova.common.exception.ServiceException;
 import org.mapstruct.factory.Mappers;
 import org.springframework.util.CollectionUtils;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CommonUtil {
 
@@ -34,54 +33,18 @@ public class CommonUtil {
     /**
      * list 转 tree
      */
-    public static <T> List<T> listToTree(List<T> list) {
-        return listToTree(list, "id", "pid", "children");
-    }
-
-    /**
-     * list 转 tree
-     * @param id: 主键名
-     * @param pid: 父级id名称
-     * @param children: children的名称
-     * @return List<T>: 返回值为list，可能有多个root节点
-     */
-    public static <T> List<T> listToTree(List<T> list, String id, String pid, String children) {
-        List<T> resultList = new ArrayList<>();
+    public static <T extends BaseTree<T>> List<T> listToTree(List<T> list) {
         if(CollectionUtils.isEmpty(list)) return null;
-        Class<?> sourceClass = list.get(0).getClass();
-        try {
-            Method getId = sourceClass.getMethod(String.format("get%s", StringUtils.capitalize(id)));
-            Method getPid = sourceClass.getMethod(String.format("get%s", StringUtils.capitalize(pid)));
-            Method setChildren = sourceClass.getMethod(String.format("set%s", StringUtils.capitalize(children)), List.class);
-            Map<Object, List<T>> listMap = new HashMap<>();
-            Set<Object> idSet = new HashSet<>();
-            Set<Object> pidSet = new HashSet<>();
-            // 循环将自己放入父级的list中
-            for (T item : list) {
-                Object itemId = getId.invoke(item);
-                idSet.add(itemId);
-                Object itemPid = getPid.invoke(item);
-                pidSet.add(itemPid);
-                List<T> itemParentList = listMap.get(itemPid);
-                if(itemParentList == null) {
-                    List<T> itemList = new ArrayList<>();
-                    itemList.add(item);
-                    listMap.put(itemPid, itemList);
-                } else {
-                    itemParentList.add(item);
-                }
-            }
-            for (T item : list) {
-                Object itemId = getId.invoke(item);
-                Object itemPid = getPid.invoke(item);
-                if(pidSet.contains(itemPid) && !idSet.contains(itemPid)) resultList.add(item);
-                List<T> itemChild = listMap.get(itemId);
-                setChildren.invoke(item, itemChild);
-            }
-            return resultList;
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            throw new ServiceException();
-        }
+        Map<Long, T> idMap = list.stream().collect(Collectors.toMap(BaseEntity::getId, item -> item));
+        return list.stream()
+                .filter(item -> Objects.isNull(
+                        idMap.computeIfPresent(item.getPid(), (a, b) -> {
+                            List<T> newList = Optional.ofNullable(b.getChildren()).orElseGet(ArrayList::new);
+                            newList.add(item);
+                            b.setChildren(newList);
+                            return b;
+                        })
+                )).collect(Collectors.toList());
     }
 
     /**

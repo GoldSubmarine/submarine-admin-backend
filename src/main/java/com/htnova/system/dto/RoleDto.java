@@ -1,6 +1,6 @@
 package com.htnova.system.dto;
 
-import com.htnova.common.base.BaseDto;
+import com.htnova.common.base.BaseEntity;
 import com.htnova.system.entity.Role;
 import com.htnova.system.mapstruct.RoleMapStruct;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class RoleDto extends BaseDto {
+public class RoleDto extends BaseEntity {
 
 
     /**

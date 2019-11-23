@@ -3,7 +3,7 @@ package com.htnova.system.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.htnova.common.base.BaseDto;
+import com.htnova.common.base.BaseEntity;
 import com.htnova.system.entity.User;
 import com.htnova.system.mapstruct.UserMapStruct;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class UserDto extends BaseDto {
+public class UserDto extends BaseEntity {
 
     /**
      * 登录名
