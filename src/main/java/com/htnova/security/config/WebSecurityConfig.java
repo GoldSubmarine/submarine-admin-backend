@@ -48,10 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/auth/login", "/auth/info", "/auth/logout").permitAll()
                     .antMatchers("/druid/**").permitAll()
-                    .anyRequest().authenticated().and()   // 其他地址的访问均需验证权限
-                // 防止iframe 造成跨域
-                .headers()
-                    .frameOptions().disable();
+                    .anyRequest().authenticated();   // 其他地址的访问均需验证权限
         httpSecurity.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
