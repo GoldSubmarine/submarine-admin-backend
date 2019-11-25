@@ -188,7 +188,9 @@ CREATE TABLE `role`  (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES (1, '超级管理员', 'superAdmin', NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `role` VALUES (1, '超级管理员', 'SuperAdmin', NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `role` VALUES (2, '系统管理员', 'Admin', NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `role` VALUES (3, '超级管理员', 'OrgAdmin', NULL, NULL, NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for role_permission
