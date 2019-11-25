@@ -5,13 +5,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.common.base.BaseEntity;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.XPage;
+import com.htnova.common.exception.ServiceException;
 import com.htnova.common.util.CommonUtil;
 import com.htnova.common.util.UserUtil;
-import com.htnova.common.exception.ServiceException;
-import com.htnova.system.entity.Dept;
-import com.htnova.system.entity.Role;
-import com.htnova.system.entity.User;
-import com.htnova.system.entity.UserRole;
+import com.htnova.system.entity.*;
 import com.htnova.system.mapper.UserMapper;
 import com.htnova.system.mapper.UserRoleMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -62,10 +59,16 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     @Transactional
     public String saveUser(User user) {
-        String randomPass = null;
         Dept dept = deptService.getDeptById(user.getDeptId());
         user.setDeptIds(Optional.ofNullable(dept.getPids()).orElse("") + dept.getId() + ",");
         user.setDeptName(dept.getName());
+        String randomPass = computePassword(user);
+        super.saveOrUpdate(user);
+        return randomPass;
+    }
+
+    private String computePassword(User user) {
+        String randomPass = null;
         if(Objects.isNull(user.getId())) {
             //新建时创建jwt密钥和初始化密码
             user.setJwtSecret(CommonUtil.getRandomString(16));
@@ -76,10 +79,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
             user.setPassword(source.getPassword());
             user.setJwtSecret(source.getJwtSecret());
         }
-        super.saveOrUpdate(user);
-        // 保存角色
-        List<Long> roleIdList = user.getRoleList().stream().map(BaseEntity::getId).collect(Collectors.toList());
-        userRoleService.saveUserRole(user.getId(), roleIdList);
         return randomPass;
     }
 
@@ -114,16 +113,18 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     @Transactional
     public User getByUsername(String username) {
         User user = super.lambdaQuery().eq(User::getUsername, username).one();
+        fillRolePermission(user);
         return user;
     }
 
-    @Transactional
-    public void fillRolePermission(User user) {
+    private void fillRolePermission(User user) {
         if(Objects.nonNull(user)) {
             List<Role> roleList = userRoleMapper.getRoleByUserId(user.getId());
-            List<Long> roleIds = roleList.stream().map(BaseEntity::getId).collect(Collectors.toList());
+            List<Permission> permissionList = rolePermissionService.findPermissionList(
+                    roleList.stream().map(BaseEntity::getId).collect(Collectors.toList())
+            );
             user.setRoleList(roleList);
-            user.setPermissionList(rolePermissionService.findPermissionList(roleIds));
+            user.setPermissionList(permissionList);
         }
     }
 

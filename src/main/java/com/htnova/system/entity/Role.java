@@ -15,6 +15,13 @@ import java.util.List;
 @SuperBuilder
 public class Role extends BaseEntity {
 
+    // 超级管理员，开发人员
+    public static final String SUPER_ADMIN_CODE = "SuperAdmin";
+    // 系统管理员
+    public static final String ADMIN_CODE = "Admin";
+    // 机构管理员
+    public static final String ORG_ADMIN_CODE = "OrgAdmin";
+
     /**
      * 名称（中文）
      */
@@ -26,6 +33,11 @@ public class Role extends BaseEntity {
     private String code;
 
     /**
+     * 机构管理员是否可见
+     */
+    private DisplayType orgAdminDisplay;
+
+    /**
      * 权限
      */
     @TableField(exist=false)
@@ -34,6 +46,11 @@ public class Role extends BaseEntity {
     public enum RoleCode {
         SuperAdmin,
         Admin;
+    }
+
+    public enum DisplayType {
+        visible,
+        hidden;
     }
 
 }

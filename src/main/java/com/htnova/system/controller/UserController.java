@@ -7,6 +7,7 @@ import com.htnova.common.util.CommonUtil;
 import com.htnova.system.dto.UserDto;
 import com.htnova.system.entity.User;
 import com.htnova.system.mapstruct.UserMapStruct;
+import com.htnova.system.service.UserRoleService;
 import com.htnova.system.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,9 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private UserRoleService userRoleService;
 
     /**
      * 分页查询
@@ -62,6 +66,16 @@ public class UserController {
     public Result save(UserDto userDto) {
         String randomPass = userService.saveUser(UserDto.toEntity(userDto));
         return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
+    }
+
+    /**
+     * 角色绑定
+     */
+    @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
+    @PostMapping("/bind-role")
+    public Result bingRole(Long id, @RequestParam("roleIdList") List<Long> roleIdList) {
+        userRoleService.saveUserRole(id, roleIdList);
+        return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
     /**

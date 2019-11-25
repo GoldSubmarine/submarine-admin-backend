@@ -29,6 +29,11 @@ public class RoleDto extends BaseEntity {
     private String code;
 
     /**
+     * 机构管理员是否可见
+     */
+    private Role.DisplayType orgAdminDisplay;
+
+    /**
      * 权限
      */
     private List<PermissionDto> permissionList;

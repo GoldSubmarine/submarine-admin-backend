@@ -6,6 +6,7 @@
         a.id,
         a.name,
         a.code,
+        a.org_admin_display,
         a.remark,
         a.create_by,
         a.create_time,
@@ -27,6 +28,9 @@
         </if>
         <if test="role.code != null and role.code != ''">
             AND a.code LIKE concat('%',#{role.code},'%')
+        </if>
+        <if test="role.orgAdminDisplay != null">
+            AND a.org_admin_display = #{role.orgAdminDisplay}
         </if>
         <if test="role.remark != null and role.remark != ''">
             AND a.remark LIKE concat('%',#{role.remark},'%')

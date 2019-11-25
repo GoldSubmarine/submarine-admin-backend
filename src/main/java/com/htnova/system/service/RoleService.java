@@ -3,6 +3,7 @@ package com.htnova.system.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.common.dto.XPage;
+import com.htnova.common.util.UserUtil;
 import com.htnova.system.entity.Permission;
 import com.htnova.system.entity.Role;
 import com.htnova.system.entity.RolePermission;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleService extends ServiceImpl<RoleMapper, Role> {
@@ -29,9 +31,22 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
         return roleXPage;
     }
 
+    private List<Role> filterRoleByCode(List<Role> roleList, String ...roleCodeList) {
+        List<String> list = Arrays.asList(roleCodeList);
+        return roleList.stream().filter(item -> !list.contains(item.getCode())).collect(Collectors.toList());
+    }
+
     @Transactional(readOnly = true)
     public List<Role> findRoleList(Role role) {
-        return roleMapper.findList(role);
+        List<Role> roleList = roleMapper.findList(role);
+        if(!UserUtil.getJwtUser().isSuperAdmin()) {
+            roleList = filterRoleByCode(roleList, Role.SUPER_ADMIN_CODE);
+        }
+        if(UserUtil.getJwtUser().getRoles().contains(Role.ORG_ADMIN_CODE)) {
+            roleList = filterRoleByCode(roleList, Role.ADMIN_CODE, Role.ORG_ADMIN_CODE);
+            roleList = roleList.stream().filter(item -> Role.DisplayType.visible.equals(item.getOrgAdminDisplay())).collect(Collectors.toList());
+        }
+        return roleList;
     }
 
     @Transactional

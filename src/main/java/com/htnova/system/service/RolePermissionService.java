@@ -8,8 +8,10 @@ import com.htnova.system.entity.RolePermission;
 import com.htnova.system.mapper.RolePermissionMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +39,9 @@ public class RolePermissionService extends ServiceImpl<RolePermissionMapper, Rol
 
     @Transactional
     public List<Permission> findPermissionList(List<Long> roleIds) {
+        if(CollectionUtils.isEmpty(roleIds)) {
+            return Arrays.asList();
+        }
         return rolePermissionMapper.getByRoleIds(roleIds);
     }
 
