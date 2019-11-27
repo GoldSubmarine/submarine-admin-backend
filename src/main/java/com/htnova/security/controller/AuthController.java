@@ -10,10 +10,7 @@ import com.htnova.system.entity.User;
 import com.htnova.system.service.UserService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Objects;
@@ -41,7 +38,7 @@ public class AuthController {
      * 用户登录
      */
     @PostMapping("/login")
-    public String login(UserDto userDto) {
+    public String login(@RequestBody UserDto userDto) {
         JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(userDto.getUsername());
         if(Objects.isNull(jwtUser)) {
             throw new ServiceException(ResultStatus.USER_NOT_EXIST);

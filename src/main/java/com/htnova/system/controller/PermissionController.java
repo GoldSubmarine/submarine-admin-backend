@@ -67,7 +67,7 @@ public class PermissionController {
      * 权限保存
      */
     @PostMapping("/save")
-    public Result save(PermissionDto permissionDto) {
+    public Result save(@RequestBody PermissionDto permissionDto) {
         permissionService.savePermission(PermissionDto.toEntity(permissionDto));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
@@ -76,7 +76,7 @@ public class PermissionController {
      * 模块权限保存
      */
     @PostMapping("/save/module")
-    public Result saveModule(PermissionDto permissionDto) {
+    public Result saveModule(@RequestBody PermissionDto permissionDto) {
         Permission permission = PermissionDto.toEntity(permissionDto);
         permissionService.savePermission(permission);
         Map<String, String> map = new HashMap<>();
@@ -99,7 +99,7 @@ public class PermissionController {
      * 权限删除
      */
     @DeleteMapping("/del")
-    public Result delete(PermissionDto permissionDto) {
+    public Result delete(@RequestBody PermissionDto permissionDto) {
         permissionService.deletePermission(permissionDto.getId());
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }

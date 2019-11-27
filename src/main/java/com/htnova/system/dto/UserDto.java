@@ -1,6 +1,7 @@
 package com.htnova.system.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.htnova.common.base.BaseEntity;
@@ -28,7 +29,7 @@ public class UserDto extends BaseEntity {
     /**
      * 密码
      */
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     /**
@@ -90,7 +91,12 @@ public class UserDto extends BaseEntity {
     /**
      * 角色id逗号分隔
      */
-    private String roleIdList;
+    private String roleIds;
+
+    /**
+     * 角色id
+     */
+    private List<Long> roleIdList;
 
     /**
      * 权限

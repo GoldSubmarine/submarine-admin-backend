@@ -5,6 +5,7 @@ import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.util.CommonUtil;
 import com.htnova.system.dto.RoleDto;
+import com.htnova.system.dto.RolePermissionDto;
 import com.htnova.system.entity.Permission;
 import com.htnova.system.entity.Role;
 import com.htnova.system.mapstruct.RoleMapStruct;
@@ -59,7 +60,7 @@ public class RoleController {
      * 角色保存
      */
     @PostMapping("/save")
-    public Result save(RoleDto roleDto) {
+    public Result save(@RequestBody RoleDto roleDto) {
         roleService.saveRole(RoleDto.toEntity(roleDto));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
@@ -68,8 +69,8 @@ public class RoleController {
      * 角色的权限保存
      */
     @PostMapping("/permission/save")
-    public Result saveRolePermission(long id, Permission.PermissionType type, @RequestParam(value = "permissionList") List<Long> permissionList) {
-        rolePermissionService.saveRolePermission(id, type, permissionList);
+    public Result saveRolePermission(@RequestBody RolePermissionDto rolePermissionDto) {
+        rolePermissionService.saveRolePermission(rolePermissionDto.getRoleId(), rolePermissionDto.getType(), rolePermissionDto.getPermissionList());
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
@@ -77,7 +78,7 @@ public class RoleController {
      * 角色删除
      */
     @DeleteMapping("/del")
-    public Result delete(RoleDto roleDto) {
+    public Result delete(@RequestBody RoleDto roleDto) {
         roleService.deleteRole(roleDto.getId());
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }

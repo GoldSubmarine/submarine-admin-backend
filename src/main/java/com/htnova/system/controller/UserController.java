@@ -1,5 +1,6 @@
 package com.htnova.system.controller;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
@@ -13,7 +14,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @menu 用户
@@ -63,7 +66,7 @@ public class UserController {
      */
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/save")
-    public Result save(UserDto userDto) {
+    public Result save(@RequestBody UserDto userDto) {
         String randomPass = userService.saveUser(UserDto.toEntity(userDto));
         return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
     }
@@ -73,8 +76,8 @@ public class UserController {
      */
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/bind-role")
-    public Result bingRole(Long id, @RequestParam("roleIdList") List<Long> roleIdList) {
-        userRoleService.saveUserRole(id, roleIdList);
+    public Result bingRole(@RequestBody UserDto userDto) {
+        userRoleService.saveUserRole(userDto.getId(), userDto.getRoleIdList());
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
@@ -82,8 +85,8 @@ public class UserController {
      * 修改密码
      */
     @PostMapping("/changePass")
-    public Result changePass(String oldPassword, String newPassword) {
-        userService.changePass(oldPassword, newPassword);
+    public Result changePass(@RequestBody Map<String, String> json) {
+        userService.changePass(json.get("oldPassword"), json.get("newPassword"));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
@@ -91,7 +94,7 @@ public class UserController {
      * 重置密码
      */
     @PostMapping("/resetPass")
-    public Result resetPass(Long id) {
+    public Result resetPass(@RequestBody Long id) {
         String pass = userService.resetPass(id);
         return Result.build(ResultStatus.SAVE_SUCCESS, pass);
     }
@@ -101,7 +104,7 @@ public class UserController {
      */
     @PreAuthorize("hasAnyAuthority('user.del')")
     @DeleteMapping("/del")
-    public Result delete(UserDto userDto) {
+    public Result delete(@RequestBody UserDto userDto) {
         userService.deleteUser(userDto.getId());
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }

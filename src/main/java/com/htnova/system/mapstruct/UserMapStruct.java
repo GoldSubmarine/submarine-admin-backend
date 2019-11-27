@@ -21,14 +21,14 @@ public interface UserMapStruct extends BaseMapStruct<UserDto, User> {
     default void toEntityRoleIdList(User user, @MappingTarget UserDto userDto) {
         if(!CollectionUtils.isEmpty(user.getRoleList())) {
             String roleIdList = user.getRoleList().stream().map(item -> String.valueOf(item.getId())).collect(Collectors.joining(","));
-            userDto.setRoleIdList(roleIdList);
+            userDto.setRoleIds(roleIdList);
         }
     }
 
     @AfterMapping // or @BeforeMapping
     default void toDtoRoleIdList(UserDto userDto, @MappingTarget User user) {
-        if(StringUtils.isNotEmpty(userDto.getRoleIdList())) {
-            List<Role> roleList = Stream.of(userDto.getRoleIdList().split(",")).map(item -> new Role() {{
+        if(StringUtils.isNotEmpty(userDto.getRoleIds())) {
+            List<Role> roleList = Stream.of(userDto.getRoleIds().split(",")).map(item -> new Role() {{
                 setId(Long.valueOf(item));
             }}).collect(Collectors.toList());
             user.setRoleList(roleList);
