@@ -1,5 +1,6 @@
 package com.htnova.common.util;
 
+import com.google.common.collect.Lists;
 import com.htnova.common.base.BaseEntity;
 import com.htnova.common.base.BaseMapStruct;
 import com.htnova.common.base.BaseTree;
@@ -34,17 +35,20 @@ public class CommonUtil {
      * list 转 tree
      */
     public static <T extends BaseTree<T>> List<T> listToTree(List<T> list) {
-        if(CollectionUtils.isEmpty(list)) return null;
+        if(CollectionUtils.isEmpty(list)) return Lists.newArrayList();
         Map<Long, T> idMap = list.stream().collect(Collectors.toMap(BaseEntity::getId, item -> item));
         return list.stream()
-                .filter(item -> Objects.isNull(
-                        idMap.computeIfPresent(item.getPid(), (a, b) -> {
-                            List<T> newList = Optional.ofNullable(b.getChildren()).orElseGet(ArrayList::new);
-                            newList.add(item);
-                            b.setChildren(newList);
-                            return b;
-                        })
-                )).collect(Collectors.toList());
+                .filter(item -> {
+                    T treeEntity = idMap.get(item.getPid());
+                    if(Objects.nonNull(treeEntity)){
+                        if(Objects.isNull(treeEntity.getChildren())){
+                            treeEntity.setChildren(Lists.newArrayList());
+                        }
+                        treeEntity.getChildren().add(item);
+                        return false;
+                    }
+                    return true;
+                }).collect(Collectors.toList());
     }
 
     /**
