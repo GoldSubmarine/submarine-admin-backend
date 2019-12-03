@@ -176,6 +176,7 @@ CREATE TABLE `role`  (
   `id` bigint(20) NOT NULL COMMENT '主键',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '名称（中文）',
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '编码',
+  `org_admin_display` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '机构管理员是否可见（visible，hidden）',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
@@ -188,9 +189,9 @@ CREATE TABLE `role`  (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES (1, '超级管理员', 'SuperAdmin', NULL, NULL, NULL, NULL, NULL, 0);
-INSERT INTO `role` VALUES (2, '系统管理员', 'Admin', NULL, NULL, NULL, NULL, NULL, 0);
-INSERT INTO `role` VALUES (3, '超级管理员', 'OrgAdmin', NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `role` VALUES (1, '超级管理员', 'SuperAdmin', 'hidden', NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `role` VALUES (2, '系统管理员', 'Admin', 'hidden', NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `role` VALUES (3, '超级管理员', 'OrgAdmin', 'hidden', NULL, NULL, NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for role_permission
