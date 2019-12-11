@@ -60,7 +60,7 @@ public class RoleController {
      * 角色保存
      */
     @PostMapping("/save")
-    public Result save(@RequestBody RoleDto roleDto) {
+    public Result<Void> save(@RequestBody RoleDto roleDto) {
         roleService.saveRole(RoleDto.toEntity(roleDto));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
@@ -69,7 +69,7 @@ public class RoleController {
      * 角色的权限保存
      */
     @PostMapping("/permission/save")
-    public Result saveRolePermission(@RequestBody RolePermissionDto rolePermissionDto) {
+    public Result<Void> saveRolePermission(@RequestBody RolePermissionDto rolePermissionDto) {
         rolePermissionService.saveRolePermission(rolePermissionDto.getRoleId(), rolePermissionDto.getType(), rolePermissionDto.getPermissionList());
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
@@ -78,7 +78,7 @@ public class RoleController {
      * 角色删除
      */
     @DeleteMapping("/del")
-    public Result delete(@RequestBody RoleDto roleDto) {
+    public Result<Void> delete(@RequestBody RoleDto roleDto) {
         roleService.deleteRole(roleDto.getId());
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }

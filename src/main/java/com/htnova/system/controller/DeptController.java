@@ -65,7 +65,7 @@ public class DeptController {
      * 部门保存
      */
     @PostMapping("/save")
-    public Result save(@RequestBody DeptDto deptDto) {
+    public Result<Void> save(@RequestBody DeptDto deptDto) {
         deptService.saveDept(DeptDto.toEntity(deptDto));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
@@ -74,7 +74,7 @@ public class DeptController {
      * 部门删除
      */
     @DeleteMapping("/del")
-    public Result delete(@RequestBody DeptDto deptDto) {
+    public Result<Void> delete(@RequestBody DeptDto deptDto) {
         deptService.deleteDept(deptDto.getId());
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }

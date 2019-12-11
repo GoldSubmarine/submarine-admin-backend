@@ -59,7 +59,7 @@ public class DictionaryController {
      */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.add', 'dictionary.edit')")
     @PostMapping("/save")
-    public Result save(@RequestBody DictionaryDto dictionaryDto) {
+    public Result<Void> save(@RequestBody DictionaryDto dictionaryDto) {
         dictionaryService.saveDictionary(DictionaryDto.toEntity(dictionaryDto));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
@@ -69,7 +69,7 @@ public class DictionaryController {
      */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.del')")
     @DeleteMapping("/del")
-    public Result delete(@RequestBody DictionaryDto dictionaryDto) {
+    public Result<Void> delete(@RequestBody DictionaryDto dictionaryDto) {
         dictionaryService.deleteDictionary(dictionaryDto.getId());
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }

@@ -2,7 +2,6 @@ package com.htnova.common.dto;
 
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.base.CaseFormat;
 import com.htnova.common.base.BaseMapStruct;
 import lombok.EqualsAndHashCode;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @EqualsAndHashCode
-@JsonIgnoreProperties({"records", "size", "current", "orders", "searchCount", "pages"})
+//@JsonIgnoreProperties({"records", "size", "current", "orders", "searchCount", "pages"})
 @ToString(callSuper=false)
 public class XPage<T> extends Page<T> {
     private static final long serialVersionUID = 5194933845448697148L;
@@ -111,14 +110,14 @@ public class XPage<T> extends Page<T> {
     /**
      * page 转 dto
      */
-    @SuppressWarnings("unchecked")
-    public <V> XPage<V> toDto(Class<? extends BaseMapStruct> mapStruct) {
+//    @SuppressWarnings("unchecked")
+    public <V> XPage<V> toDto(Class<? extends BaseMapStruct<V,T>> mapStruct) {
         XPage<V> resultPage = new XPage<>();
         resultPage.setPageNum(getPageNum());
         resultPage.setPageSize(getPageSize());
         resultPage.setTotal(getTotal());
         resultPage.setSortable(getSortable());
-        BaseMapStruct mapper = Mappers.getMapper(mapStruct);
+        BaseMapStruct<V,T> mapper = Mappers.getMapper(mapStruct);
         resultPage.setList(mapper.toDto(getList()));
         return resultPage;
     }

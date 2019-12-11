@@ -66,7 +66,7 @@ public class UserController {
      */
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/save")
-    public Result save(@RequestBody UserDto userDto) {
+    public Result<Void> save(@RequestBody UserDto userDto) {
         String randomPass = userService.saveUser(UserDto.toEntity(userDto));
         return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
     }
@@ -76,7 +76,7 @@ public class UserController {
      */
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/bind-role")
-    public Result bingRole(@RequestBody UserDto userDto) {
+    public Result<Void> bingRole(@RequestBody UserDto userDto) {
         userRoleService.saveUserRole(userDto.getId(), userDto.getRoleIdList());
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
@@ -85,7 +85,7 @@ public class UserController {
      * 修改密码
      */
     @PostMapping("/changePass")
-    public Result changePass(@RequestBody Map<String, String> json) {
+    public Result<Void> changePass(@RequestBody Map<String, String> json) {
         userService.changePass(json.get("oldPassword"), json.get("newPassword"));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
@@ -94,7 +94,7 @@ public class UserController {
      * 重置密码
      */
     @PostMapping("/resetPass")
-    public Result resetPass(@RequestBody Long id) {
+    public Result<Void> resetPass(@RequestBody Long id) {
         String pass = userService.resetPass(id);
         return Result.build(ResultStatus.SAVE_SUCCESS, pass);
     }
@@ -104,7 +104,7 @@ public class UserController {
      */
     @PreAuthorize("hasAnyAuthority('user.del')")
     @DeleteMapping("/del")
-    public Result delete(@RequestBody UserDto userDto) {
+    public Result<Void> delete(@RequestBody UserDto userDto) {
         userService.deleteUser(userDto.getId());
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }
