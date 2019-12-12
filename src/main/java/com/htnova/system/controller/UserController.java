@@ -1,6 +1,6 @@
 package com.htnova.system.controller;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
@@ -14,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -36,9 +35,9 @@ public class UserController {
      */
     @GetMapping("/list/page")
     @PreAuthorize("hasAnyAuthority('user.find')")
-    public XPage<UserDto> findListByPage(UserDto userDto, XPage xPage) {
-        XPage<User> userPage = userService.findUserList(UserDto.toEntity(userDto), xPage);
-        return userPage.toDto(UserMapStruct.class);
+    public XPage<UserDto> findListByPage(UserDto userDto, XPage<Void> xPage) {
+        IPage<User> userPage = userService.findUserList(UserDto.toEntity(userDto), xPage);
+        return XPage.toDto(userPage, UserMapStruct.class);
     }
 
     /**
@@ -66,7 +65,7 @@ public class UserController {
      */
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/save")
-    public Result<Void> save(@RequestBody UserDto userDto) {
+    public Result<String> save(@RequestBody UserDto userDto) {
         String randomPass = userService.saveUser(UserDto.toEntity(userDto));
         return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
     }
@@ -94,7 +93,7 @@ public class UserController {
      * 重置密码
      */
     @PostMapping("/resetPass")
-    public Result<Void> resetPass(@RequestBody Long id) {
+    public Result<String> resetPass(@RequestBody Long id) {
         String pass = userService.resetPass(id);
         return Result.build(ResultStatus.SAVE_SUCCESS, pass);
     }

@@ -1,12 +1,12 @@
 package com.htnova.system.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.util.CommonUtil;
 import com.htnova.system.dto.RoleDto;
 import com.htnova.system.dto.RolePermissionDto;
-import com.htnova.system.entity.Permission;
 import com.htnova.system.entity.Role;
 import com.htnova.system.mapstruct.RoleMapStruct;
 import com.htnova.system.service.RolePermissionService;
@@ -33,9 +33,9 @@ public class RoleController {
      * 角色分页查询
      */
     @GetMapping("/list/page")
-    public XPage<RoleDto> findListByPage(RoleDto roleDto, XPage<RoleDto> xPage) {
-        XPage<Role> rolePage = roleService.findRoleList(RoleDto.toEntity(roleDto), xPage);
-        return rolePage.toDto(RoleMapStruct.class);
+    public XPage<RoleDto> findListByPage(RoleDto roleDto, XPage<Void> xPage) {
+        IPage<Role> rolePage = roleService.findRoleList(RoleDto.toEntity(roleDto), xPage);
+        return XPage.toDto(rolePage, RoleMapStruct.class);
     }
 
     /**

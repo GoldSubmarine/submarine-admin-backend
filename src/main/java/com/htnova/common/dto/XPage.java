@@ -1,124 +1,42 @@
 package com.htnova.common.dto;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.base.CaseFormat;
+import com.google.common.collect.Lists;
 import com.htnova.common.base.BaseMapStruct;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.apache.commons.lang3.StringUtils;
+import lombok.Data;
 import org.mapstruct.factory.Mappers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
-@EqualsAndHashCode
-//@JsonIgnoreProperties({"records", "size", "current", "orders", "searchCount", "pages"})
-@ToString(callSuper=false)
+@Data
 public class XPage<T> extends Page<T> {
+
     private static final long serialVersionUID = 5194933845448697148L;
 
     /**
-     * 当前页码
+     * 默认排序
      */
-    private Long pageNum;
+    private OrderItem defaultOrderItem = OrderItem.desc("create_time");
 
-    /**
-     * 每页数量
-     */
-    private Long pageSize;
-
-    /**
-     * 总条数
-     */
-    private Long total;
-
-    /**
-     * 排序字段
-     */
-    private String sortable = "create_time DESC";
-
-    /**
-     * 数据列表
-     */
-    private List<T> list;
-
-
-//    初始化排序
     public XPage() {
         super();
-        setSortable(sortable);
-    }
-
-    public XPage(long pageNum, long pageSize) {
-        super(pageNum, pageSize);
-    }
-
-    public long getPageNum() {
-        return super.getCurrent();
-    }
-
-    public void setPageNum(long pageNum) {
-        super.setCurrent(pageNum);
-    }
-
-    public long getPageSize() {
-        return super.getSize();
-    }
-
-    public void setPageSize(long pageSize) {
-        super.setSize(pageSize);
-    }
-
-    public List<T> getList() {
-        return super.getRecords();
-    }
-
-    public void setList(List<T> list) {
-        super.setRecords(list);
-    }
-
-    @Override
-    public long getTotal() {
-        return super.getTotal();
-    }
-
-    public String getSortable() {
-        return sortable;
-    }
-
-    public void setSortable(String sortable) {
-        OrderItem orderItem = null;
-        this.sortable = sortable;
-        String column = StringUtils.substringBefore(sortable, " ");
-        column = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, column);
-        String order = StringUtils.substringAfter(sortable, " ");
-        if(StringUtils.equalsIgnoreCase(order, "desc")) {
-            orderItem = OrderItem.desc(column);
-        } else if(StringUtils.equalsIgnoreCase(order, "asc")) {
-            orderItem = OrderItem.asc(column);
-        }
-        if(Objects.nonNull(orderItem)) {
-            super.setOrders(Arrays.asList(orderItem));
-        } else {
-            super.setOrders(new ArrayList<>());
-        }
+        //初始化排序
+        this.setOrders(Lists.newArrayList(defaultOrderItem));
     }
 
     /**
      * page 转 dto
      */
-//    @SuppressWarnings("unchecked")
-    public <V> XPage<V> toDto(Class<? extends BaseMapStruct<V,T>> mapStruct) {
-        XPage<V> resultPage = new XPage<>();
-        resultPage.setPageNum(getPageNum());
-        resultPage.setPageSize(getPageSize());
-        resultPage.setTotal(getTotal());
-        resultPage.setSortable(getSortable());
-        BaseMapStruct<V,T> mapper = Mappers.getMapper(mapStruct);
-        resultPage.setList(mapper.toDto(getList()));
+    public static <D,E> XPage<D> toDto(IPage<E> iPage, Class<? extends BaseMapStruct<D,E>> mapStruct) {
+        XPage<D> resultPage = new XPage<>();
+        resultPage.setTotal(iPage.getTotal());
+        resultPage.setSize(iPage.getSize());
+        resultPage.setCurrent(iPage.getCurrent());
+        resultPage.setOrders(iPage.orders());
+        resultPage.setOptimizeCountSql(iPage.optimizeCountSql());
+        resultPage.setSearchCount(iPage.isSearchCount());
+        BaseMapStruct<D,E> mapper = Mappers.getMapper(mapStruct);
+        resultPage.setRecords(mapper.toDto(iPage.getRecords()));
         return resultPage;
     }
 

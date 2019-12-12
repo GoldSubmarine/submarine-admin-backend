@@ -1,11 +1,11 @@
 package com.htnova.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.common.base.BaseEntity;
-import com.htnova.common.dto.XPage;
-import org.apache.commons.lang3.StringUtils;
 import com.htnova.system.entity.Dept;
 import com.htnova.system.mapper.DeptMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +26,8 @@ public class DeptService extends ServiceImpl<DeptMapper, Dept> {
     private ApplicationContext applicationContext;
 
     @Transactional(readOnly = true)
-    public XPage<Dept> findDeptList(Dept dept, XPage xPage) {
-        XPage<Dept> deptXPage = deptMapper.findPage(xPage, dept);
+    public IPage<Dept> findDeptList(Dept dept, IPage<Void> xPage) {
+        IPage<Dept> deptXPage = deptMapper.findPage(xPage, dept);
         return deptXPage;
     }
 

@@ -1,10 +1,10 @@
 package com.htnova.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.common.base.BaseEntity;
 import com.htnova.common.constant.ResultStatus;
-import com.htnova.common.dto.XPage;
 import com.htnova.common.exception.ServiceException;
 import com.htnova.common.util.CommonUtil;
 import com.htnova.common.util.UserUtil;
@@ -47,8 +47,8 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(readOnly = true)
-    public XPage<User> findUserList(User user, XPage xPage) {
-        XPage<User> userXPage = userMapper.findPage(xPage, user);
+    public IPage<User> findUserList(User user, IPage<Void> xPage) {
+        IPage<User> userXPage = userMapper.findPage(xPage, user);
         return userXPage;
     }
 

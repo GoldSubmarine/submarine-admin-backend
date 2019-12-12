@@ -1,12 +1,13 @@
 package com.htnova.system.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.util.CommonUtil;
-import com.htnova.system.mapstruct.DictionaryMapStruct;
 import com.htnova.system.dto.DictionaryDto;
 import com.htnova.system.entity.Dictionary;
+import com.htnova.system.mapstruct.DictionaryMapStruct;
 import com.htnova.system.service.DictionaryService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,9 @@ public class DictionaryController {
      */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
     @GetMapping("/list/page")
-    public XPage<DictionaryDto> findListByPage(DictionaryDto dictionaryDto, XPage xPage) {
-        XPage<Dictionary> dictionaryPage = dictionaryService.findDictionaryList(DictionaryDto.toEntity(dictionaryDto), xPage);
-        return dictionaryPage.toDto(DictionaryMapStruct.class);
+    public XPage<DictionaryDto> findListByPage(DictionaryDto dictionaryDto, XPage<Void> xPage) {
+        IPage<Dictionary> dictionaryPage = dictionaryService.findDictionaryList(DictionaryDto.toEntity(dictionaryDto), xPage);
+        return XPage.toDto(dictionaryPage, DictionaryMapStruct.class);
     }
 
     /**

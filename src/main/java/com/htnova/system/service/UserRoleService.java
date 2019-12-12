@@ -1,8 +1,8 @@
 package com.htnova.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.htnova.common.dto.XPage;
 import com.htnova.system.entity.UserRole;
 import com.htnova.system.mapper.UserRoleMapper;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,8 @@ public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRole> {
     private UserRoleMapper userRoleMapper;
 
     @Transactional(readOnly = true)
-    public XPage<UserRole> findUserRoleList(UserRole userRole, XPage xPage) {
-        XPage<UserRole> userRoleXPage = userRoleMapper.findPage(xPage, userRole);
+    public IPage<UserRole> findUserRoleList(UserRole userRole, IPage<Void> xPage) {
+        IPage<UserRole> userRoleXPage = userRoleMapper.findPage(xPage, userRole);
         return userRoleXPage;
     }
 

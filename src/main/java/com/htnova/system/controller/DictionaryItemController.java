@@ -1,5 +1,6 @@
 package com.htnova.system.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
@@ -29,9 +30,9 @@ public class DictionaryItemController {
      */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
     @GetMapping("/list/page")
-    public XPage<DictionaryItemDto> findListByPage(DictionaryItemDto dictionaryItemDto, XPage xPage) {
-        XPage<DictionaryItem> dictionaryItemPage = dictionaryItemService.findDictionaryItemList(DictionaryItemDto.toEntity(dictionaryItemDto), xPage);
-        return dictionaryItemPage.toDto(DictionaryItemMapStruct.class);
+    public XPage<DictionaryItemDto> findListByPage(DictionaryItemDto dictionaryItemDto, XPage<Void> xPage) {
+        IPage<DictionaryItem> dictionaryItemPage = dictionaryItemService.findDictionaryItemList(DictionaryItemDto.toEntity(dictionaryItemDto), xPage);
+        return XPage.toDto(dictionaryItemPage, DictionaryItemMapStruct.class);
     }
 
     /**

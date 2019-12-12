@@ -1,8 +1,8 @@
 package com.htnova.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.htnova.common.dto.XPage;
 import com.htnova.system.entity.Permission;
 import com.htnova.system.entity.RolePermission;
 import com.htnova.system.mapper.RolePermissionMapper;
@@ -22,8 +22,8 @@ public class RolePermissionService extends ServiceImpl<RolePermissionMapper, Rol
     private RolePermissionMapper rolePermissionMapper;
 
     @Transactional(readOnly = true)
-    public XPage<RolePermission> findRolePermissionList(RolePermission rolePermission, XPage xPage) {
-        XPage<RolePermission> rolePermissionXPage = rolePermissionMapper.findPage(xPage, rolePermission);
+    public IPage<RolePermission> findRolePermissionList(RolePermission rolePermission, IPage<Void> xPage) {
+        IPage<RolePermission> rolePermissionXPage = rolePermissionMapper.findPage(xPage, rolePermission);
         return rolePermissionXPage;
     }
 

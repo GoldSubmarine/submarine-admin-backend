@@ -1,7 +1,7 @@
 package com.htnova.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.htnova.common.dto.XPage;
 import com.htnova.system.entity.Dictionary;
 import com.htnova.system.mapper.DictionaryMapper;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,8 @@ public class DictionaryService extends ServiceImpl<DictionaryMapper, Dictionary>
     private DictionaryMapper dictionaryMapper;
 
     @Transactional(readOnly = true)
-    public XPage<Dictionary> findDictionaryList(Dictionary dictionary, XPage xPage) {
-        XPage<Dictionary> dictionaryXPage = dictionaryMapper.findPage(xPage, dictionary);
+    public IPage<Dictionary> findDictionaryList(Dictionary dictionary, IPage<Void> xPage) {
+        IPage<Dictionary> dictionaryXPage = dictionaryMapper.findPage(xPage, dictionary);
         return dictionaryXPage;
     }
 

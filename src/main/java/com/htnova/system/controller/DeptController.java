@@ -1,12 +1,13 @@
 package com.htnova.system.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.util.CommonUtil;
-import com.htnova.system.mapstruct.DeptMapStruct;
 import com.htnova.system.dto.DeptDto;
 import com.htnova.system.entity.Dept;
+import com.htnova.system.mapstruct.DeptMapStruct;
 import com.htnova.system.service.DeptService;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +28,9 @@ public class DeptController {
      * 部门分页查询
      */
     @GetMapping("/list/page")
-    public XPage<DeptDto> findListByPage(DeptDto deptDto, XPage xPage) {
-       XPage<Dept> deptPage = deptService.findDeptList(DeptDto.toEntity(deptDto), xPage);
-        return deptPage.toDto(DeptMapStruct.class);
+    public XPage<DeptDto> findListByPage(DeptDto deptDto, XPage<Void> xPage) {
+        IPage<Dept> deptPage = deptService.findDeptList(DeptDto.toEntity(deptDto), xPage);
+        return XPage.toDto(deptPage, DeptMapStruct.class);
     }
 
     /**

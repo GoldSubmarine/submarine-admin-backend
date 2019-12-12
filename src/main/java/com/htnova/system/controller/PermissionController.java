@@ -1,5 +1,6 @@
 package com.htnova.system.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
@@ -29,9 +30,9 @@ public class PermissionController {
      * 权限分页查询
      */
     @GetMapping("/list/page")
-    public XPage<PermissionDto> findListByPage(PermissionDto permissionDto, XPage xPage) {
-       XPage<Permission> permissionPage = permissionService.findPermissionList(PermissionDto.toEntity(permissionDto), xPage);
-        return permissionPage.toDto(PermissionMapStruct.class);
+    public XPage<PermissionDto> findListByPage(PermissionDto permissionDto, XPage<Void> xPage) {
+        IPage<Permission> permissionPage = permissionService.findPermissionList(PermissionDto.toEntity(permissionDto), xPage);
+        return XPage.toDto(permissionPage, PermissionMapStruct.class);
     }
 
     /**

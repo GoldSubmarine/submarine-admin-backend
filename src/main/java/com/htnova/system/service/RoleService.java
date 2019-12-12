@@ -1,8 +1,8 @@
 package com.htnova.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.htnova.common.dto.XPage;
 import com.htnova.common.util.UserUtil;
 import com.htnova.system.entity.Permission;
 import com.htnova.system.entity.Role;
@@ -26,8 +26,8 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
     private RolePermissionService rolePermissionService;
 
     @Transactional(readOnly = true)
-    public XPage<Role> findRoleList(Role role, XPage xPage) {
-        XPage<Role> roleXPage = roleMapper.findPage(xPage, role);
+    public IPage<Role> findRoleList(Role role, IPage<Void> xPage) {
+        IPage<Role> roleXPage = roleMapper.findPage(xPage, role);
         return roleXPage;
     }
 

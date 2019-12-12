@@ -1,16 +1,16 @@
 package com.htnova.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.htnova.common.dto.XPage;
-import org.apache.ibatis.annotations.Param;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.system.entity.Permission;
 import com.htnova.system.entity.RolePermission;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface RolePermissionMapper extends BaseMapper<RolePermission> {
 
-    XPage<RolePermission> findPage(XPage xPage, @Param("rolePermission") RolePermission rolePermission);
+    IPage<RolePermission> findPage(IPage<Void> xPage, @Param("rolePermission") RolePermission rolePermission);
 
     List<RolePermission> findList(@Param("rolePermission") RolePermission rolePermission);
 
