@@ -1,4 +1,4 @@
-package com.htnova.common.Interceptor;
+package com.htnova.common.interceptor;
 
 import com.htnova.common.exception.GlobalErrorController;
 import com.htnova.common.exception.RestErrorAttributes;
