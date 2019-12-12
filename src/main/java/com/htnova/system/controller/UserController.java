@@ -93,8 +93,8 @@ public class UserController {
      * 重置密码
      */
     @PostMapping("/resetPass")
-    public Result<String> resetPass(@RequestBody Long id) {
-        String pass = userService.resetPass(id);
+    public Result<String> resetPass(@RequestBody UserDto userDto) {
+        String pass = userService.resetPass(userDto.getId());
         return Result.build(ResultStatus.SAVE_SUCCESS, pass);
     }
 
