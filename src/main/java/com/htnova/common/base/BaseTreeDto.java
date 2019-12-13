@@ -1,6 +1,5 @@
 package com.htnova.common.base;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
@@ -31,7 +30,6 @@ public abstract class BaseTreeDto<T extends Serializable> extends BaseDto implem
     /**
      * 子节点
      */
-    @TableField(exist=false)
     private List<T> children;
 
 }

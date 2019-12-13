@@ -2,7 +2,7 @@ package com.htnova.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
-import com.htnova.common.util.ConverterUtil;
+import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.system.dto.RoleDto;
@@ -35,7 +35,7 @@ public class RoleController {
     @GetMapping("/list/page")
     public XPage<RoleDto> findListByPage(RoleDto roleDto, XPage<Void> xPage) {
         IPage<Role> rolePage = roleService.findRoleList(roleDto, xPage);
-        return ConverterUtil.toDto(rolePage, RoleMapStruct.class);
+        return DtoConverter.toDto(rolePage, RoleMapStruct.class);
     }
 
     /**
@@ -44,7 +44,7 @@ public class RoleController {
     @GetMapping("/list/all")
     public List<RoleDto> findList(RoleDto roleDto) {
         List<Role> roleList = roleService.findRoleList(roleDto);
-        return ConverterUtil.toDto(roleList, RoleMapStruct.class);
+        return DtoConverter.toDto(roleList, RoleMapStruct.class);
     }
 
     /**
@@ -53,7 +53,7 @@ public class RoleController {
     @GetMapping("/detail")
     public RoleDto getById(long id) {
         Role role = roleService.getRoleById(id);
-        return ConverterUtil.toDto(role, RoleMapStruct.class);
+        return DtoConverter.toDto(role, RoleMapStruct.class);
     }
 
     /**
@@ -61,7 +61,7 @@ public class RoleController {
      */
     @PostMapping("/save")
     public Result<Void> save(@RequestBody RoleDto roleDto) {
-        roleService.saveRole(ConverterUtil.toEntity(roleDto, RoleMapStruct.class));
+        roleService.saveRole(DtoConverter.toEntity(roleDto, RoleMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

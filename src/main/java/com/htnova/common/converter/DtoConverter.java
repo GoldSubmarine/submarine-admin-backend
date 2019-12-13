@@ -1,22 +1,16 @@
-package com.htnova.common.util;
+package com.htnova.common.converter;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.google.common.collect.Lists;
 import com.htnova.common.base.BaseEntity;
 import com.htnova.common.base.BaseMapStruct;
-import com.htnova.common.base.BaseTree;
 import com.htnova.common.dto.XPage;
 import org.mapstruct.factory.Mappers;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-public class ConverterUtil {
+public class DtoConverter {
 
-    private ConverterUtil() {}
+    private DtoConverter() {}
 
     public static <D, E extends BaseEntity> E toEntity(D d, Class<? extends BaseMapStruct<D, E>> c) {
         return Mappers.getMapper(c).toEntity(d);
@@ -53,22 +47,4 @@ public class ConverterUtil {
         return Mappers.getMapper(mapStruct).toEntity(source);
     }
 
-    /**
-     * list 转 树
-     */
-    public static <T extends BaseTree<T>> List<T> listToTree(List<T> list) {
-        if(CollectionUtils.isEmpty(list)) return Lists.newArrayList();
-        Map<Long, T> idMap = list.stream().collect(Collectors.toMap(BaseTree::getId, item -> item));
-        return list.stream().filter(item -> {
-            T treeEntity = idMap.get(item.getPid());
-            if(Objects.nonNull(treeEntity)){
-                if(Objects.isNull(treeEntity.getChildren())){
-                    treeEntity.setChildren(Lists.newArrayList());
-                }
-                treeEntity.getChildren().add(item);
-                return false;
-            }
-            return true;
-        }).collect(Collectors.toList());
-    }
 }

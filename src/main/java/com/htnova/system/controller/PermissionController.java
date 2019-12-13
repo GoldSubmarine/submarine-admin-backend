@@ -2,9 +2,10 @@ package com.htnova.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
-import com.htnova.common.util.ConverterUtil;
+import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
+import com.htnova.common.converter.TreeConverter;
 import com.htnova.system.dto.PermissionDto;
 import com.htnova.system.entity.Permission;
 import com.htnova.system.mapstruct.PermissionMapStruct;
@@ -32,7 +33,7 @@ public class PermissionController {
     @GetMapping("/list/page")
     public XPage<PermissionDto> findListByPage(PermissionDto permissionDto, XPage<Void> xPage) {
         IPage<Permission> permissionPage = permissionService.findPermissionList(permissionDto, xPage);
-        return ConverterUtil.toDto(permissionPage, PermissionMapStruct.class);
+        return DtoConverter.toDto(permissionPage, PermissionMapStruct.class);
     }
 
     /**
@@ -41,7 +42,7 @@ public class PermissionController {
     @GetMapping("/list/all")
     public List<PermissionDto> findList(PermissionDto permissionDto) {
         List<Permission> permissionList = permissionService.findPermissionList(permissionDto);
-        return ConverterUtil.toDto(permissionList, PermissionMapStruct.class);
+        return DtoConverter.toDto(permissionList, PermissionMapStruct.class);
     }
 
     /**
@@ -50,7 +51,7 @@ public class PermissionController {
     @GetMapping("/detail")
     public PermissionDto getById(Long id) {
         Permission permission = permissionService.getPermissionById(id);
-        return ConverterUtil.toDto(permission, PermissionMapStruct.class);
+        return DtoConverter.toDto(permission, PermissionMapStruct.class);
     }
 
     /**
@@ -60,8 +61,8 @@ public class PermissionController {
     @GetMapping("/tree/list")
     public List<PermissionDto> getPermissionTree(PermissionDto permissionDto) {
         List<Permission> permissionList = permissionService.findPermissionList(permissionDto);
-        List<Permission> treeList = ConverterUtil.listToTree(permissionList);
-        return ConverterUtil.toDto(treeList, PermissionMapStruct.class);
+        List<Permission> treeList = TreeConverter.listToTree(permissionList);
+        return DtoConverter.toDto(treeList, PermissionMapStruct.class);
     }
 
     /**
@@ -69,7 +70,7 @@ public class PermissionController {
      */
     @PostMapping("/save")
     public Result<Void> save(@RequestBody PermissionDto permissionDto) {
-        permissionService.savePermission(ConverterUtil.toEntity(permissionDto, PermissionMapStruct.class));
+        permissionService.savePermission(DtoConverter.toEntity(permissionDto, PermissionMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
@@ -78,7 +79,7 @@ public class PermissionController {
      */
     @PostMapping("/save/module")
     public Result<Void> saveModule(@RequestBody PermissionDto permissionDto) {
-        Permission permission = ConverterUtil.toEntity(permissionDto, PermissionMapStruct.class);
+        Permission permission = DtoConverter.toEntity(permissionDto, PermissionMapStruct.class);
         permissionService.savePermission(permission);
         Map<String, String> map = new HashMap<>();
         map.put("查询", ".find");

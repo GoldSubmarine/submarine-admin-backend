@@ -2,7 +2,7 @@ package com.htnova.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
-import com.htnova.common.util.ConverterUtil;
+import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.system.dto.DictionaryDto;
@@ -32,7 +32,7 @@ public class DictionaryController {
     @GetMapping("/list/page")
     public XPage<DictionaryDto> findListByPage(DictionaryDto dictionaryDto, XPage<Void> xPage) {
         IPage<Dictionary> dictionaryPage = dictionaryService.findDictionaryList(dictionaryDto, xPage);
-        return ConverterUtil.toDto(dictionaryPage, DictionaryMapStruct.class);
+        return DtoConverter.toDto(dictionaryPage, DictionaryMapStruct.class);
     }
 
     /**
@@ -42,7 +42,7 @@ public class DictionaryController {
     @GetMapping("/list/all")
     public List<DictionaryDto> findList(DictionaryDto dictionaryDto) {
         List<Dictionary> dictionaryList = dictionaryService.findDictionaryList(dictionaryDto);
-        return ConverterUtil.toDto(dictionaryList, DictionaryMapStruct.class);
+        return DtoConverter.toDto(dictionaryList, DictionaryMapStruct.class);
     }
 
     /**
@@ -52,7 +52,7 @@ public class DictionaryController {
     @GetMapping("/detail")
     public DictionaryDto getById(long id) {
         Dictionary dictionary = dictionaryService.getDictionaryById(id);
-        return ConverterUtil.toDto(dictionary, DictionaryMapStruct.class);
+        return DtoConverter.toDto(dictionary, DictionaryMapStruct.class);
     }
 
     /**
@@ -61,7 +61,7 @@ public class DictionaryController {
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.add', 'dictionary.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody DictionaryDto dictionaryDto) {
-        dictionaryService.saveDictionary(ConverterUtil.toEntity(dictionaryDto, DictionaryMapStruct.class));
+        dictionaryService.saveDictionary(DtoConverter.toEntity(dictionaryDto, DictionaryMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

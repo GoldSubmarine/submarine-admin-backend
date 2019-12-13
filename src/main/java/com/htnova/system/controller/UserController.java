@@ -2,7 +2,7 @@ package com.htnova.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
-import com.htnova.common.util.ConverterUtil;
+import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.system.dto.UserDto;
@@ -37,7 +37,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('user.find')")
     public XPage<UserDto> findListByPage(UserDto userDto, XPage<Void> xPage) {
         IPage<User> userPage = userService.findUserList(userDto, xPage);
-        return ConverterUtil.toDto(userPage, UserMapStruct.class);
+        return DtoConverter.toDto(userPage, UserMapStruct.class);
     }
 
     /**
@@ -47,7 +47,7 @@ public class UserController {
     @GetMapping("/list/all")
     public List<UserDto> findList(UserDto userDto) {
         List<User> userList = userService.findUserList(userDto);
-        return ConverterUtil.toDto(userList, UserMapStruct.class);
+        return DtoConverter.toDto(userList, UserMapStruct.class);
     }
 
     /**
@@ -57,7 +57,7 @@ public class UserController {
     @GetMapping("/detail")
     public UserDto getById(long id) {
         User user = userService.getUserById(id);
-        return ConverterUtil.toDto(user, UserMapStruct.class);
+        return DtoConverter.toDto(user, UserMapStruct.class);
     }
 
     /**
@@ -66,7 +66,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/save")
     public Result<String> save(@RequestBody UserDto userDto) {
-        String randomPass = userService.saveUser(ConverterUtil.toEntity(userDto, UserMapStruct.class));
+        String randomPass = userService.saveUser(DtoConverter.toEntity(userDto, UserMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
     }
 

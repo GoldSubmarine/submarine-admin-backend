@@ -141,11 +141,11 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     @Async
     @TransactionalEventListener
     @Transactional
-    public void updateOrgName(Dept.UpdateName UpdateName) {
+    public void updateOrgName(Dept.UpdateName updateName) {
         User user = new User();
-        user.setDeptName(UpdateName.getName());
+        user.setDeptName(updateName.getName());
         super.update(user, new LambdaQueryWrapper<>(new User()).eq(User::getDeptId, user.getDeptId()));
-        log.debug("Dept.UpdateName: {}", UpdateName);
+        log.debug("Dept.UpdateName: {}", updateName);
     }
 
     //===============冗余字段更新end===============
