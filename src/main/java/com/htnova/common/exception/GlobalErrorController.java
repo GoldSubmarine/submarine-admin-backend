@@ -64,15 +64,15 @@ public class GlobalErrorController implements ErrorController {
 
 
 	@RequestMapping
-	public ResponseEntity<Result> error(HttpServletRequest request) {
+	public ResponseEntity<Result<?>> error(HttpServletRequest request) {
 		HttpStatus status = this.getStatus(request);
-		Result result = getErrorMessage(request, status);
+		Result<?> result = getErrorMessage(request, status);
 		return new ResponseEntity<>(result, status);
 	}
 
-	private Result getErrorMessage(HttpServletRequest request, HttpStatus status){
+	private Result<?> getErrorMessage(HttpServletRequest request, HttpStatus status){
 		if(status.value() == 404) return Result.build(ResultStatus.NOT_FOUND);
-		Result result = new Result();
+		Result<?> result = new Result<>();
 		Throwable error = this.errorAttributes.getError(new ServletWebRequest(request));
 		if(error != null) {
 			while(true) {
@@ -102,7 +102,7 @@ public class GlobalErrorController implements ErrorController {
 					}
 					break;
 				}
-				error = ((ServletException)error).getCause();
+				error = error.getCause();
 			}
 		}
 		String message = this.getAttribute(new ServletWebRequest(request), "javax.servlet.error.message");
@@ -112,9 +112,11 @@ public class GlobalErrorController implements ErrorController {
 		return result;
 	}
 
-
 	private BindingResult extractBindingResult(Throwable error) {
-		return error instanceof BindingResult?(BindingResult)error:(error instanceof MethodArgumentNotValidException ?((MethodArgumentNotValidException)error).getBindingResult():null);
+		if(error instanceof BindingResult){
+			return (BindingResult)error;
+		}
+		return error instanceof MethodArgumentNotValidException ?((MethodArgumentNotValidException)error).getBindingResult():null;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -16,9 +16,7 @@ import java.util.Map;
 public class RestErrorAttributes implements ErrorAttributes, HandlerExceptionResolver {
     private static final String ERROR_ATTRIBUTE = RestErrorAttributes.class.getName() + ".ERROR";
 
-    public RestErrorAttributes() {
-    }
-
+    @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         this.storeErrorAttributes(request, ex);
         return null;
@@ -33,9 +31,9 @@ public class RestErrorAttributes implements ErrorAttributes, HandlerExceptionRes
     }
 
     public Throwable getError(WebRequest webRequest) {
-        Throwable exception = (Throwable)this.getAttribute(webRequest, ERROR_ATTRIBUTE);
+        Throwable exception = this.getAttribute(webRequest, ERROR_ATTRIBUTE);
         if(exception == null) {
-            exception = (Throwable)this.getAttribute(webRequest, "javax.servlet.error.exception");
+            exception = this.getAttribute(webRequest, "javax.servlet.error.exception");
         }
         return exception;
     }

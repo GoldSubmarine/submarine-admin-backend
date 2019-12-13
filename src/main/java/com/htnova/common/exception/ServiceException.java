@@ -3,6 +3,8 @@ package com.htnova.common.exception;
 import com.htnova.common.constant.ResultStatus;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * Service层公用的Exception, 从由Spring管理事务的函数中抛出时会触发事务回滚.
  */
@@ -11,9 +13,9 @@ public class ServiceException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	private Integer code;
+	private final Integer code;
 
-	private Object data;
+	private final Serializable data;
 
 	/**
 	 * 默认为 ResultStatus.SERVER_ERROR 错误
@@ -21,11 +23,13 @@ public class ServiceException extends RuntimeException {
 	public ServiceException() {
 		super(ResultStatus.SERVER_ERROR.getMsg());
 		this.code = ResultStatus.SERVER_ERROR.getCode();
+		this.data = null;
 	}
 
 	public ServiceException(ResultStatus resultStatus) {
 		super(resultStatus.getMsg());
 		this.code = resultStatus.getCode();
+		this.data = null;
 	}
 
 	/**
@@ -35,14 +39,6 @@ public class ServiceException extends RuntimeException {
 		super(resultStatus.getMsg());
 		this.code = resultStatus.getCode();
 		this.data = objects;
-	}
-
-	public ServiceException(Throwable cause) {
-		super(cause);
-	}
-
-	public ServiceException(String message, Throwable cause) {
-		super(message, cause);
 	}
 
 }
