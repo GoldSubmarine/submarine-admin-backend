@@ -8,13 +8,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
-public abstract class BaseTreeDto<T> extends BaseEntity implements BaseTree<T> {
+public abstract class BaseTreeDto<T extends Serializable> extends BaseDto implements BaseTree<T> {
 
     /**
      * 父级id
