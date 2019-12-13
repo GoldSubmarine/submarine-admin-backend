@@ -17,27 +17,27 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM dictionary a WHERE a.del_flag = #{dictionary.delFlag}
-        <if test="dictionary.id != null and dictionary.id != ''">
-            AND a.id = #{dictionary.id}
+        FROM dictionary a WHERE a.del_flag = #{dictionaryDto.delFlag}
+        <if test="dictionaryDto.id != null and dictionaryDto.id != ''">
+            AND a.id = #{dictionaryDto.id}
         </if>
-        <if test="dictionary.name != null and dictionary.name != ''">
-            AND a.name LIKE concat('%',#{dictionary.name},'%')
+        <if test="dictionaryDto.name != null and dictionaryDto.name != ''">
+            AND a.name LIKE concat('%',#{dictionaryDto.name},'%')
         </if>
-        <if test="dictionary.remark != null and dictionary.remark != ''">
-            AND a.remark LIKE concat('%',#{dictionary.remark},'%')
+        <if test="dictionaryDto.remark != null and dictionaryDto.remark != ''">
+            AND a.remark LIKE concat('%',#{dictionaryDto.remark},'%')
         </if>
-        <if test="dictionary.createBy != null and dictionary.createBy != ''">
-            AND a.create_by = #{dictionary.createBy}
+        <if test="dictionaryDto.createBy != null and dictionaryDto.createBy != ''">
+            AND a.create_by = #{dictionaryDto.createBy}
         </if>
-        <if test="dictionary.createTime != null">
-            AND a.create_time = #{dictionary.createTime}
+        <if test="dictionaryDto.createTime != null">
+            AND a.create_time = #{dictionaryDto.createTime}
         </if>
-        <if test="dictionary.updateBy != null and dictionary.updateBy != ''">
-            AND a.update_by = #{dictionary.updateBy}
+        <if test="dictionaryDto.updateBy != null and dictionaryDto.updateBy != ''">
+            AND a.update_by = #{dictionaryDto.updateBy}
         </if>
-        <if test="dictionary.updateTime != null">
-            AND a.update_time = #{dictionary.updateTime}
+        <if test="dictionaryDto.updateTime != null">
+            AND a.update_time = #{dictionaryDto.updateTime}
         </if>
     </sql>
 

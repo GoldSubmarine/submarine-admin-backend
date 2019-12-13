@@ -21,21 +21,21 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM permission a WHERE a.del_flag = #{permission.delFlag}
-        <if test="permission.name != null and permission.name != ''">
-            AND a.name LIKE concat('%',#{permission.name},'%')
+        FROM permission a WHERE a.del_flag = #{permissionDto.delFlag}
+        <if test="permissionDto.name != null and permissionDto.name != ''">
+            AND a.name LIKE concat('%',#{permissionDto.name},'%')
         </if>
-        <if test="permission.type != null">
-            AND a.type = #{permission.type}
+        <if test="permissionDto.type != null">
+            AND a.type = #{permissionDto.type}
         </if>
-        <if test="permission.value != null and permission.value != ''">
-            AND a.value LIKE concat('%',#{permission.value},'%')
+        <if test="permissionDto.value != null and permissionDto.value != ''">
+            AND a.value LIKE concat('%',#{permissionDto.value},'%')
         </if>
-        <if test="permission.pid != null and permission.pid != ''">
-            AND a.pid = #{permission.pid}
+        <if test="permissionDto.pid != null and permissionDto.pid != ''">
+            AND a.pid = #{permissionDto.pid}
         </if>
-        <if test="permission.pids != null and permission.pids != ''">
-            AND a.pids = #{permission.pids}
+        <if test="permissionDto.pids != null and permissionDto.pids != ''">
+            AND a.pids = #{permissionDto.pids}
         </if>
     </sql>
 

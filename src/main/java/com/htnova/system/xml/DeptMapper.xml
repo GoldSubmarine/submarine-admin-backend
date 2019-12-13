@@ -20,36 +20,36 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM dept a WHERE a.del_flag = #{dept.delFlag}
-        <if test="dept.id != null and dept.id != ''">
-            AND a.id = #{dept.id}
+        FROM dept a WHERE a.del_flag = #{deptDto.delFlag}
+        <if test="deptDto.id != null and deptDto.id != ''">
+            AND a.id = #{deptDto.id}
         </if>
-        <if test="dept.name != null and dept.name != ''">
-            AND a.name LIKE concat('%',#{dept.name},'%')
+        <if test="deptDto.name != null and deptDto.name != ''">
+            AND a.name LIKE concat('%',#{deptDto.name},'%')
         </if>
-        <if test="dept.code != null and dept.code != ''">
-            AND a.code LIKE concat('%',#{dept.code},'%')
+        <if test="deptDto.code != null and deptDto.code != ''">
+            AND a.code LIKE concat('%',#{deptDto.code},'%')
         </if>
-        <if test="dept.pid != null and dept.pid != ''">
-            AND a.pid = #{dept.pid}
+        <if test="deptDto.pid != null and deptDto.pid != ''">
+            AND a.pid = #{deptDto.pid}
         </if>
-        <if test="dept.pids != null and dept.pids != ''">
-            AND a.pids = #{dept.pids}
+        <if test="deptDto.pids != null and deptDto.pids != ''">
+            AND a.pids = #{deptDto.pids}
         </if>
-        <if test="dept.remark != null and dept.remark != ''">
-            AND a.remark LIKE concat('%',#{dept.remark},'%')
+        <if test="deptDto.remark != null and deptDto.remark != ''">
+            AND a.remark LIKE concat('%',#{deptDto.remark},'%')
         </if>
-        <if test="dept.createBy != null and dept.createBy != ''">
-            AND a.create_by = #{dept.createBy}
+        <if test="deptDto.createBy != null and deptDto.createBy != ''">
+            AND a.create_by = #{deptDto.createBy}
         </if>
-        <if test="dept.createTime != null">
-            AND a.create_time = #{dept.createTime}
+        <if test="deptDto.createTime != null">
+            AND a.create_time = #{deptDto.createTime}
         </if>
-        <if test="dept.updateBy != null and dept.updateBy != ''">
-            AND a.update_by = #{dept.updateBy}
+        <if test="deptDto.updateBy != null and deptDto.updateBy != ''">
+            AND a.update_by = #{deptDto.updateBy}
         </if>
-        <if test="dept.updateTime != null">
-            AND a.update_time = #{dept.updateTime}
+        <if test="deptDto.updateTime != null">
+            AND a.update_time = #{deptDto.updateTime}
         </if>
     </sql>
 

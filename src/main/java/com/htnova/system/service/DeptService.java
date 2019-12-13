@@ -3,6 +3,7 @@ package com.htnova.system.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.common.base.BaseEntity;
+import com.htnova.system.dto.DeptDto;
 import com.htnova.system.entity.Dept;
 import com.htnova.system.mapper.DeptMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -26,14 +27,13 @@ public class DeptService extends ServiceImpl<DeptMapper, Dept> {
     private ApplicationContext applicationContext;
 
     @Transactional(readOnly = true)
-    public IPage<Dept> findDeptList(Dept dept, IPage<Void> xPage) {
-        IPage<Dept> deptXPage = deptMapper.findPage(xPage, dept);
-        return deptXPage;
+    public IPage<Dept> findDeptList(DeptDto deptDto, IPage<Void> xPage) {
+        return deptMapper.findPage(xPage, deptDto);
     }
 
     @Transactional(readOnly = true)
-    public List<Dept> findDeptList(Dept dept) {
-        return deptMapper.findList(dept);
+    public List<Dept> findDeptList(DeptDto deptDto) {
+        return deptMapper.findList(deptDto);
     }
 
     @Transactional
@@ -46,7 +46,7 @@ public class DeptService extends ServiceImpl<DeptMapper, Dept> {
         if(parent != null) {
             dept.setPids(String.format("%s%s,", Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
         }
-        if(Objects.nonNull(dept.getId()) && !StringUtils.equals(dept.getName(), originalDept.getName())) {
+        if(Objects.nonNull(dept.getId()) && !StringUtils.equals(dept.getName(), Optional.ofNullable(originalDept).map(Dept::getName).orElse(null))) {
             applicationContext.publishEvent(dept.updateName());
         }
         super.saveOrUpdate(dept);

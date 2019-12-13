@@ -19,33 +19,33 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM role a WHERE a.del_flag = #{role.delFlag}
-        <if test="role.id != null and role.id != ''">
-            AND a.id = #{role.id}
+        FROM role a WHERE a.del_flag = #{roleDto.delFlag}
+        <if test="roleDto.id != null and roleDto.id != ''">
+            AND a.id = #{roleDto.id}
         </if>
-        <if test="role.name != null and role.name != ''">
-            AND a.name LIKE concat('%',#{role.name},'%')
+        <if test="roleDto.name != null and roleDto.name != ''">
+            AND a.name LIKE concat('%',#{roleDto.name},'%')
         </if>
-        <if test="role.code != null and role.code != ''">
-            AND a.code LIKE concat('%',#{role.code},'%')
+        <if test="roleDto.code != null and roleDto.code != ''">
+            AND a.code LIKE concat('%',#{roleDto.code},'%')
         </if>
-        <if test="role.orgAdminDisplay != null">
-            AND a.org_admin_display = #{role.orgAdminDisplay}
+        <if test="roleDto.orgAdminDisplay != null">
+            AND a.org_admin_display = #{roleDto.orgAdminDisplay}
         </if>
-        <if test="role.remark != null and role.remark != ''">
-            AND a.remark LIKE concat('%',#{role.remark},'%')
+        <if test="roleDto.remark != null and roleDto.remark != ''">
+            AND a.remark LIKE concat('%',#{roleDto.remark},'%')
         </if>
-        <if test="role.createBy != null and role.createBy != ''">
-            AND a.create_by = #{role.createBy}
+        <if test="roleDto.createBy != null and roleDto.createBy != ''">
+            AND a.create_by = #{roleDto.createBy}
         </if>
-        <if test="role.createTime != null">
-            AND a.create_time = #{role.createTime}
+        <if test="roleDto.createTime != null">
+            AND a.create_time = #{roleDto.createTime}
         </if>
-        <if test="role.updateBy != null and role.updateBy != ''">
-            AND a.update_by = #{role.updateBy}
+        <if test="roleDto.updateBy != null and roleDto.updateBy != ''">
+            AND a.update_by = #{roleDto.updateBy}
         </if>
-        <if test="role.updateTime != null">
-            AND a.update_time = #{role.updateTime}
+        <if test="roleDto.updateTime != null">
+            AND a.update_time = #{roleDto.updateTime}
         </if>
     </sql>
 

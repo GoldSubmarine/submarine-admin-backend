@@ -2,9 +2,9 @@ package com.htnova.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
+import com.htnova.common.util.ConverterUtil;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
-import com.htnova.common.util.CommonUtil;
 import com.htnova.system.dto.DictionaryItemDto;
 import com.htnova.system.entity.DictionaryItem;
 import com.htnova.system.mapstruct.DictionaryItemMapStruct;
@@ -31,8 +31,8 @@ public class DictionaryItemController {
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
     @GetMapping("/list/page")
     public XPage<DictionaryItemDto> findListByPage(DictionaryItemDto dictionaryItemDto, XPage<Void> xPage) {
-        IPage<DictionaryItem> dictionaryItemPage = dictionaryItemService.findDictionaryItemList(DictionaryItemDto.toEntity(dictionaryItemDto), xPage);
-        return XPage.toDto(dictionaryItemPage, DictionaryItemMapStruct.class);
+        IPage<DictionaryItem> dictionaryItemPage = dictionaryItemService.findDictionaryItemList(dictionaryItemDto, xPage);
+        return ConverterUtil.toDto(dictionaryItemPage, DictionaryItemMapStruct.class);
     }
 
     /**
@@ -41,8 +41,8 @@ public class DictionaryItemController {
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
     @GetMapping("/list/all")
     public List<DictionaryItemDto> findList(DictionaryItemDto dictionaryItemDto) {
-        List<DictionaryItem> dictionaryItemList = dictionaryItemService.findDictionaryItemList(DictionaryItemDto.toEntity(dictionaryItemDto));
-        return CommonUtil.toDto(dictionaryItemList, DictionaryItemMapStruct.class);
+        List<DictionaryItem> dictionaryItemList = dictionaryItemService.findDictionaryItemList(dictionaryItemDto);
+        return ConverterUtil.toDto(dictionaryItemList, DictionaryItemMapStruct.class);
     }
 
     /**
@@ -52,7 +52,7 @@ public class DictionaryItemController {
     @GetMapping("/detail")
     public DictionaryItemDto getById(long id) {
         DictionaryItem dictionaryItem = dictionaryItemService.getDictionaryItemById(id);
-        return DictionaryItemDto.toDto(dictionaryItem);
+        return ConverterUtil.toDto(dictionaryItem, DictionaryItemMapStruct.class);
     }
 
     /**
@@ -61,7 +61,7 @@ public class DictionaryItemController {
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.add', 'dictionary.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody DictionaryItemDto dictionaryItemDto) {
-        dictionaryItemService.saveDictionaryItem(DictionaryItemDto.toEntity(dictionaryItemDto));
+        dictionaryItemService.saveDictionaryItem(ConverterUtil.toEntity(dictionaryItemDto, DictionaryItemMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

@@ -20,36 +20,36 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM dictionary_item a WHERE a.del_flag = #{dictionaryItem.delFlag}
-        <if test="dictionaryItem.id != null and dictionaryItem.id != ''">
-            AND a.id = #{dictionaryItem.id}
+        FROM dictionary_item a WHERE a.del_flag = #{dictionaryItemDto.delFlag}
+        <if test="dictionaryItemDto.id != null and dictionaryItemDto.id != ''">
+            AND a.id = #{dictionaryItemDto.id}
         </if>
-        <if test="dictionaryItem.dictionaryId != null and dictionaryItem.dictionaryId != ''">
-            AND a.dictionary_id = #{dictionaryItem.dictionaryId}
+        <if test="dictionaryItemDto.dictionaryId != null and dictionaryItemDto.dictionaryId != ''">
+            AND a.dictionary_id = #{dictionaryItemDto.dictionaryId}
         </if>
-        <if test="dictionaryItem.label != null and dictionaryItem.label != ''">
-            AND a.label LIKE concat('%',#{dictionaryItem.label},'%')
+        <if test="dictionaryItemDto.label != null and dictionaryItemDto.label != ''">
+            AND a.label LIKE concat('%',#{dictionaryItemDto.label},'%')
         </if>
-        <if test="dictionaryItem.value != null and dictionaryItem.value != ''">
-            AND a.value LIKE concat('%',#{dictionaryItem.value},'%')
+        <if test="dictionaryItemDto.value != null and dictionaryItemDto.value != ''">
+            AND a.value LIKE concat('%',#{dictionaryItemDto.value},'%')
         </if>
-        <if test="dictionaryItem.sort != null and dictionaryItem.sort != ''">
-            AND a.sort = #{dictionaryItem.sort}
+        <if test="dictionaryItemDto.sort != null and dictionaryItemDto.sort != ''">
+            AND a.sort = #{dictionaryItemDto.sort}
         </if>
-        <if test="dictionaryItem.remark != null and dictionaryItem.remark != ''">
-            AND a.remark = #{dictionaryItem.remark}
+        <if test="dictionaryItemDto.remark != null and dictionaryItemDto.remark != ''">
+            AND a.remark = #{dictionaryItemDto.remark}
         </if>
-        <if test="dictionaryItem.createBy != null and dictionaryItem.createBy != ''">
-            AND a.create_by = #{dictionaryItem.createBy}
+        <if test="dictionaryItemDto.createBy != null and dictionaryItemDto.createBy != ''">
+            AND a.create_by = #{dictionaryItemDto.createBy}
         </if>
-        <if test="dictionaryItem.createTime != null">
-            AND a.create_time = #{dictionaryItem.createTime}
+        <if test="dictionaryItemDto.createTime != null">
+            AND a.create_time = #{dictionaryItemDto.createTime}
         </if>
-        <if test="dictionaryItem.updateBy != null and dictionaryItem.updateBy != ''">
-            AND a.update_by = #{dictionaryItem.updateBy}
+        <if test="dictionaryItemDto.updateBy != null and dictionaryItemDto.updateBy != ''">
+            AND a.update_by = #{dictionaryItemDto.updateBy}
         </if>
-        <if test="dictionaryItem.updateTime != null">
-            AND a.update_time = #{dictionaryItem.updateTime}
+        <if test="dictionaryItemDto.updateTime != null">
+            AND a.update_time = #{dictionaryItemDto.updateTime}
         </if>
     </sql>
 

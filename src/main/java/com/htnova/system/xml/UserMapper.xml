@@ -29,63 +29,63 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM user a WHERE a.del_flag = #{user.delFlag}
-        <if test="user.id != null and user.id != ''">
-            AND a.id = #{user.id}
+        FROM user a WHERE a.del_flag = #{userDto.delFlag}
+        <if test="userDto.id != null and userDto.id != ''">
+            AND a.id = #{userDto.id}
         </if>
-        <if test="user.username != null and user.username != ''">
-            AND a.username LIKE concat('%',#{user.username},'%')
+        <if test="userDto.username != null and userDto.username != ''">
+            AND a.username LIKE concat('%',#{userDto.username},'%')
         </if>
-        <!--<if test="user.password != null and user.password != ''">-->
-            <!--AND a.password = #{user.password}-->
+        <!--<if test="userDto.password != null and userDto.password != ''">-->
+            <!--AND a.password = #{userDto.password}-->
         <!--</if>-->
-        <if test="user.name != null and user.name != ''">
-            AND a.name LIKE concat('%',#{user.name},'%')
+        <if test="userDto.name != null and userDto.name != ''">
+            AND a.name LIKE concat('%',#{userDto.name},'%')
         </if>
-        <if test="user.phone != null and user.phone != ''">
-            AND a.phone LIKE concat('%',#{user.phone},'%')
+        <if test="userDto.phone != null and userDto.phone != ''">
+            AND a.phone LIKE concat('%',#{userDto.phone},'%')
         </if>
-        <if test="user.email != null and user.email != ''">
-            AND a.email LIKE concat('%',#{user.email},'%')
+        <if test="userDto.email != null and userDto.email != ''">
+            AND a.email LIKE concat('%',#{userDto.email},'%')
         </if>
-        <if test="user.address != null and user.address != ''">
-            AND a.address LIKE concat('%',#{user.address},'%')
+        <if test="userDto.address != null and userDto.address != ''">
+            AND a.address LIKE concat('%',#{userDto.address},'%')
         </if>
-        <if test="user.sex != null and user.sex != ''">
-            AND a.sex = #{user.sex}
+        <if test="userDto.sex != null and userDto.sex != ''">
+            AND a.sex = #{userDto.sex}
         </if>
-        <if test="user.avatar != null and user.avatar != ''">
-            AND a.avatar = #{user.avatar}
+        <if test="userDto.avatar != null and userDto.avatar != ''">
+            AND a.avatar = #{userDto.avatar}
         </if>
-        <if test="user.status != null">
-            AND a.status = #{user.status}
+        <if test="userDto.status != null">
+            AND a.status = #{userDto.status}
         </if>
-        <if test="user.deptId != null and user.deptId != ''">
-            AND a.dept_id = #{user.deptId}
+        <if test="userDto.deptId != null and userDto.deptId != ''">
+            AND a.dept_id = #{userDto.deptId}
         </if>
-        <if test="user.deptIds != null and user.deptIds != ''">
-            AND a.dept_ids LIKE concat('%',#{user.deptIds},'%')
+        <if test="userDto.deptIds != null and userDto.deptIds != ''">
+            AND a.dept_ids LIKE concat('%',#{userDto.deptIds},'%')
         </if>
-        <if test="user.deptName != null and user.deptName != ''">
-            AND a.dept_name LIKE concat('%',#{user.deptName},'%')
+        <if test="userDto.deptName != null and userDto.deptName != ''">
+            AND a.dept_name LIKE concat('%',#{userDto.deptName},'%')
         </if>
-        <if test="user.jwtSecret != null and user.jwtSecret != ''">
-            AND a.jwt_secret = #{user.jwtSecret}
+        <if test="userDto.jwtSecret != null and userDto.jwtSecret != ''">
+            AND a.jwt_secret = #{userDto.jwtSecret}
         </if>
-        <if test="user.remark != null and user.remark != ''">
-            AND a.remark LIKE concat('%',#{user.remark},'%')
+        <if test="userDto.remark != null and userDto.remark != ''">
+            AND a.remark LIKE concat('%',#{userDto.remark},'%')
         </if>
-        <if test="user.createBy != null and user.createBy != ''">
-            AND a.create_by = #{user.createBy}
+        <if test="userDto.createBy != null and userDto.createBy != ''">
+            AND a.create_by = #{userDto.createBy}
         </if>
-        <if test="user.createTime != null">
-            AND a.create_time = #{user.createTime}
+        <if test="userDto.createTime != null">
+            AND a.create_time = #{userDto.createTime}
         </if>
-        <if test="user.updateBy != null and user.updateBy != ''">
-            AND a.update_by = #{user.updateBy}
+        <if test="userDto.updateBy != null and userDto.updateBy != ''">
+            AND a.update_by = #{userDto.updateBy}
         </if>
-        <if test="user.updateTime != null">
-            AND a.update_time = #{user.updateTime}
+        <if test="userDto.updateTime != null">
+            AND a.update_time = #{userDto.updateTime}
         </if>
     </sql>
 

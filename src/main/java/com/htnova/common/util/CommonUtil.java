@@ -1,55 +1,10 @@
 package com.htnova.common.util;
 
-import com.google.common.collect.Lists;
-import com.htnova.common.base.BaseEntity;
-import com.htnova.common.base.BaseMapStruct;
-import com.htnova.common.base.BaseTree;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.mapstruct.factory.Mappers;
-import org.springframework.util.CollectionUtils;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class CommonUtil {
 
-    /**
-     * 调用 list 的 toDto 方法
-     */
-    @SuppressWarnings("unchecked")
-    public static <V, T> List<V> toDto(List<T> source, Class<? extends BaseMapStruct> mapStruct) {
-        BaseMapStruct mapper = Mappers.getMapper(mapStruct);
-        return mapper.toDto(source);
-    }
-
-    /**
-     * 调用 list 的 toDto 方法
-     */
-    @SuppressWarnings("unchecked")
-    public static <V, T> List<V> toEntity(List<T> source, Class<? extends BaseMapStruct> mapStruct) {
-        BaseMapStruct mapper = Mappers.getMapper(mapStruct);
-        return mapper.toEntity(source);
-    }
-
-    /**
-     * list 转 tree
-     */
-    public static <T extends BaseTree<T>> List<T> listToTree(List<T> list) {
-        if(CollectionUtils.isEmpty(list)) return Lists.newArrayList();
-        Map<Long, T> idMap = list.stream().collect(Collectors.toMap(BaseEntity::getId, item -> item));
-        return list.stream()
-                .filter(item -> {
-                    T treeEntity = idMap.get(item.getPid());
-                    if(Objects.nonNull(treeEntity)){
-                        if(Objects.isNull(treeEntity.getChildren())){
-                            treeEntity.setChildren(Lists.newArrayList());
-                        }
-                        treeEntity.getChildren().add(item);
-                        return false;
-                    }
-                    return true;
-                }).collect(Collectors.toList());
-    }
+    private CommonUtil() {}
 
     /**
      * 获取随机字符串

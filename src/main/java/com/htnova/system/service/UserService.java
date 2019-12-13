@@ -8,6 +8,7 @@ import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.exception.ServiceException;
 import com.htnova.common.util.CommonUtil;
 import com.htnova.common.util.UserUtil;
+import com.htnova.system.dto.UserDto;
 import com.htnova.system.entity.*;
 import com.htnova.system.mapper.UserMapper;
 import com.htnova.system.mapper.UserRoleMapper;
@@ -47,14 +48,13 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(readOnly = true)
-    public IPage<User> findUserList(User user, IPage<Void> xPage) {
-        IPage<User> userXPage = userMapper.findPage(xPage, user);
-        return userXPage;
+    public IPage<User> findUserList(UserDto userDto, IPage<Void> xPage) {
+        return userMapper.findPage(xPage, userDto);
     }
 
     @Transactional(readOnly = true)
-    public List<User> findUserList(User user) {
-        return userMapper.findList(user);
+    public List<User> findUserList(UserDto userDto) {
+        return userMapper.findList(userDto);
     }
 
     @Transactional

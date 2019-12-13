@@ -2,9 +2,9 @@ package com.htnova.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
+import com.htnova.common.util.ConverterUtil;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
-import com.htnova.common.util.CommonUtil;
 import com.htnova.system.dto.UserDto;
 import com.htnova.system.entity.User;
 import com.htnova.system.mapstruct.UserMapStruct;
@@ -36,8 +36,8 @@ public class UserController {
     @GetMapping("/list/page")
     @PreAuthorize("hasAnyAuthority('user.find')")
     public XPage<UserDto> findListByPage(UserDto userDto, XPage<Void> xPage) {
-        IPage<User> userPage = userService.findUserList(UserDto.toEntity(userDto), xPage);
-        return XPage.toDto(userPage, UserMapStruct.class);
+        IPage<User> userPage = userService.findUserList(userDto, xPage);
+        return ConverterUtil.toDto(userPage, UserMapStruct.class);
     }
 
     /**
@@ -46,8 +46,8 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('user.find')")
     @GetMapping("/list/all")
     public List<UserDto> findList(UserDto userDto) {
-        List<User> userList = userService.findUserList(UserDto.toEntity(userDto));
-        return CommonUtil.toDto(userList, UserMapStruct.class);
+        List<User> userList = userService.findUserList(userDto);
+        return ConverterUtil.toDto(userList, UserMapStruct.class);
     }
 
     /**
@@ -57,7 +57,7 @@ public class UserController {
     @GetMapping("/detail")
     public UserDto getById(long id) {
         User user = userService.getUserById(id);
-        return UserDto.toDto(user);
+        return ConverterUtil.toDto(user, UserMapStruct.class);
     }
 
     /**
@@ -66,7 +66,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/save")
     public Result<String> save(@RequestBody UserDto userDto) {
-        String randomPass = userService.saveUser(UserDto.toEntity(userDto));
+        String randomPass = userService.saveUser(ConverterUtil.toEntity(userDto, UserMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
     }
 

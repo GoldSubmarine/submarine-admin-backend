@@ -2,9 +2,9 @@ package com.htnova.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
+import com.htnova.common.util.ConverterUtil;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
-import com.htnova.common.util.CommonUtil;
 import com.htnova.system.dto.DeptDto;
 import com.htnova.system.entity.Dept;
 import com.htnova.system.mapstruct.DeptMapStruct;
@@ -29,8 +29,8 @@ public class DeptController {
      */
     @GetMapping("/list/page")
     public XPage<DeptDto> findListByPage(DeptDto deptDto, XPage<Void> xPage) {
-        IPage<Dept> deptPage = deptService.findDeptList(DeptDto.toEntity(deptDto), xPage);
-        return XPage.toDto(deptPage, DeptMapStruct.class);
+        IPage<Dept> deptPage = deptService.findDeptList(deptDto, xPage);
+        return ConverterUtil.toDto(deptPage, DeptMapStruct.class);
     }
 
     /**
@@ -38,8 +38,8 @@ public class DeptController {
      */
     @GetMapping("/list/all")
     public List<DeptDto> findList(DeptDto deptDto) {
-        List<Dept> deptList = deptService.findDeptList(DeptDto.toEntity(deptDto));
-        return CommonUtil.toDto(deptList, DeptMapStruct.class);
+        List<Dept> deptList = deptService.findDeptList(deptDto);
+        return ConverterUtil.toDto(deptList, DeptMapStruct.class);
     }
 
     /**
@@ -48,7 +48,7 @@ public class DeptController {
     @GetMapping("/detail")
     public DeptDto getById(Long id) {
         Dept dept = deptService.getDeptById(id);
-        return DeptDto.toDto(dept);
+        return ConverterUtil.toDto(dept, DeptMapStruct.class);
     }
 
     /**
@@ -57,9 +57,9 @@ public class DeptController {
      */
     @GetMapping("/tree/list")
     public List<DeptDto> getDeptTree(DeptDto deptDto) {
-        List<Dept> deptList = deptService.findDeptList(DeptDto.toEntity(deptDto));
-        List<Dept> treeList = CommonUtil.listToTree(deptList);
-        return CommonUtil.toDto(treeList, DeptMapStruct.class);
+        List<Dept> deptList = deptService.findDeptList(deptDto);
+        List<Dept> treeList = ConverterUtil.listToTree(deptList);
+        return ConverterUtil.toDto(treeList, DeptMapStruct.class);
     }
 
     /**
@@ -67,7 +67,7 @@ public class DeptController {
      */
     @PostMapping("/save")
     public Result<Void> save(@RequestBody DeptDto deptDto) {
-        deptService.saveDept(DeptDto.toEntity(deptDto));
+        deptService.saveDept(ConverterUtil.toEntity(deptDto, DeptMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

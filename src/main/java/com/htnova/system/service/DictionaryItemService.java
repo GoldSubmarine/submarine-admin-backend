@@ -2,6 +2,7 @@ package com.htnova.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.htnova.system.dto.DictionaryItemDto;
 import com.htnova.system.entity.DictionaryItem;
 import com.htnova.system.mapper.DictionaryItemMapper;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,13 @@ public class DictionaryItemService extends ServiceImpl<DictionaryItemMapper, Dic
     private DictionaryItemMapper dictionaryItemMapper;
 
     @Transactional(readOnly = true)
-    public IPage<DictionaryItem> findDictionaryItemList(DictionaryItem dictionaryItem, IPage<Void> xPage) {
-        IPage<DictionaryItem> dictionaryItemXPage = dictionaryItemMapper.findPage(xPage, dictionaryItem);
-        return dictionaryItemXPage;
+    public IPage<DictionaryItem> findDictionaryItemList(DictionaryItemDto dictionaryItemDto, IPage<Void> xPage) {
+        return dictionaryItemMapper.findPage(xPage, dictionaryItemDto);
     }
 
     @Transactional(readOnly = true)
-    public List<DictionaryItem> findDictionaryItemList(DictionaryItem dictionaryItem) {
-        return dictionaryItemMapper.findList(dictionaryItem);
+    public List<DictionaryItem> findDictionaryItemList(DictionaryItemDto dictionaryItemDto) {
+        return dictionaryItemMapper.findList(dictionaryItemDto);
     }
 
     @Transactional

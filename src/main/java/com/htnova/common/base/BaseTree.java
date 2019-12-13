@@ -1,36 +1,22 @@
 package com.htnova.common.base;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@SuperBuilder(toBuilder = true)
-public abstract class BaseTree<T> extends BaseEntity {
+public interface BaseTree<T> {
 
-    /**
-     * 父级id
-     */
-    @JsonSerialize(using= ToStringSerializer.class)
-    private Long pid;
+    Long getId();
 
-    /**
-     * 父级ids
-     */
-    private String pids;
+    void setId(Long id);
 
-    /**
-     * 子节点
-     */
-    @TableField(exist=false)
-    private List<T> children;
+    Long getPid();
 
+    void setPid(Long pid);
+
+    String getPids();
+
+    void setPids(String pids);
+
+    List<T> getChildren();
+
+    void setChildren(List<T> children);
 }

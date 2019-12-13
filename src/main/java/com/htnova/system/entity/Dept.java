@@ -1,6 +1,6 @@
 package com.htnova.system.entity;
 
-import com.htnova.common.base.BaseTree;
+import com.htnova.common.base.BaseTreeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 @SuperBuilder
-public class Dept extends BaseTree<Dept> {
+public class Dept extends BaseTreeEntity<Dept> {
 
     /**
      * 名称（中文）

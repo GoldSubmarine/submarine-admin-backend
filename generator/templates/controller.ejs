@@ -42,7 +42,7 @@ public class <%= Entity %>Controller {
     @GetMapping("/list/all")
     public List<<%= Entity %>Dto> findList(<%= Entity %>Dto <%= entity %>Dto) {
         List<<%= Entity %>> <%= entity %>List = <%= entity %>Service.find<%= Entity %>List(<%= Entity %>Dto.toEntity(<%= entity %>Dto));
-        return CommonUtil.toDto(<%= entity %>List, <%= Entity %>MapStruct.class);
+        return DtoConverter.toDto(<%= entity %>List, <%= Entity %>MapStruct.class);
     }
 
     /**

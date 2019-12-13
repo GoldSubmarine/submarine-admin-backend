@@ -20,8 +20,7 @@ public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRole> {
 
     @Transactional(readOnly = true)
     public IPage<UserRole> findUserRoleList(UserRole userRole, IPage<Void> xPage) {
-        IPage<UserRole> userRoleXPage = userRoleMapper.findPage(xPage, userRole);
-        return userRoleXPage;
+        return userRoleMapper.findPage(xPage, userRole);
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,6 @@
 package com.htnova.system.entity;
 
-import com.htnova.common.base.BaseTree;
+import com.htnova.common.base.BaseTreeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 @SuperBuilder
-public class Permission extends BaseTree<Permission> {
+public class Permission extends BaseTreeEntity<Permission> {
 
     /**
      * 类型

@@ -1,6 +1,6 @@
 package com.htnova.system.dto;
 
-import com.htnova.common.base.BaseEntity;
+import com.htnova.common.base.BaseDto;
 import com.htnova.system.entity.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class RolePermissionDto extends BaseEntity {
+public class RolePermissionDto extends BaseDto {
 
     /**
      * 权限id
@@ -30,6 +30,6 @@ public class RolePermissionDto extends BaseEntity {
      */
     private Permission.PermissionType type;
 
-    List<Long> permissionList;
+    private List<Long> permissionList;
 
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.common.base.BaseEntity;
+import com.htnova.system.dto.PermissionDto;
 import com.htnova.system.entity.Permission;
 import com.htnova.system.entity.RolePermission;
 import com.htnova.system.mapper.PermissionMapper;
@@ -25,14 +26,13 @@ public class PermissionService extends ServiceImpl<PermissionMapper, Permission>
     private RolePermissionService rolePermissionService;
 
     @Transactional(readOnly = true)
-    public IPage<Permission> findPermissionList(Permission permission, IPage<Void> xPage) {
-        IPage<Permission> permissionXPage = permissionMapper.findPage(xPage, permission);
-        return permissionXPage;
+    public IPage<Permission> findPermissionList(PermissionDto permissionDto, IPage<Void> xPage) {
+        return permissionMapper.findPage(xPage, permissionDto);
     }
 
     @Transactional(readOnly = true)
-    public List<Permission> findPermissionList(Permission permission) {
-        return permissionMapper.findList(permission);
+    public List<Permission> findPermissionList(PermissionDto permissionDto) {
+        return permissionMapper.findList(permissionDto);
     }
 
     @Transactional

@@ -2,9 +2,9 @@ package com.htnova.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
+import com.htnova.common.util.ConverterUtil;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
-import com.htnova.common.util.CommonUtil;
 import com.htnova.system.dto.DictionaryDto;
 import com.htnova.system.entity.Dictionary;
 import com.htnova.system.mapstruct.DictionaryMapStruct;
@@ -31,8 +31,8 @@ public class DictionaryController {
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
     @GetMapping("/list/page")
     public XPage<DictionaryDto> findListByPage(DictionaryDto dictionaryDto, XPage<Void> xPage) {
-        IPage<Dictionary> dictionaryPage = dictionaryService.findDictionaryList(DictionaryDto.toEntity(dictionaryDto), xPage);
-        return XPage.toDto(dictionaryPage, DictionaryMapStruct.class);
+        IPage<Dictionary> dictionaryPage = dictionaryService.findDictionaryList(dictionaryDto, xPage);
+        return ConverterUtil.toDto(dictionaryPage, DictionaryMapStruct.class);
     }
 
     /**
@@ -41,8 +41,8 @@ public class DictionaryController {
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
     @GetMapping("/list/all")
     public List<DictionaryDto> findList(DictionaryDto dictionaryDto) {
-        List<Dictionary> dictionaryList = dictionaryService.findDictionaryList(DictionaryDto.toEntity(dictionaryDto));
-        return CommonUtil.toDto(dictionaryList, DictionaryMapStruct.class);
+        List<Dictionary> dictionaryList = dictionaryService.findDictionaryList(dictionaryDto);
+        return ConverterUtil.toDto(dictionaryList, DictionaryMapStruct.class);
     }
 
     /**
@@ -52,7 +52,7 @@ public class DictionaryController {
     @GetMapping("/detail")
     public DictionaryDto getById(long id) {
         Dictionary dictionary = dictionaryService.getDictionaryById(id);
-        return DictionaryDto.toDto(dictionary);
+        return ConverterUtil.toDto(dictionary, DictionaryMapStruct.class);
     }
 
     /**
@@ -61,7 +61,7 @@ public class DictionaryController {
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.add', 'dictionary.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody DictionaryDto dictionaryDto) {
-        dictionaryService.saveDictionary(DictionaryDto.toEntity(dictionaryDto));
+        dictionaryService.saveDictionary(ConverterUtil.toEntity(dictionaryDto, DictionaryMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

@@ -4,14 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.htnova.common.base.BaseEntity;
+import com.htnova.common.base.BaseDto;
 import com.htnova.system.entity.User;
-import com.htnova.system.mapstruct.UserMapStruct;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
@@ -19,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class UserDto extends BaseEntity {
+public class UserDto extends BaseDto {
 
     /**
      * 登录名
@@ -84,6 +82,12 @@ public class UserDto extends BaseEntity {
     private String deptName;
 
     /**
+     * jwt密钥
+     */
+    @JsonIgnore
+    private String jwtSecret;
+
+    /**
      * 角色
      */
     private List<RoleDto> roleList;
@@ -102,15 +106,5 @@ public class UserDto extends BaseEntity {
      * 权限
      */
     private List<PermissionDto> permissionList;
-
-    public static User toEntity(UserDto userDto) {
-        UserMapStruct mapStruct = Mappers.getMapper( UserMapStruct.class );
-        return mapStruct.toEntity(userDto);
-    }
-
-    public static UserDto toDto(User user) {
-        UserMapStruct mapStruct = Mappers.getMapper( UserMapStruct.class );
-        return mapStruct.toDto(user);
-    }
 
 }

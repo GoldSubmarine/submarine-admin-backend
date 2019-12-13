@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.common.util.UserUtil;
+import com.htnova.system.dto.RoleDto;
 import com.htnova.system.entity.Permission;
 import com.htnova.system.entity.Role;
 import com.htnova.system.entity.RolePermission;
@@ -26,9 +27,8 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
     private RolePermissionService rolePermissionService;
 
     @Transactional(readOnly = true)
-    public IPage<Role> findRoleList(Role role, IPage<Void> xPage) {
-        IPage<Role> roleXPage = roleMapper.findPage(xPage, role);
-        return roleXPage;
+    public IPage<Role> findRoleList(RoleDto roleDto, IPage<Void> xPage) {
+        return roleMapper.findPage(xPage, roleDto);
     }
 
     private List<Role> filterRoleByCode(List<Role> roleList, String ...roleCodeList) {
@@ -37,8 +37,8 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
     }
 
     @Transactional(readOnly = true)
-    public List<Role> findRoleList(Role role) {
-        List<Role> roleList = roleMapper.findList(role);
+    public List<Role> findRoleList(RoleDto roleDto) {
+        List<Role> roleList = roleMapper.findList(roleDto);
         if(!UserUtil.getJwtUser().isSuperAdmin()) {
             roleList = filterRoleByCode(roleList, Role.SUPER_ADMIN_CODE);
         }
