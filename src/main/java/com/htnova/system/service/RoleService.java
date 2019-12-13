@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,7 +57,7 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
 
     @Transactional
     public Role getRoleById(long id) {
-        List<Permission> permissionList = rolePermissionService.findPermissionList(Arrays.asList(id));
+        List<Permission> permissionList = rolePermissionService.findPermissionList(Collections.singletonList(id));
         Role role = roleMapper.selectById(id);
         role.setPermissionList(permissionList);
         return role;
