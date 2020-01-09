@@ -1,5 +1,7 @@
 package com.htnova.common.base;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.htnova.common.constant.GlobalConst;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +20,7 @@ public abstract class BaseDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonSerialize(using= ToStringSerializer.class)
     protected Long id;
 
     /**

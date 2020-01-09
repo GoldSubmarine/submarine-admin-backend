@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.system.tool.mapper.FileStoreMapper">
+    <sql id="SelectColumns">
+		a.id as id,
+		a.name as name,
+		a.real_name as realName,
+		a.size as size,
+		a.type as type,
+		a.url as url,
+		a.md5 as md5,
+		a.store_type as storeType,
+		a.remark as remark,
+		a.create_by as createBy,
+		a.create_time as createTime,
+		a.update_by as updateBy,
+		a.update_time as updateTime,
+		a.del_flag as delFlag
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM file_store a WHERE a.del_flag = #{fileStoreDto.delFlag}
+            
+		<if test="fileStoreDto.id != null">
+			AND a.id = #{fileStoreDto.id}
+		</if>
+		<if test="fileStoreDto.name != null and fileStoreDto.name != ''">
+			AND a.name LIKE concat('%', #{fileStoreDto.name}, '%')
+		</if>
+		<if test="fileStoreDto.realName != null and fileStoreDto.realName != ''">
+			AND a.real_name LIKE concat('%', #{fileStoreDto.realName}, '%')
+		</if>
+		<if test="fileStoreDto.size != null">
+			AND a.size = #{fileStoreDto.size}
+		</if>
+		<if test="fileStoreDto.type != null and fileStoreDto.type != ''">
+			AND a.type = #{fileStoreDto.type}
+		</if>
+		<if test="fileStoreDto.url != null and fileStoreDto.url != ''">
+			AND a.url = #{fileStoreDto.url}
+		</if>
+		<if test="fileStoreDto.md5 != null and fileStoreDto.md5 != ''">
+			AND a.md5 LIKE concat('%', #{fileStoreDto.md5}, '%')
+		</if>
+		<if test="fileStoreDto.storeType != null">
+			AND a.store_type = #{fileStoreDto.storeType}
+		</if>
+		<if test="fileStoreDto.remark != null and fileStoreDto.remark != ''">
+			AND a.remark = #{fileStoreDto.remark}
+		</if>
+		<if test="fileStoreDto.createBy != null and fileStoreDto.createBy != ''">
+			AND a.create_by = #{fileStoreDto.createBy}
+		</if>
+		<if test="fileStoreDto.createTime != null">
+			AND a.create_time = #{fileStoreDto.createTime}
+		</if>
+		<if test="fileStoreDto.updateBy != null and fileStoreDto.updateBy != ''">
+			AND a.update_by = #{fileStoreDto.updateBy}
+		</if>
+		<if test="fileStoreDto.updateTime != null">
+			AND a.update_time = #{fileStoreDto.updateTime}
+		</if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="FileStore">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="FileStore">
+        <include refid="findList"/>
+    </select>
+
+</mapper>

@@ -25,3 +25,7 @@ spring:
     lettuce:
       pool:
         max-active: 8
+
+file:
+  local:
+    path: C:\Users\vinson\Desktop\project\java\submarine-admin-backend\src\main\resources\public\

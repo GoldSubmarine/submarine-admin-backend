@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.system.manage.mapper.RoleMapper">
+
+    <sql id="SelectColumns">
+        a.id,
+        a.name,
+        a.code,
+        a.org_admin_display,
+        a.remark,
+        a.create_by,
+        a.create_time,
+        a.update_by,
+        a.update_time,
+        a.del_flag
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM role a WHERE a.del_flag = #{roleDto.delFlag}
+        <if test="roleDto.id != null and roleDto.id != ''">
+            AND a.id = #{roleDto.id}
+        </if>
+        <if test="roleDto.name != null and roleDto.name != ''">
+            AND a.name LIKE concat('%',#{roleDto.name},'%')
+        </if>
+        <if test="roleDto.code != null and roleDto.code != ''">
+            AND a.code LIKE concat('%',#{roleDto.code},'%')
+        </if>
+        <if test="roleDto.orgAdminDisplay != null">
+            AND a.org_admin_display = #{roleDto.orgAdminDisplay}
+        </if>
+        <if test="roleDto.remark != null and roleDto.remark != ''">
+            AND a.remark LIKE concat('%',#{roleDto.remark},'%')
+        </if>
+        <if test="roleDto.createBy != null and roleDto.createBy != ''">
+            AND a.create_by = #{roleDto.createBy}
+        </if>
+        <if test="roleDto.createTime != null">
+            AND a.create_time = #{roleDto.createTime}
+        </if>
+        <if test="roleDto.updateBy != null and roleDto.updateBy != ''">
+            AND a.update_by = #{roleDto.updateBy}
+        </if>
+        <if test="roleDto.updateTime != null">
+            AND a.update_time = #{roleDto.updateTime}
+        </if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="Role">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="Role">
+        <include refid="findList"/>
+    </select>
+
+</mapper>

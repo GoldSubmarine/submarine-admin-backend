@@ -2,8 +2,8 @@ package com.htnova.common.util;
 
 import com.htnova.security.config.JwtConfig;
 import com.htnova.security.entity.JwtUser;
-import com.htnova.system.entity.User;
-import com.htnova.system.service.UserService;
+import com.htnova.system.manage.entity.User;
+import com.htnova.system.manage.service.UserService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClock;
 import io.jsonwebtoken.impl.TextCodec;

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.system.manage.mapper.RolePermissionMapper">
+
+    <sql id="SelectColumns">
+        a.id,
+        a.type,
+        a.permission_id,
+        a.role_id,
+        a.remark,
+        a.create_by,
+        a.create_time,
+        a.update_by,
+        a.update_time,
+        a.del_flag
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM role_permission a WHERE a.del_flag = #{rolePermissionDto.delFlag}
+        <if test="rolePermissionDto.id != null and rolePermissionDto.id != ''">
+            AND a.id = #{rolePermissionDto.id}
+        </if>
+        <if test="rolePermissionDto.type != null">
+            AND a.type = #{rolePermissionDto.type}
+        </if>
+        <if test="rolePermissionDto.permissionId != null and rolePermissionDto.permissionId != ''">
+            AND a.permission_id = #{rolePermissionDto.permissionId}
+        </if>
+        <if test="rolePermissionDto.roleId != null and rolePermissionDto.roleId != ''">
+            AND a.role_id = #{rolePermissionDto.roleId}
+        </if>
+        <if test="rolePermissionDto.remark != null and rolePermissionDto.remark != ''">
+            AND a.remark = #{rolePermissionDto.remark}
+        </if>
+        <if test="rolePermissionDto.createBy != null and rolePermissionDto.createBy != ''">
+            AND a.create_by = #{rolePermissionDto.createBy}
+        </if>
+        <if test="rolePermissionDto.createTime != null">
+            AND a.create_time = #{rolePermissionDto.createTime}
+        </if>
+        <if test="rolePermissionDto.updateBy != null and rolePermissionDto.updateBy != ''">
+            AND a.update_by = #{rolePermissionDto.updateBy}
+        </if>
+        <if test="rolePermissionDto.updateTime != null">
+            AND a.update_time = #{rolePermissionDto.updateTime}
+        </if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="RolePermission">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="RolePermission">
+        <include refid="findList"/>
+    </select>
+
+    <!--根据id-->
+    <select id="getByRoleId" resultType="Permission">
+        SELECT b.* FROM
+          role_permission a
+        LEFT JOIN permission b ON a.permission_id = b.id
+        WHERE
+          a.del_flag = 0 AND a.role_id = #{id}
+    </select>
+
+    <!--根据ids-->
+    <select id="getByRoleIds" resultType="Permission">
+        SELECT b.* FROM
+          role_permission a
+        LEFT JOIN permission b ON a.permission_id = b.id
+        WHERE
+          a.del_flag = 0 AND a.role_id IN
+        <foreach item="item" index="index" collection="ids"  open="(" separator="," close=")">
+            '${item}'
+        </foreach>
+    </select>
+
+</mapper>

@@ -9,6 +9,11 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     timeZone: GMT+8
+  servlet:
+    multipart:
+      enabled: true
+      maxFileSize: 100MB
+      max-request-size: 100MB
 
 mybatis-plus:
   mapper-locations: classpath:com/htnova/**/xml/*.xml

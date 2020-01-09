@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.system.manage.mapper.DeptMapper">
+
+    <sql id="SelectColumns">
+        a.id,
+        a.name,
+        a.code,
+        a.pid,
+        a.pids,
+        a.remark,
+        a.create_by,
+        a.create_time,
+        a.update_by,
+        a.update_time,
+        a.del_flag
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM dept a WHERE a.del_flag = #{deptDto.delFlag}
+        <if test="deptDto.id != null and deptDto.id != ''">
+            AND a.id = #{deptDto.id}
+        </if>
+        <if test="deptDto.name != null and deptDto.name != ''">
+            AND a.name LIKE concat('%',#{deptDto.name},'%')
+        </if>
+        <if test="deptDto.code != null and deptDto.code != ''">
+            AND a.code LIKE concat('%',#{deptDto.code},'%')
+        </if>
+        <if test="deptDto.pid != null and deptDto.pid != ''">
+            AND a.pid = #{deptDto.pid}
+        </if>
+        <if test="deptDto.pids != null and deptDto.pids != ''">
+            AND a.pids = #{deptDto.pids}
+        </if>
+        <if test="deptDto.remark != null and deptDto.remark != ''">
+            AND a.remark LIKE concat('%',#{deptDto.remark},'%')
+        </if>
+        <if test="deptDto.createBy != null and deptDto.createBy != ''">
+            AND a.create_by = #{deptDto.createBy}
+        </if>
+        <if test="deptDto.createTime != null">
+            AND a.create_time = #{deptDto.createTime}
+        </if>
+        <if test="deptDto.updateBy != null and deptDto.updateBy != ''">
+            AND a.update_by = #{deptDto.updateBy}
+        </if>
+        <if test="deptDto.updateTime != null">
+            AND a.update_time = #{deptDto.updateTime}
+        </if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="Dept">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="Dept">
+        <include refid="findList"/>
+    </select>
+
+</mapper>

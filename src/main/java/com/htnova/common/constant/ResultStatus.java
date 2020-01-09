@@ -35,6 +35,9 @@ public enum ResultStatus {
     PASSWORD_WRONG(50007, "密码错误"),
     OLD_PASSWORD_WRONG(50008, "原密码错误"),
     NO_ERROR(50009, "No errors"),
+    EMPTY_FILE(50010, "文件为空"),
+    FILE_NOT_FOUND(50011, "文件不存在"),
+    UPLOAD_FAILED(50012, "上传失败"),
     TO_LOGIN(50014, "重新登录");
 
 

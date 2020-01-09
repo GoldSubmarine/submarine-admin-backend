@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.system.manage.mapper.DictionaryMapper">
+
+    <sql id="SelectColumns">
+        a.id,
+        a.name,
+        a.remark,
+        a.create_by,
+        a.create_time,
+        a.update_by,
+        a.update_time,
+        a.del_flag
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM dictionary a WHERE a.del_flag = #{dictionaryDto.delFlag}
+        <if test="dictionaryDto.id != null and dictionaryDto.id != ''">
+            AND a.id = #{dictionaryDto.id}
+        </if>
+        <if test="dictionaryDto.name != null and dictionaryDto.name != ''">
+            AND a.name LIKE concat('%',#{dictionaryDto.name},'%')
+        </if>
+        <if test="dictionaryDto.remark != null and dictionaryDto.remark != ''">
+            AND a.remark LIKE concat('%',#{dictionaryDto.remark},'%')
+        </if>
+        <if test="dictionaryDto.createBy != null and dictionaryDto.createBy != ''">
+            AND a.create_by = #{dictionaryDto.createBy}
+        </if>
+        <if test="dictionaryDto.createTime != null">
+            AND a.create_time = #{dictionaryDto.createTime}
+        </if>
+        <if test="dictionaryDto.updateBy != null and dictionaryDto.updateBy != ''">
+            AND a.update_by = #{dictionaryDto.updateBy}
+        </if>
+        <if test="dictionaryDto.updateTime != null">
+            AND a.update_time = #{dictionaryDto.updateTime}
+        </if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="Dictionary">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="Dictionary">
+        <include refid="findList"/>
+    </select>
+
+</mapper>
