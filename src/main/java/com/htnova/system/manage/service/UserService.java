@@ -84,7 +84,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     @Transactional
     public void changePass(String oldPassword, String newPassword ) {
-        User source = userMapper.selectById(UserUtil.getJwtUser().getId());
+        User source = userMapper.selectById(UserUtil.getAuthUser().getId());
         if(!bCryptPasswordEncoder.matches(oldPassword, source.getPassword())) {
             throw new ServiceException(ResultStatus.OLD_PASSWORD_WRONG);
         }

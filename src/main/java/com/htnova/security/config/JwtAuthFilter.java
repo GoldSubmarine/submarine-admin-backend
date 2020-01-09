@@ -2,7 +2,7 @@ package com.htnova.security.config;
 
 import com.htnova.common.util.JwtToken;
 import com.htnova.common.util.JwtUtil;
-import com.htnova.security.entity.JwtUser;
+import com.htnova.security.entity.UserDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,7 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private UserDetailsService userDetailsService;
 
-    public JwtAuthFilter(JwtUtil jwtUtil, JwtConfig jwtConfig, @Qualifier("jwtUserDetailService") UserDetailsService userDetailsService) {
+    public JwtAuthFilter(JwtUtil jwtUtil, JwtConfig jwtConfig, @Qualifier("authUserDetailService") UserDetailsService userDetailsService) {
         this.jwtUtil = jwtUtil;
         this.jwtConfig = jwtConfig;
         this.userDetailsService = userDetailsService;
@@ -42,11 +42,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (StringUtils.isNotBlank(token) && token.length() >= 7) {
             JwtToken jwtToken = jwtUtil.getJwtToken(token.substring(7));
             if(Objects.nonNull(jwtToken)){
-                JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(jwtToken.getSubject());
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwtUser, null, jwtUser.getAuthorities());
+                UserDetail userDetail = (UserDetail) userDetailsService.loadUserByUsername(jwtToken.getSubject());
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                jwtToken.refresh(response,jwtUser);
+                jwtToken.refresh(response, userDetail.getAuthUser());
             }
         }
         chain.doFilter(request, response);

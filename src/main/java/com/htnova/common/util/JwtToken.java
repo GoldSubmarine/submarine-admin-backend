@@ -1,7 +1,7 @@
 package com.htnova.common.util;
 
 import com.htnova.security.config.JwtConfig;
-import com.htnova.security.entity.JwtUser;
+import com.htnova.security.entity.AuthUser;
 import io.jsonwebtoken.Claims;
 import lombok.Builder;
 
@@ -24,9 +24,9 @@ public class JwtToken {
         return claims.getSubject();
     }
 
-    public void refresh(HttpServletResponse response, JwtUser jwtUser) {
+    public void refresh(HttpServletResponse response, AuthUser authUser) {
         if(shouldRefresh()){
-            response.setHeader(jwtConfig.getRefreshHeader(), jwtUtil.create(jwtUser));
+            response.setHeader(jwtConfig.getRefreshHeader(), jwtUtil.create(authUser));
         }
     }
 

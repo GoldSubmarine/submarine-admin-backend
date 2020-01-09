@@ -40,10 +40,10 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
     @Transactional(readOnly = true)
     public List<Role> findRoleList(RoleDto roleDto) {
         List<Role> roleList = roleMapper.findList(roleDto);
-        if(!UserUtil.getJwtUser().isSuperAdmin()) {
+        if(!UserUtil.getAuthUser().isSuperAdmin()) {
             roleList = filterRoleByCode(roleList, Role.SUPER_ADMIN_CODE);
         }
-        if(UserUtil.getJwtUser().getRoles().contains(Role.ORG_ADMIN_CODE)) {
+        if(UserUtil.getAuthUser().getRoles().contains(Role.ORG_ADMIN_CODE)) {
             roleList = filterRoleByCode(roleList, Role.ADMIN_CODE, Role.ORG_ADMIN_CODE);
             roleList = roleList.stream().filter(item -> Role.DisplayType.visible.equals(item.getOrgAdminDisplay())).collect(Collectors.toList());
         }

@@ -4,6 +4,8 @@ server:
     context-path: /scaffold
 
 spring:
+  application:
+    name: scaffold
   profiles:
     active: dev
   jackson:

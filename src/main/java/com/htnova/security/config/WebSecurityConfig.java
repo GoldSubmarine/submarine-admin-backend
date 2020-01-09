@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                    .antMatchers("/auth/login", "/auth/info", "/auth/logout").permitAll()
+                    .antMatchers("/auth/login", "/auth/logout").permitAll()
                     .antMatchers("/druid/**").permitAll()
                     .anyRequest().authenticated();   // 其他地址的访问均需验证权限
         httpSecurity.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

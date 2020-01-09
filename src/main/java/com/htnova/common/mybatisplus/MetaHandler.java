@@ -13,7 +13,7 @@ public class MetaHandler implements MetaObjectHandler {
     // 新增的时候自动填充
     @Override
     public void insertFill(MetaObject metaObject) {
-        String username = UserUtil.getJwtUser().getUsername();
+        String username = UserUtil.getAuthUser().getUsername();
         this.setFieldValByName("createTime", new Date(), metaObject);
         this.setFieldValByName("updateTime", new Date(), metaObject);
         this.setFieldValByName("createBy", username, metaObject);
@@ -23,7 +23,7 @@ public class MetaHandler implements MetaObjectHandler {
     // 更新的时候自动填充
     @Override
     public void updateFill(MetaObject metaObject) {
-        String username = UserUtil.getJwtUser().getUsername();
+        String username = UserUtil.getAuthUser().getUsername();
         this.setFieldValByName("updateTime", new Date(), metaObject);
         this.setFieldValByName("updateBy", username, metaObject);
     }

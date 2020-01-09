@@ -1,7 +1,7 @@
 package com.htnova.common.util;
 
 import com.htnova.security.config.JwtConfig;
-import com.htnova.security.entity.JwtUser;
+import com.htnova.security.entity.AuthUser;
 import com.htnova.system.manage.entity.User;
 import com.htnova.system.manage.service.UserService;
 import io.jsonwebtoken.*;
@@ -25,13 +25,13 @@ public class JwtUtil {
     @Resource
     private JwtConfig jwtConfig;
 
-    public String create(JwtUser jwtUser) {
+    public String create(AuthUser authUser) {
         final Date createdDate = clock.now();
         Date expirationDate = new Date(createdDate.getTime() + jwtConfig.getExpiration());
         return Jwts.builder()
-            .setSubject(jwtUser.getUsername())
+            .setSubject(authUser.getUsername())
             .setIssuedAt(createdDate)
-            .signWith(SignatureAlgorithm.HS256, TextCodec.BASE64URL.decode(jwtUser.getJwtSecret()))
+            .signWith(SignatureAlgorithm.HS256, TextCodec.BASE64URL.decode(authUser.getJwtSecret()))
             .setExpiration(expirationDate)
             .compact();
     }

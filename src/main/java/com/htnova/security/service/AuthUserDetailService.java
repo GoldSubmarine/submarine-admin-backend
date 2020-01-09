@@ -2,7 +2,7 @@ package com.htnova.security.service;
 
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.exception.ServiceException;
-import com.htnova.security.entity.JwtUser;
+import com.htnova.security.entity.UserDetail;
 import com.htnova.system.manage.entity.User;
 import com.htnova.system.manage.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.Objects;
 
 @Service
-public class JwtUserDetailService implements UserDetailsService {
+public class AuthUserDetailService implements UserDetailsService {
 
     @Resource
     private UserService userService;
@@ -25,6 +25,6 @@ public class JwtUserDetailService implements UserDetailsService {
         if(Objects.isNull(user)) {
             throw new ServiceException(ResultStatus.USER_NOT_EXIST);
         }
-        return JwtUser.createByUser(user);
+        return UserDetail.createByUser(user);
     }
 }

@@ -25,7 +25,7 @@ public abstract class BaseEntity implements Serializable {
      * 主键
      */
     @JsonSerialize(using= ToStringSerializer.class)
-    @TableId(type= IdType.ID_WORKER)
+    @TableId(type= IdType.ASSIGN_ID)
     protected Long id;
 
     /**

@@ -4,7 +4,8 @@ import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.exception.ServiceException;
 import com.htnova.common.util.JwtUtil;
 import com.htnova.common.util.UserUtil;
-import com.htnova.security.entity.JwtUser;
+import com.htnova.security.entity.AuthUser;
+import com.htnova.security.entity.UserDetail;
 import com.htnova.system.manage.dto.UserDto;
 import com.htnova.system.manage.entity.User;
 import com.htnova.system.manage.service.UserService;
@@ -39,26 +40,25 @@ public class AuthController {
      */
     @PostMapping("/login")
     public String login(@RequestBody UserDto userDto) {
-        JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(userDto.getUsername());
-        if(Objects.isNull(jwtUser)) {
+        AuthUser authUser = ((UserDetail) userDetailsService.loadUserByUsername(userDto.getUsername())).getAuthUser();
+        if(Objects.isNull(authUser)) {
             throw new ServiceException(ResultStatus.USER_NOT_EXIST);
         }
-        if(!jwtUser.isEnabled()) {
+        if(User.UserStatus.disable.equals(authUser.getStatus())) {
             throw new ServiceException(ResultStatus.ACCOUNT_FREEZE);
         }
-        if(!bCryptPasswordEncoder.matches(userDto.getPassword(), jwtUser.getPassword())) {
+        if(!bCryptPasswordEncoder.matches(userDto.getPassword(), authUser.getPassword())) {
             throw new ServiceException(ResultStatus.PASSWORD_WRONG);
         }
-        return jwtUtil.create(jwtUser);
+        return jwtUtil.create(authUser);
     }
 
     /**
      * 用户信息
      */
     @GetMapping("/info")
-    public JwtUser info() {
-        User user = userService.getUserById(UserUtil.getJwtUser().getId());
-        return JwtUser.createByUser(user);
+    public AuthUser info() {
+        return UserUtil.getAuthUser();
     }
 
     /**
