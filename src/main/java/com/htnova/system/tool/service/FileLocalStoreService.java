@@ -5,6 +5,7 @@ import com.htnova.common.exception.ServiceException;
 import com.htnova.system.tool.entity.FileStore;
 import com.htnova.system.tool.service.interfaces.FileStoreInterface;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -66,17 +67,12 @@ public class FileLocalStoreService implements FileStoreInterface {
         if(!file.exists()) {
             throw new ServiceException(ResultStatus.FILE_NOT_FOUND);
         }
-        response.setContentType(fileStore.getType());
+        response.setContentType("application/octet-stream");
         ServletOutputStream outputStream = response.getOutputStream();
         try( FileInputStream fileInputStream = new FileInputStream(file) ) {
-            byte[] buffer = new byte[1024];
-            while (true) {
-                int len = fileInputStream.read(buffer);
-                if(len == -1) { break; }
-                outputStream.write(buffer, 0, len);
-            }
+            IOUtils.copyLarge(fileInputStream, outputStream);
         } catch (Exception e) {
-            log.error("读取文件失败：{}", e);
+            log.error("读取文件失败", e);
         }
     }
 
