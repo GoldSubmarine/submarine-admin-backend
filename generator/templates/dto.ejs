@@ -1,7 +1,7 @@
 package com.htnova.<%= module %>.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.htnova.<%= module %>.entity.<%= Entity %>;
@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class <%= Entity %>Dto extends BaseDto {
 <%
     var baseField = ['id', 'remark', 'createBy', 'createTime', 'updateBy', 'updateTime', 'delFlag'];

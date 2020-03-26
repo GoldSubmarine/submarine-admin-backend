@@ -2,14 +2,14 @@ package com.htnova.system.manage.dto;
 
 import com.htnova.common.base.BaseDto;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class DictionaryDto extends BaseDto {
 
     /**

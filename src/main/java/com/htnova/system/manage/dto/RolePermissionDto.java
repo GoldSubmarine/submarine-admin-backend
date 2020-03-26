@@ -3,16 +3,16 @@ package com.htnova.system.manage.dto;
 import com.htnova.common.base.BaseDto;
 import com.htnova.system.manage.entity.Permission;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class RolePermissionDto extends BaseDto {
 
     /**

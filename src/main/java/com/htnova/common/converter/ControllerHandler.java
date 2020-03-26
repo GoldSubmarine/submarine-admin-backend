@@ -28,8 +28,8 @@ public class ControllerHandler {
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity handleMultipartException(MultipartException e, RedirectAttributes redirectAttributes) {
 //        redirectAttributes.addFlashAttribute("message", e.getCause().getMessage());
-        log.error("文件上传错误：{}", e);
-        return new ResponseEntity<>(Result.build(ResultStatus.UPLOAD_FAILED), HttpStatus.REQUEST_ENTITY_TOO_LARGE);
+        log.error("文件上传错误：", e);
+        return new ResponseEntity<>(Result.build(ResultStatus.UPLOAD_FAILED), HttpStatus.PAYLOAD_TOO_LARGE);
     }
 
 }

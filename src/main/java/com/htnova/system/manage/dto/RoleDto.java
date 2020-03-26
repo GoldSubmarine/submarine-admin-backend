@@ -3,16 +3,16 @@ package com.htnova.system.manage.dto;
 import com.htnova.common.base.BaseDto;
 import com.htnova.system.manage.entity.Role;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class RoleDto extends BaseDto {
 
 
@@ -35,10 +35,5 @@ public class RoleDto extends BaseDto {
      * 权限
      */
     private List<PermissionDto> permissionList;
-
-    /**
-     * 菜单
-     */
-    private List<PermissionDto> menuList;
 
 }

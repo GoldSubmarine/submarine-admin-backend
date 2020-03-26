@@ -3,16 +3,16 @@ package com.htnova.system.tool.dto;
 import com.htnova.common.base.BaseEntity;
 import com.htnova.system.tool.entity.FileStore;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class FileStoreDto extends BaseEntity {
     
 

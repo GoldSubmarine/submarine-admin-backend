@@ -15,7 +15,7 @@ spring:
         # 允许清空统计数据
         reset-enable: true
         login-username: root
-        login-password:
+        login-password: 123456
 
   redis:
     database: 5

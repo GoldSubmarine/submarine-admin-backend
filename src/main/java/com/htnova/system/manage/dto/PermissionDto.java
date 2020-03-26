@@ -3,14 +3,14 @@ package com.htnova.system.manage.dto;
 import com.htnova.common.base.BaseTreeDto;
 import com.htnova.system.manage.entity.Permission;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class PermissionDto extends BaseTreeDto<PermissionDto> {
 
     /**

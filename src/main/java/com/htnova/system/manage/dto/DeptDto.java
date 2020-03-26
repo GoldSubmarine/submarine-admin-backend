@@ -2,14 +2,14 @@ package com.htnova.system.manage.dto;
 
 import com.htnova.common.base.BaseTreeDto;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class DeptDto extends BaseTreeDto<DeptDto> {
 
     /**

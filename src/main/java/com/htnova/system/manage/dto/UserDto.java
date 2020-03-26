@@ -7,16 +7,16 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.htnova.common.base.BaseDto;
 import com.htnova.system.manage.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 public class UserDto extends BaseDto {
 
     /**

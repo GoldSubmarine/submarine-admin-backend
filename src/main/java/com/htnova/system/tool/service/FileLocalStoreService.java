@@ -45,7 +45,7 @@ public class FileLocalStoreService implements FileStoreInterface {
                 fileOutputStream.write(buffer, 0, len);
             }
         }catch (Exception e) {
-            log.error("文件上传失败：{}", e);
+            log.error("文件上传失败：", e);
             throw new ServiceException(ResultStatus.UPLOAD_FAILED);
         }
         double size = file.getSize();
