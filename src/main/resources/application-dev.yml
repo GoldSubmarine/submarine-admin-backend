@@ -9,7 +9,7 @@ spring:
       validationQuery: SELECT 1
       testWhileIdle: true
       stat-view-servlet:
-        # 默认true 内置监控页面首页/druid/index.html
+        # 默认true 内置监控页面首页 http://localhost:19687/scaffold/druid/login.html
         enabled: true
         url-pattern: /druid/*
         # 允许清空统计数据
