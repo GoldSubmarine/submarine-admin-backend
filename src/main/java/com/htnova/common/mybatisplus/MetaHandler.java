@@ -13,18 +13,18 @@ public class MetaHandler implements MetaObjectHandler {
     // 新增的时候自动填充
     @Override
     public void insertFill(MetaObject metaObject) {
-        String username = UserUtil.getAuthUser().getUsername();
+        Long userId = UserUtil.getAuthUser().getId();
         this.setFieldValByName("createTime", new Date(), metaObject);
         this.setFieldValByName("updateTime", new Date(), metaObject);
-        this.setFieldValByName("createBy", username, metaObject);
-        this.setFieldValByName("updateBy", username, metaObject);
+        this.setFieldValByName("createBy", userId, metaObject);
+        this.setFieldValByName("updateBy", userId, metaObject);
     }
 
     // 更新的时候自动填充
     @Override
     public void updateFill(MetaObject metaObject) {
-        String username = UserUtil.getAuthUser().getUsername();
+        Long userId = UserUtil.getAuthUser().getId();
         this.setFieldValByName("updateTime", new Date(), metaObject);
-        this.setFieldValByName("updateBy", username, metaObject);
+        this.setFieldValByName("updateBy", userId, metaObject);
     }
 }

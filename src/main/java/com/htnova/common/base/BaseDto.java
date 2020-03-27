@@ -31,7 +31,8 @@ public abstract class BaseDto implements Serializable {
     /**
      * 创建人
      */
-    protected String createBy;
+    @JsonSerialize(using= ToStringSerializer.class)
+    protected Long createBy;
 
     /**
      * 创建时间
@@ -41,7 +42,8 @@ public abstract class BaseDto implements Serializable {
     /**
      * 更新人
      */
-    protected String updateBy;
+    @JsonSerialize(using= ToStringSerializer.class)
+    protected Long updateBy;
 
     /**
      * 更新时间
