@@ -3,14 +3,14 @@
 <mapper namespace="com.htnova.system.manage.mapper.DictionaryMapper">
 
     <sql id="SelectColumns">
-        a.id,
-        a.name,
-        a.remark,
-        a.create_by,
-        a.create_time,
-        a.update_by,
-        a.update_time,
-        a.del_flag
+        a.id as `id`,
+        a.name as `name`,
+        a.remark as `remark`,
+        a.create_by as `createBy`,
+        a.create_time as `createTime`,
+        a.update_by as `updateBy`,
+        a.update_time as `updateTime`,
+        a.del_flag as `delFlag`
     </sql>
 
     <!--列表查询-->

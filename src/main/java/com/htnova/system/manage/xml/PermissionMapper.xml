@@ -3,18 +3,18 @@
 <mapper namespace="com.htnova.system.manage.mapper.PermissionMapper">
 
     <sql id="SelectColumns">
-        a.id,
-        a.type,
-        a.name,
-        a.value,
-        a.pid,
-        a.pids,
-        a.remark,
-        a.create_by,
-        a.create_time,
-        a.update_by,
-        a.update_time,
-        a.del_flag
+        a.id as `id`,
+        a.type as `type`,
+        a.name as `name`,
+        a.value as `value`,
+        a.pid as `pid`,
+        a.pids as `pids`,
+        a.remark as `remark`,
+        a.create_by as `createBy`,
+        a.create_time as `createTime`,
+        a.update_by as `updateBy`,
+        a.update_time as `updateTime`,
+        a.del_flag as `delFlag`
     </sql>
 
     <!--动态检索片段-->

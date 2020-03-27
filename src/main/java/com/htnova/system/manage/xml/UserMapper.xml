@@ -3,26 +3,26 @@
 <mapper namespace="com.htnova.system.manage.mapper.UserMapper">
 
     <sql id="SelectColumns">
-        a.id,
-        a.username,
-        a.password,
-        a.name,
-        a.phone,
-        a.email,
-        a.address,
-        a.sex,
-        a.avatar,
-        a.status,
-        a.dept_id,
-        a.dept_ids,
-        a.dept_name,
-        a.jwt_secret,
-        a.remark,
-        a.create_by,
-        a.create_time,
-        a.update_by,
-        a.update_time,
-        a.del_flag
+        a.id as `id`,
+        a.username as `username`,
+        a.password as `password`,
+        a.name as `name`,
+        a.phone as `phone`,
+        a.email as `email`,
+        a.address as `address`,
+        a.sex as `sex`,
+        a.avatar as `avatar`,
+        a.status as `status`,
+        a.dept_id as `deptId`,
+        a.dept_ids as `deptIds`,
+        a.dept_name as `deptName`,
+        a.jwt_secret as `jwtSecret`,
+        a.remark as `remark`,
+        a.create_by as `createBy`,
+        a.create_time as `createTime`,
+        a.update_by as `updateBy`,
+        a.update_time as `updateTime`,
+        a.del_flag as `delFlag`
     </sql>
 
     <!--列表查询-->
