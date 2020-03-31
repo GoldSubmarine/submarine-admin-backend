@@ -250,7 +250,7 @@ public final class SignatureClient {
 
         public String encodeToString(byte[] src) {
             byte[] encoded = encode(src);
-            return new String(encoded, 0, 0, encoded.length);
+            return new String(encoded);
         }
 
         private int encode0(byte[] src, int off, int end, byte[] dst) {
