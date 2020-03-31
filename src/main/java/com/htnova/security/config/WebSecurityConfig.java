@@ -1,14 +1,18 @@
 package com.htnova.security.config;
 
+import com.alibaba.fastjson.JSON;
+import com.htnova.common.constant.ResultStatus;
+import com.htnova.common.dto.Result;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.annotation.Resource;
 
@@ -18,10 +22,17 @@ import javax.annotation.Resource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
-    private JwtAuthFilter jwtAuthFilter;
+    private ServerProperties serverProperties;
 
     @Resource
-    private ServerProperties serverProperties;
+    private UserDetailsService userDetailsService;
+
+    @Resource
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public void config(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication().and().userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -34,17 +45,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     })
                     .accessDeniedHandler((httpServletRequest, httpServletResponse, e) -> {
                         if (e != null) throw e;
-                    }).and()
-                //因为使用JWT，所以不需要HttpSession
-                .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests()
-                    .antMatchers("/auth/login", "/auth/logout").permitAll()
+                    })
+                .and()
+                    .formLogin()
+                    .loginProcessingUrl("/auth/login")
+                    .successHandler((request, response, authentication) -> {
+                        response.setContentType("application/json;charset=UTF-8");
+                        response.getWriter().write(
+                                JSON.toJSONString(Result.build(ResultStatus.LOGIN_SUCCESS, authentication.getName())));
+                    })
+                .and()
+                    .logout()
+                    .logoutUrl("/auth/logout")
+                .and()
+                    .authorizeRequests()
                     .antMatchers("/druid/**").permitAll()
                     .anyRequest()
-                .authenticated()    // 其他地址的访问均需验证权限
-                .and().headers().frameOptions().disable();   // sql监控页面 iframe 配置
-        httpSecurity.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .   authenticated()    // 其他地址的访问均需验证权限
+                .and()
+                    .headers().frameOptions().disable();   // sql监控页面 iframe 配置
     }
 
     @Override

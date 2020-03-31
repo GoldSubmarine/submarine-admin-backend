@@ -16,6 +16,12 @@ spring:
       enabled: true
       maxFileSize: 100MB
       max-request-size: 100MB
+  session:
+    store-type: redis
+    timeout: 1H
+    redis:
+      flush-mode: on_save
+      namespace: springboot-session
 
 mybatis-plus:
   mapper-locations: classpath:com/htnova/**/xml/*.xml
@@ -25,9 +31,3 @@ mybatis-plus:
       update-strategy: IGNORED  # 编辑时全字段更新
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
-
-jwt:
-  header: Authorization
-  refreshHeader: x-token
-  expiration: 14400000    # token 过期时间 4个小时
-  updateExpiration: 7200000   # 2小时的时候更新一下token

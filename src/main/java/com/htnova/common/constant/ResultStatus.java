@@ -17,9 +17,10 @@ import lombok.ToString;
 public enum ResultStatus {
 
     //================success================
-    SAVE_SUCCESS(20000, "保存成功"),
-    DELETE_SUCCESS(20001, "删除成功"),
-    LOGOUT_SUCCESS(20002, "成功退出登录"),
+    LOGIN_SUCCESS(20000, "登录成功"),
+    SAVE_SUCCESS(20001, "保存成功"),
+    DELETE_SUCCESS(20002, "删除成功"),
+    LOGOUT_SUCCESS(20003, "成功退出登录"),
 
 
     NOT_FOUND(40004, "接口不存在"),

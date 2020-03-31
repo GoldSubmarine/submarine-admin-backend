@@ -70,14 +70,12 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     private String computePassword(User user) {
         String randomPass = null;
         if(Objects.isNull(user.getId())) {
-            //新建时创建jwt密钥和初始化密码
-            user.setJwtSecret(CommonUtil.getRandomString(16));
+            //新建时创建初始化密码
             randomPass = CommonUtil.getRandomNum(6);
             user.setPassword(bCryptPasswordEncoder.encode(randomPass));
         } else {
             User source = userMapper.selectById(user.getId());
             user.setPassword(source.getPassword());
-            user.setJwtSecret(source.getJwtSecret());
         }
         return randomPass;
     }
@@ -89,7 +87,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
             throw new ServiceException(ResultStatus.OLD_PASSWORD_WRONG);
         }
         source.setPassword(bCryptPasswordEncoder.encode(newPassword));
-        source.setJwtSecret(CommonUtil.getRandomString(16));
         super.saveOrUpdate(source);
     }
 
@@ -98,7 +95,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         User source = userMapper.selectById(id);
         String pass = CommonUtil.getRandomNum(6);
         source.setPassword(bCryptPasswordEncoder.encode(pass));
-        source.setJwtSecret(CommonUtil.getRandomString(16));
         super.saveOrUpdate(source);
         return pass;
     }

@@ -2,8 +2,6 @@ package com.htnova.system.manage.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.htnova.common.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -67,7 +65,6 @@ public class User extends BaseEntity {
     /**
      * 部门id
      */
-    @JsonSerialize(using= ToStringSerializer.class)
     private Long deptId;
 
     /**
@@ -79,12 +76,6 @@ public class User extends BaseEntity {
      * 部门名称
      */
     private String deptName;
-
-    /**
-     * jwt密钥
-     */
-    @JsonIgnore
-    private String jwtSecret;
 
     /**
      * 角色

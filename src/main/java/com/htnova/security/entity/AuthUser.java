@@ -1,7 +1,5 @@
 package com.htnova.security.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.htnova.common.base.BaseEntity;
@@ -19,9 +17,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthUser extends BaseEntity {
-
-    @JsonIgnore
-    public static final String SESSION_KEY = "jwtUser";
 
     /**
      * 登录名
@@ -83,12 +78,6 @@ public class AuthUser extends BaseEntity {
      * 部门名称
      */
     private String deptName;
-
-    /**
-     * jwt密钥
-     */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String jwtSecret;
 
     /**
      * 角色

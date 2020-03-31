@@ -1,6 +1,5 @@
 package com.htnova.system.manage.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -80,12 +79,6 @@ public class UserDto extends BaseDto {
      * 部门名称
      */
     private String deptName;
-
-    /**
-     * jwt密钥
-     */
-    @JsonIgnore
-    private String jwtSecret;
 
     /**
      * 角色
