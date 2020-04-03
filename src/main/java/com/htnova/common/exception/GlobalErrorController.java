@@ -86,11 +86,7 @@ public class GlobalErrorController implements ErrorController {
 							result = Result.build(ResultStatus.NO_ERROR);
 						}
 					}else {
-						if(error instanceof AuthenticationException){
-							result = Result.build(ResultStatus.INVALID_TOKEN);
-						}else if(error instanceof AccessDeniedException){
-							result = Result.build(ResultStatus.UNAUTHORIZED);
-						}else if(error instanceof ServiceException){
+						if(error instanceof ServiceException){
 							ServiceException serviceException = (ServiceException) error;
 							result = Result.build(serviceException.getCode(), serviceException.getMessage(), serviceException.getData());
 						}else {

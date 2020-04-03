@@ -22,6 +22,12 @@ spring:
     redis:
       flush-mode: on_save
       namespace: springboot-session
+  security:
+    login-page: /login
+    login-processing-url: /security/login
+    login-success-page: /
+    logout-url: /logout
+    error-page: /error-page
 
 mybatis-plus:
   mapper-locations: classpath:com/htnova/**/xml/*.xml

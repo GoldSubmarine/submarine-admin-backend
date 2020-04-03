@@ -11,13 +11,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- * oauth server 用的 UserDetail（权限为oauth server的GrantedAuthority）
- * 同时也保存了原始的User（包括了基本信息，以及全部的权限信息 Role、Permission）
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,7 +25,7 @@ public class UserDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getPermissionList().stream()
+        return Optional.ofNullable(user.getPermissionList()).orElseGet(ArrayList::new).stream()
                 .filter(item -> Permission.PermissionType.button == item.getType())
                 .map(permission -> new SimpleGrantedAuthority(permission.getValue()))
                 .collect(Collectors.toList());

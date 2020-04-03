@@ -1,6 +1,6 @@
 package com.htnova;
 
-import com.htnova.security.util.SignatureClient;
+import com.htnova.signature.utils.SignatureClient;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
