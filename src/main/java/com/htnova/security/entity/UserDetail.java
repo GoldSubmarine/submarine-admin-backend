@@ -1,12 +1,10 @@
 package com.htnova.security.entity;
 
-import com.htnova.security.mapstruct.AuthUserMapStruct;
 import com.htnova.system.manage.entity.Permission;
 import com.htnova.system.manage.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -64,10 +62,4 @@ public class UserDetail implements UserDetails {
     public static UserDetail createByUser(User user){
         return  new UserDetail(user);
     }
-
-    public AuthUser getAuthUser(){
-        AuthUserMapStruct mapper = Mappers.getMapper(AuthUserMapStruct.class);
-        return mapper.toAuthUser(user);
-    }
-
 }
