@@ -6,6 +6,7 @@ import com.htnova.common.dto.Result;
 import com.htnova.common.util.response.ResponseHandler;
 import com.htnova.security.entity.UserDetail;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -120,7 +121,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new RequestHeaderRequestMatcher("X-Requested-With", "XMLHttpRequest");
     }
 
-    private AuthenticationProvider getAuthenticationProvider() {
+    @Bean
+    public AuthenticationProvider getAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
