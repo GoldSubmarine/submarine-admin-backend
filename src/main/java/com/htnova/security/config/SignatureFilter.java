@@ -1,7 +1,7 @@
 package com.htnova.security.config;
 
-import com.htnova.security.cachedrequest.CachedBodyHttpServletRequest;
-import com.htnova.security.util.SignatureUtil;
+import com.htnova.signature.security.cachedrequest.CachedBodyHttpServletRequest;
+import com.htnova.signature.utils.SignatureUtil;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.AntPathMatcher;
