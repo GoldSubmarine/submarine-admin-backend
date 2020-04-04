@@ -65,8 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     // 认证和授权的逻辑自定义，需要注意的是：不能在httpSecurity里直接配置 authenticationProvider
-    // 这样只会配置出一个 AuthenticationProvider，parent 是 DaoAuthenticationProvider 的 authenticationProvider
-    // 如果我们的AuthenticationProvider认证失败，则结果由 DaoAuthenticationProvider决定，不符合我们的预期
+    // 这样会配置出一个 ProviderManager，parent 是 另一个 ProviderManager，其中只有一个DaoAuthenticationProvider
+    // 如果我们的AuthenticationProvider认证失败，则结果由 parent ProviderManager 的 DaoAuthenticationProvider决定，不符合我们的预期
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(getAuthenticationProvider());
     }
