@@ -24,6 +24,16 @@ public enum ResultStatus {
 
 
     NOT_FOUND(40004, "接口不存在"),
+    QUARTZ_CREATE_FAIL(40005, "创建定时任务失败"),
+    QUARTZ_PAUSE_FAIL(40006, "暂停定时任务失败"),
+    QUARTZ_PAUSE_SUCCESS(20001, "停用定时任务成功"),
+    QUARTZ_RESUME_FAIL(40007, "恢复定时任务失败"),
+    QUARTZ_RUN_FAIL(40008, "运行定时任务出错"),
+    QUARTZ_RUN_SUCCESS(40008, "运行定时任务成功"),
+    QUARTZ_DELETE_FAIL(40009, "删除定时任务出错"),
+    QUARTZ_EXPRESSION_INVALID(40010, "cron表达式错误"),
+    QUARTZ_METHOD_NOT_EXIST(40011, "当前方法不存在"),
+    QUARTZ_JOB_NAME_IS_EXIST(40012, "当前任务名已存在，不能重复"),
 
     //================fail================
     SERVER_ERROR(50000, "请求异常，请稍后重试"),

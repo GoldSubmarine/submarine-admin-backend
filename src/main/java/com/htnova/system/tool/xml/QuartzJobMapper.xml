@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.system.tool.mapper.QuartzJobMapper">
+    <sql id="SelectColumns">
+		a.id as `id`,
+		a.job_name as `jobName`,
+		a.bean_name as `beanName`,
+		a.method_name as `methodName`,
+		a.params as `params`,
+		a.cron_expression as `cronExpression`,
+		a.status as `status`,
+		a.remark as `remark`,
+		a.create_by as `createBy`,
+		a.create_time as `createTime`,
+		a.update_by as `updateBy`,
+		a.update_time as `updateTime`,
+		a.del_flag as `delFlag`
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM quartz_job a WHERE a.del_flag = #{quartzJobDto.delFlag}
+            
+		<if test="quartzJobDto.id != null">
+			AND a.id = #{quartzJobDto.id}
+		</if>
+		<if test="quartzJobDto.jobName != null and quartzJobDto.jobName != ''">
+			AND a.job_name LIKE concat('%', #{quartzJobDto.jobName}, '%')
+		</if>
+		<if test="quartzJobDto.beanName != null and quartzJobDto.beanName != ''">
+			AND a.bean_name LIKE concat('%', #{quartzJobDto.beanName}, '%')
+		</if>
+		<if test="quartzJobDto.methodName != null and quartzJobDto.methodName != ''">
+			AND a.method_name LIKE concat('%', #{quartzJobDto.methodName}, '%')
+		</if>
+		<if test="quartzJobDto.params != null and quartzJobDto.params != ''">
+			AND a.params = #{quartzJobDto.params}
+		</if>
+		<if test="quartzJobDto.cronExpression != null and quartzJobDto.cronExpression != ''">
+			AND a.cron_expression = #{quartzJobDto.cronExpression}
+		</if>
+		<if test="quartzJobDto.status != null and quartzJobDto.status != ''">
+			AND a.status = #{quartzJobDto.status}
+		</if>
+		<if test="quartzJobDto.remark != null and quartzJobDto.remark != ''">
+			AND a.remark LIKE concat('%', #{quartzJobDto.remark}, '%')
+		</if>
+		<if test="quartzJobDto.createBy != null">
+			AND a.create_by = #{quartzJobDto.createBy}
+		</if>
+		<if test="quartzJobDto.createTime != null">
+			AND a.create_time = #{quartzJobDto.createTime}
+		</if>
+		<if test="quartzJobDto.updateBy != null">
+			AND a.update_by = #{quartzJobDto.updateBy}
+		</if>
+		<if test="quartzJobDto.updateTime != null">
+			AND a.update_time = #{quartzJobDto.updateTime}
+		</if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="QuartzJob">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="QuartzJob">
+        <include refid="findList"/>
+    </select>
+
+</mapper>
