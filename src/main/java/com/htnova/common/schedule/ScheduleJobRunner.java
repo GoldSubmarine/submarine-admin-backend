@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * 启动时运行
+ * spring启动时初始化定时任务
  */
 @Component
 public class ScheduleJobRunner implements ApplicationRunner {

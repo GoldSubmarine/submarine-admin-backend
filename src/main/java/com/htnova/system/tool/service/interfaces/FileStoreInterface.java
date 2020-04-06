@@ -6,6 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 实现类只操作文件，不操作数据库
+ */
 public interface FileStoreInterface {
 
     FileStore upload(MultipartFile file) throws IOException;

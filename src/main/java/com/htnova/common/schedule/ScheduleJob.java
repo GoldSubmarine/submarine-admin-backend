@@ -1,9 +1,10 @@
 package com.htnova.common.schedule;
 
-import com.htnova.common.constant.ResultStatus;
-import com.htnova.common.exception.ServiceException;
 import com.htnova.common.util.SpringContextUtil;
 import com.htnova.system.tool.entity.QuartzJob;
+import com.htnova.system.tool.entity.QuartzLog;
+import com.htnova.system.tool.service.QuartzLogService;
+import io.netty.util.internal.ThrowableUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
+import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -29,8 +31,14 @@ public class ScheduleJob extends QuartzJobBean {
 
     public static final String QUARTZ_JOB_KEY = "QUARTZ_JOB";
 
+    @Resource
+    private QuartzLogService quartzLogService;
+
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+        long startTime = System.currentTimeMillis();
+        QuartzLog.StatusType isSuccess = QuartzLog.StatusType.success;
+        String failDetail = "";
         QuartzJob quartzJob = (QuartzJob) context.getJobDetail().getJobDataMap().get(QUARTZ_JOB_KEY);
         try {
             Object bean = SpringContextUtil.getBean(quartzJob.getBeanName());
@@ -44,7 +52,14 @@ public class ScheduleJob extends QuartzJobBean {
                 method.invoke(bean);
             }
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new ServiceException(ResultStatus.QUARTZ_RUN_FAIL);
+            isSuccess = QuartzLog.StatusType.fail;
+            failDetail = ThrowableUtil.stackTraceToString(e);
+            throw new JobExecutionException(e);
+        } finally {
+            long time = System.currentTimeMillis() - startTime;
+            quartzLogService.saveQuartzLog(quartzJob, isSuccess, time, failDetail);
         }
     }
+
+
 }

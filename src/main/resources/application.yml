@@ -24,7 +24,7 @@ spring:
       namespace: springboot-session
   security:
     login-page: /login
-    login-processing-url: /security/login
+    login-processing-url: /auth/login
     login-success-page: /
     logout-url: /logout
     error-page: /error-page

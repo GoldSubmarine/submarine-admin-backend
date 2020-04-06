@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.system.tool.mapper.QuartzLogMapper">
+    <sql id="SelectColumns">
+		a.id as `id`,
+		a.job_name as `jobName`,
+		a.bean_name as `beanName`,
+		a.method_name as `methodName`,
+		a.params as `params`,
+		a.cron_expression as `cronExpression`,
+		a.statusType as `statusType`,
+		a.time as `time`,
+		a.detail as `detail`,
+		a.remark as `remark`,
+		a.create_by as `createBy`,
+		a.create_time as `createTime`,
+		a.update_by as `updateBy`,
+		a.update_time as `updateTime`,
+		a.del_flag as `delFlag`
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM quartz_log a WHERE a.del_flag = #{quartzLogDto.delFlag}
+            
+		<if test="quartzLogDto.id != null">
+			AND a.id = #{quartzLogDto.id}
+		</if>
+		<if test="quartzLogDto.jobName != null and quartzLogDto.jobName != ''">
+			AND a.job_name LIKE concat('%', #{quartzLogDto.jobName}, '%')
+		</if>
+		<if test="quartzLogDto.beanName != null and quartzLogDto.beanName != ''">
+			AND a.bean_name LIKE concat('%', #{quartzLogDto.beanName}, '%')
+		</if>
+		<if test="quartzLogDto.methodName != null and quartzLogDto.methodName != ''">
+			AND a.method_name LIKE concat('%', #{quartzLogDto.methodName}, '%')
+		</if>
+		<if test="quartzLogDto.params != null and quartzLogDto.params != ''">
+			AND a.params = #{quartzLogDto.params}
+		</if>
+		<if test="quartzLogDto.cronExpression != null and quartzLogDto.cronExpression != ''">
+			AND a.cron_expression = #{quartzLogDto.cronExpression}
+		</if>
+		<if test="quartzLogDto.statusType != null">
+            AND a.statusType = #{quartzLogDto.statusType}
+        </if>
+		<if test="quartzLogDto.time != null">
+			AND a.time = #{quartzLogDto.time}
+		</if>
+		<if test="quartzLogDto.detail != null and quartzLogDto.detail != ''">
+			AND a.detail LIKE concat('%', #{quartzLogDto.detail}, '%')
+		</if>
+		<if test="quartzLogDto.remark != null and quartzLogDto.remark != ''">
+			AND a.remark LIKE concat('%', #{quartzLogDto.remark}, '%')
+		</if>
+		<if test="quartzLogDto.createBy != null">
+			AND a.create_by = #{quartzLogDto.createBy}
+		</if>
+		<if test="quartzLogDto.createTime != null">
+			AND a.create_time = #{quartzLogDto.createTime}
+		</if>
+		<if test="quartzLogDto.updateBy != null">
+			AND a.update_by = #{quartzLogDto.updateBy}
+		</if>
+		<if test="quartzLogDto.updateTime != null">
+			AND a.update_time = #{quartzLogDto.updateTime}
+		</if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="QuartzLog">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="QuartzLog">
+        <include refid="findList"/>
+    </select>
+
+</mapper>
