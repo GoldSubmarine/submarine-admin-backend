@@ -6,9 +6,13 @@ import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
 import com.htnova.system.tool.dto.QuartzJobDto;
+import com.htnova.system.tool.dto.QuartzLogDto;
 import com.htnova.system.tool.entity.QuartzJob;
+import com.htnova.system.tool.entity.QuartzLog;
 import com.htnova.system.tool.mapstruct.QuartzJobMapStruct;
+import com.htnova.system.tool.mapstruct.QuartzLogMapStruct;
 import com.htnova.system.tool.service.QuartzJobService;
+import com.htnova.system.tool.service.QuartzLogService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +29,9 @@ public class QuartzJobController {
 
     @Resource
     private QuartzJobService quartzJobService;
+
+    @Resource
+    private QuartzLogService quartzLogService;
 
     /**
      * 分页查询
@@ -94,5 +101,15 @@ public class QuartzJobController {
     public Result<Void> runScheduleJob(@RequestBody QuartzJobDto quartzJobDto) {
         quartzJobService.runScheduleJob(quartzJobDto.getId());
         return Result.build(ResultStatus.QUARTZ_RUN_SUCCESS);
+    }
+
+    /**
+     * 查看日志
+     */
+    @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
+    @GetMapping("/log/page")
+    public XPage<QuartzLogDto> findLogByPage(QuartzLogDto quartzLogDto, XPage<Void> xPage) {
+        IPage<QuartzLog> quartzLogPage = quartzLogService.findQuartzLogList(quartzLogDto, xPage);
+        return DtoConverter.toDto(quartzLogPage, QuartzLogMapStruct.class);
     }
 }

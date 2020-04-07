@@ -8,7 +8,7 @@
 		a.method_name as `methodName`,
 		a.params as `params`,
 		a.cron_expression as `cronExpression`,
-		a.statusType as `statusType`,
+		a.status as `status`,
 		a.time as `time`,
 		a.detail as `detail`,
 		a.remark as `remark`,
@@ -43,11 +43,11 @@
 		<if test="quartzLogDto.cronExpression != null and quartzLogDto.cronExpression != ''">
 			AND a.cron_expression = #{quartzLogDto.cronExpression}
 		</if>
-		<if test="quartzLogDto.statusType != null">
-            AND a.statusType = #{quartzLogDto.statusType}
+		<if test="quartzLogDto.status != null">
+            AND a.status = #{quartzLogDto.status}
         </if>
 		<if test="quartzLogDto.time != null">
-			AND a.time = #{quartzLogDto.time}
+			AND a.time > #{quartzLogDto.time}
 		</if>
 		<if test="quartzLogDto.detail != null and quartzLogDto.detail != ''">
 			AND a.detail LIKE concat('%', #{quartzLogDto.detail}, '%')

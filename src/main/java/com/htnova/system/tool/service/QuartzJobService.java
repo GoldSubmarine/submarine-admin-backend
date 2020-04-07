@@ -97,6 +97,7 @@ public class QuartzJobService extends ServiceImpl<QuartzJobMapper, QuartzJob> {
     public void testSchedule(String params) {
         String[] paramArr = params.split(",");
         log.info("定时任务示例，参数：{}", Arrays.asList(paramArr));
+        throw new NullPointerException();
     }
 
 }
