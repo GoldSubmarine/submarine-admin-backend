@@ -16,7 +16,6 @@
         a.dept_id as `deptId`,
         a.dept_ids as `deptIds`,
         a.dept_name as `deptName`,
-        a.jwt_secret as `jwtSecret`,
         a.remark as `remark`,
         a.create_by as `createBy`,
         a.create_time as `createTime`,
@@ -68,9 +67,6 @@
         </if>
         <if test="userDto.deptName != null and userDto.deptName != ''">
             AND a.dept_name LIKE concat('%',#{userDto.deptName},'%')
-        </if>
-        <if test="userDto.jwtSecret != null and userDto.jwtSecret != ''">
-            AND a.jwt_secret = #{userDto.jwtSecret}
         </if>
         <if test="userDto.remark != null and userDto.remark != ''">
             AND a.remark LIKE concat('%',#{userDto.remark},'%')
