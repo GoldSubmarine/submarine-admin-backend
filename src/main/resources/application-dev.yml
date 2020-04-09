@@ -29,3 +29,9 @@ spring:
 file:
   local:
     path: C:\Users\vinson\Desktop\project\java\submarine-admin-backend\src\main\resources\public\
+
+socket:
+  port: 19688
+  pingInterval: 25000
+  pingTimeout: 60000
+  authorizationHeader: Authorization

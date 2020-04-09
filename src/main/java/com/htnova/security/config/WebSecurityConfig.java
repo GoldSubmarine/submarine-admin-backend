@@ -112,7 +112,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(AppConst.APP_LOGIN_URL, "/file/download/**").permitAll()
                 .antMatchers("/druid/**").permitAll()
                 .anyRequest()
-                .   authenticated()    // 其他地址的访问均需验证权限
+                .authenticated()    // 其他地址的访问均需验证权限
                 .and()
                 .headers().frameOptions().disable();   // sql监控页面 iframe 配置
     }
