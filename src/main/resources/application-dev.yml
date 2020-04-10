@@ -27,8 +27,12 @@ spring:
         max-active: 8
 
 file:
+  profiles:
+    active: local
   local:
     path: C:\Users\vinson\Desktop\project\java\submarine-admin-backend\src\main\resources\public\
+#  oss:
+#    path: xxx
 
 socket:
   port: 19688

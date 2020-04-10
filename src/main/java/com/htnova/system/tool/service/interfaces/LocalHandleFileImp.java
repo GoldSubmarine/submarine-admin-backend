@@ -1,13 +1,13 @@
-package com.htnova.system.tool.service;
+package com.htnova.system.tool.service.interfaces;
 
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.exception.ServiceException;
 import com.htnova.system.tool.entity.FileStore;
-import com.htnova.system.tool.service.interfaces.FileStoreInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -20,7 +20,8 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class FileLocalStoreService implements FileStoreInterface {
+@ConditionalOnProperty(name = "file.profiles.active", havingValue = "local", matchIfMissing = true)
+public class LocalHandleFileImp implements HandleFile {
 
     public static final String PREFIX_URL = "file/download/";
 
