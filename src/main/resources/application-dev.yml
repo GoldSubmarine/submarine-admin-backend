@@ -36,6 +36,3 @@ file:
 
 socket:
   port: 19688
-  pingInterval: 25000
-  pingTimeout: 60000
-  authorizationHeader: Authorization

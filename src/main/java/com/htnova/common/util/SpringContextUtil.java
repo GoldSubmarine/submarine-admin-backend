@@ -1,14 +1,25 @@
 package com.htnova.common.util;
 
+import com.htnova.security.entity.AuthUser;
+import com.htnova.security.entity.UserDetail;
+import com.htnova.security.mapstruct.AuthUserMapStruct;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.session.Session;
+import org.springframework.session.SessionRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -33,6 +44,42 @@ public class SpringContextUtil implements ApplicationContextAware, DisposableBea
         return applicationContext;
     }
 
+    private static void clearHolder() {
+        log.debug("清除SpringContextHolder中的ApplicationContext:{}", applicationContext);
+        applicationContext = null;
+    }
+
+    public static AuthUser getAuthUser() {
+        UserDetail userDetail = (UserDetail) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()).map(Authentication::getPrincipal).orElse(null);
+        if(Objects.isNull(userDetail)) {
+            return null;
+        }
+        AuthUserMapStruct mapper = Mappers.getMapper(AuthUserMapStruct.class);
+        return mapper.toAuthUser(userDetail.getUser());
+    }
+
+    @SuppressWarnings("unchecked")
+    public static AuthUser getAuthUser(String httpSessionId) {
+        SessionRepository<? extends Session> sessionRepository = getBean(SessionRepository.class);
+        Session session = sessionRepository.findById(httpSessionId);
+        if(Objects.isNull(session)) {
+            return null;
+        }
+        SecurityContext securityContext = session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+        UserDetail userDetail = (UserDetail) Optional.ofNullable(securityContext.getAuthentication()).map(Authentication::getPrincipal).orElse(null);
+        if(Objects.isNull(userDetail)) {
+            return null;
+        }
+        AuthUserMapStruct mapper = Mappers.getMapper(AuthUserMapStruct.class);
+        return mapper.toAuthUser(userDetail.getUser());
+    }
+
+    public static HttpServletRequest getRequest() {
+        return Optional.ofNullable((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                    .map(ServletRequestAttributes::getRequest)
+                    .orElse(null);
+    }
+
     /**
      * 检查ApplicationContext不为空.
      */
@@ -40,11 +87,6 @@ public class SpringContextUtil implements ApplicationContextAware, DisposableBea
         if (applicationContext == null) {
             throw new IllegalStateException("applicaitonContext属性未注入, 请在applicationContext.xml中定义SpringContextHolder或在SpringBoot启动类中注册SpringContextHolder.");
         }
-    }
-
-    private static void clearHolder() {
-        log.debug("清除SpringContextHolder中的ApplicationContext:{}", applicationContext);
-        applicationContext = null;
     }
 
     @Override
@@ -58,11 +100,5 @@ public class SpringContextUtil implements ApplicationContextAware, DisposableBea
             log.warn("SpringContextHolder中的ApplicationContext被覆盖, 原有ApplicationContext为:{}", SpringContextUtil.applicationContext);
         }
         SpringContextUtil.applicationContext = applicationContext;
-    }
-
-    public static HttpServletRequest getRequest() {
-        return Optional.ofNullable((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                    .map(ServletRequestAttributes::getRequest)
-                    .orElse(null);
     }
 }

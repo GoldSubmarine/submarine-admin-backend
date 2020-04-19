@@ -37,6 +37,7 @@ submarine 是一个前后端分离的后台管理系统，配后前端项目 [su
 - SQL监控
 
 ## 前端预览
+
 <table>
     <tr>
         <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/permission.png"/></td>

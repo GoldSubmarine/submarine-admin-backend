@@ -1,26 +1,33 @@
 package com.htnova.common.util;
 
 import com.htnova.security.entity.AuthUser;
-import com.htnova.security.entity.UserDetail;
-import com.htnova.security.mapstruct.AuthUserMapStruct;
-import org.mapstruct.factory.Mappers;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Objects;
-import java.util.Optional;
 
 public class UserUtil {
+
+    private final static ThreadLocal<AuthUser> socketUserThreadLocal = new ThreadLocal<>();
 
     private UserUtil() {}
 
     public static AuthUser getAuthUser() {
-        UserDetail userDetail = (UserDetail) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()).map(Authentication::getPrincipal).orElse(null);
-        if(Objects.isNull(userDetail)) {
-            return null;
+        AuthUser authUser = SpringContextUtil.getAuthUser();
+        if(Objects.nonNull(authUser)) {
+            return authUser;
         }
-        AuthUserMapStruct mapper = Mappers.getMapper(AuthUserMapStruct.class);
-        return mapper.toAuthUser(userDetail.getUser());
+        if(Objects.nonNull(socketUserThreadLocal.get())) {
+            return socketUserThreadLocal.get();
+        }
+        return null;
     }
+
+    public static void setAuthUser(AuthUser authUser) {
+        socketUserThreadLocal.set(authUser);
+    }
+
+    public static void clearAuthUser() {
+        socketUserThreadLocal.remove();
+    }
+
 
 }
