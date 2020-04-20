@@ -46,8 +46,8 @@ public class DeptController {
     /**
      * 部门详情
      */
-    @GetMapping("/detail")
-    public DeptDto getById(Long id) {
+    @GetMapping("/detail/{id}")
+    public DeptDto getById(@PathVariable long id) {
         Dept dept = deptService.getDeptById(id);
         return DtoConverter.toDto(dept, DeptMapStruct.class);
     }
@@ -75,9 +75,9 @@ public class DeptController {
     /**
      * 部门删除
      */
-    @DeleteMapping("/del")
-    public Result<Void> delete(@RequestBody DeptDto deptDto) {
-        deptService.deleteDept(deptDto.getId());
+    @DeleteMapping("/del/{id}")
+    public Result<Void> delete(@PathVariable long id) {
+        deptService.deleteDept(id);
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 }

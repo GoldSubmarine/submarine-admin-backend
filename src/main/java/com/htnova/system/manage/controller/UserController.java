@@ -54,8 +54,8 @@ public class UserController {
      * 详情
      */
     @PreAuthorize("hasAnyAuthority('user.find')")
-    @GetMapping("/detail")
-    public UserDto getById(long id) {
+    @GetMapping("/detail/{id}")
+    public UserDto getById(@PathVariable long id) {
         User user = userService.getUserById(id);
         return DtoConverter.toDto(user, UserMapStruct.class);
     }
@@ -102,9 +102,9 @@ public class UserController {
      * 删除
      */
     @PreAuthorize("hasAnyAuthority('user.del')")
-    @DeleteMapping("/del")
-    public Result<Void> delete(@RequestBody UserDto userDto) {
-        userService.deleteUser(userDto.getId());
+    @DeleteMapping("/del/{id}")
+    public Result<Void> delete(@PathVariable long id) {
+        userService.deleteUser(id);
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 }

@@ -57,8 +57,8 @@ public class QuartzJobController {
      * 详情
      */
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
-    @GetMapping("/detail")
-    public QuartzJobDto getById(long id) {
+    @GetMapping("/detail/{id}")
+    public QuartzJobDto getById(@PathVariable long id) {
         QuartzJob quartzJob = quartzJobService.getQuartzJobById(id);
         return DtoConverter.toDto(quartzJob, QuartzJobMapStruct.class);
     }
@@ -77,9 +77,9 @@ public class QuartzJobController {
      * 删除
      */
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.del')")
-    @DeleteMapping("/del")
-    public Result<Void> delete(@RequestBody QuartzJobDto quartzJobDto) {
-        quartzJobService.deleteQuartzJob(quartzJobDto.getId());
+    @DeleteMapping("/del/{id}")
+    public Result<Void> delete(@PathVariable long id) {
+        quartzJobService.deleteQuartzJob(id);
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 

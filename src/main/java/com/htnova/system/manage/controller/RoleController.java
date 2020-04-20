@@ -50,8 +50,8 @@ public class RoleController {
     /**
      * 角色详情
      */
-    @GetMapping("/detail")
-    public RoleDto getById(long id) {
+    @GetMapping("/detail/{id}")
+    public RoleDto getById(@PathVariable long id) {
         Role role = roleService.getRoleById(id);
         return DtoConverter.toDto(role, RoleMapStruct.class);
     }
@@ -77,9 +77,9 @@ public class RoleController {
     /**
      * 角色删除
      */
-    @DeleteMapping("/del")
-    public Result<Void> delete(@RequestBody RoleDto roleDto) {
-        roleService.deleteRole(roleDto.getId());
+    @DeleteMapping("/del/{id}")
+    public Result<Void> delete(@PathVariable long id) {
+        roleService.deleteRole(id);
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 }

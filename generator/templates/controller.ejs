@@ -49,7 +49,7 @@ public class <%= Entity %>Controller {
      * 详情
      */
     @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.find')")
-    @GetMapping("/detail")
+    @GetMapping("/detail/{id}")
     public <%= Entity %>Dto getById(long id) {
         <%= Entity %> <%= entity %> = <%= entity %>Service.get<%= Entity %>ById(id);
         return <%= Entity %>Dto.toDto(<%= entity %>);
@@ -69,9 +69,9 @@ public class <%= Entity %>Controller {
      * 删除
      */
     @PreAuthorize("hasAnyAuthority('<%= entity %>', '<%= entity %>.del')")
-    @DeleteMapping("/del")
-    public Result<Void> delete(<%= Entity %>Dto <%= entity %>Dto) {
-        <%= entity %>Service.delete<%= Entity %>(<%= entity %>Dto.getId());
+    @DeleteMapping("/del/{id}")
+    public Result<Void> delete(@PathVariable long id) {
+        <%= entity %>Service.delete<%= Entity %>(id);
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 }

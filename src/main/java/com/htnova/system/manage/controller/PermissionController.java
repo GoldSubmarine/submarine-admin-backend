@@ -48,8 +48,8 @@ public class PermissionController {
     /**
      * 权限详情
      */
-    @GetMapping("/detail")
-    public PermissionDto getById(Long id) {
+    @GetMapping("/detail/{id}")
+    public PermissionDto getById(@PathVariable long id) {
         Permission permission = permissionService.getPermissionById(id);
         return DtoConverter.toDto(permission, PermissionMapStruct.class);
     }
@@ -100,9 +100,9 @@ public class PermissionController {
     /**
      * 权限删除
      */
-    @DeleteMapping("/del")
-    public Result<Void> delete(@RequestBody PermissionDto permissionDto) {
-        permissionService.deletePermission(permissionDto.getId());
+    @DeleteMapping("/del/{id}")
+    public Result<Void> delete(@PathVariable long id) {
+        permissionService.deletePermission(id);
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 }

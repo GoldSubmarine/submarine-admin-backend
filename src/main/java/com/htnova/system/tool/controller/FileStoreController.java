@@ -53,8 +53,8 @@ public class FileStoreController {
      * 详情
      */
     @PreAuthorize("hasAnyAuthority('fileStore', 'fileStore.find')")
-    @GetMapping("/detail")
-    public FileStoreDto getById(long id) {
+    @GetMapping("/detail/{id}")
+    public FileStoreDto getById(@PathVariable long id) {
         FileStore fileStore = fileStoreService.getFileStoreById(id);
         return DtoConverter.toDto(fileStore, FileStoreMapStruct.class);
     }
@@ -73,9 +73,9 @@ public class FileStoreController {
      * 删除
      */
     @PreAuthorize("hasAnyAuthority('fileStore', 'fileStore.del')")
-    @DeleteMapping("/del")
-    public Result<Void> delete(@RequestBody FileStoreDto fileStoreDto) {
-        fileStoreService.deleteFileStore(fileStoreDto.getId());
+    @DeleteMapping("/del/{id}")
+    public Result<Void> delete(@PathVariable long id) {
+        fileStoreService.deleteFileStore(id);
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 

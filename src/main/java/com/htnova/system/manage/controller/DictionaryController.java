@@ -49,8 +49,8 @@ public class DictionaryController {
      * 详情
      */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
-    @GetMapping("/detail")
-    public DictionaryDto getById(long id) {
+    @GetMapping("/detail/{id}")
+    public DictionaryDto getById(@PathVariable long id) {
         Dictionary dictionary = dictionaryService.getDictionaryById(id);
         return DtoConverter.toDto(dictionary, DictionaryMapStruct.class);
     }
@@ -69,9 +69,9 @@ public class DictionaryController {
      * 删除
      */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.del')")
-    @DeleteMapping("/del")
-    public Result<Void> delete(@RequestBody DictionaryDto dictionaryDto) {
-        dictionaryService.deleteDictionary(dictionaryDto.getId());
+    @DeleteMapping("/del/{id}")
+    public Result<Void> delete(@PathVariable long id) {
+        dictionaryService.deleteDictionary(id);
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 }
