@@ -16,6 +16,13 @@ spring:
         reset-enable: true
         login-username: root
         login-password: 123456
+  # 开发环境session持久化，方便开发，生产环境自行决定是否持久化
+  session:
+    store-type: redis
+    timeout: 10H
+    redis:
+      flush-mode: on_save
+      namespace: springboot-session
 
   redis:
     database: 5
@@ -26,13 +33,7 @@ spring:
       pool:
         max-active: 8
 
-file:
-  profiles:
-    active: local
+upload:
+  type: local
   local:
     path: C:\Users\vinson\Desktop\project\java\submarine-admin-backend\src\main\resources\public\
-#  oss:
-#    path: xxx
-
-socket:
-  port: 19688

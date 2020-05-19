@@ -25,3 +25,13 @@ spring:
     lettuce:
       pool:
         max-active: 8
+
+upload:
+  type: oss
+  oss:
+    namespace: xxxx # 上传到某一个文件夹
+    endpoint: xxxx
+    viewEndpoint: xxxx
+    accessKeyId: xxxx
+    accessKeySecret: xxxx
+    bucketName: xxxx

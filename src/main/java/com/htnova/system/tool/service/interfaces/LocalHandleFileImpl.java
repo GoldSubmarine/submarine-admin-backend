@@ -20,12 +20,12 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-@ConditionalOnProperty(name = "file.profiles.active", havingValue = "local", matchIfMissing = true)
-public class LocalHandleFileImp implements HandleFile {
+@ConditionalOnProperty(name = "upload.type", havingValue = "local", matchIfMissing = true)
+public class LocalHandleFileImpl implements HandleFile {
 
     public static final String PREFIX_URL = "file/download/";
 
-    @Value("${file.local.path}")
+    @Value("${upload.local.path}")
     private String uploadPath;
 
     @Override
