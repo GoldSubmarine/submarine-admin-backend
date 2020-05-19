@@ -19,15 +19,4 @@ public class WebConfig implements WebMvcConfigurer {
 //        registry.addInterceptor(loginInterceptor).addPathPatterns("/**");
     }
 
-    @Bean
-    public ErrorAttributes errorAttributes(){
-        return new RestErrorAttributes();
-    }
-
-    @Bean
-    public GlobalErrorController getError(ErrorAttributes errorAttributes) {
-        return new GlobalErrorController(errorAttributes);
-    }
-
-
 }

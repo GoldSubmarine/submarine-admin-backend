@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,10 +19,11 @@ import org.springframework.web.context.request.ServletWebRequest;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+@Controller
 @RequestMapping({"${server.error.path:${error.path:/error}}"})
 public class GlobalErrorController implements ErrorController {
 
-	private ErrorAttributes errorAttributes;
+	private final ErrorAttributes errorAttributes;
 
 	public GlobalErrorController(ErrorAttributes errorAttributes) {
 		this.errorAttributes = errorAttributes;

@@ -3,6 +3,7 @@ package com.htnova.common.exception;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -10,8 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
+@Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RestErrorAttributes implements ErrorAttributes, HandlerExceptionResolver {
     private static final String ERROR_ATTRIBUTE = RestErrorAttributes.class.getName() + ".ERROR";
@@ -24,10 +25,6 @@ public class RestErrorAttributes implements ErrorAttributes, HandlerExceptionRes
 
     private void storeErrorAttributes(HttpServletRequest request, Exception ex) {
         request.setAttribute(ERROR_ATTRIBUTE, ex);
-    }
-
-    public Map<String, Object> getErrorAttributes(WebRequest webRequest, boolean includeStackTrace) {
-        return null;
     }
 
     public Throwable getError(WebRequest webRequest) {
