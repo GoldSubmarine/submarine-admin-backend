@@ -11,8 +11,9 @@ import java.util.Optional;
 
 @Component
 public class MetaHandler implements MetaObjectHandler {
-    //todo
-    // 新增的时候自动填充
+    /**
+     * 新增的时候自动填充
+      */
     @Override
     public void insertFill(MetaObject metaObject) {
         Long userId = Optional.ofNullable(UserUtil.getAuthUser()).map(BaseEntity::getId).orElse(null);
@@ -22,7 +23,9 @@ public class MetaHandler implements MetaObjectHandler {
         this.setFieldValByName("updateBy", userId, metaObject);
     }
 
-    // 更新的时候自动填充
+    /**
+     * 更新的时候自动填充
+     */
     @Override
     public void updateFill(MetaObject metaObject) {
         Long userId = Optional.ofNullable(UserUtil.getAuthUser()).map(BaseEntity::getId).orElse(null);

@@ -26,9 +26,12 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Resource
     private RedisConnectionFactory redisConnectionFactory;
 
-    // 自定义缓存key生成策略
-    // 使用方法 @Cacheable(keyGenerator="keyGenerator")
-    // 和默认的一致，所以没有自定义需求，不需要使用
+    /**
+     * 自定义缓存key生成策略
+     * 使用方法 @Cacheable(keyGenerator="keyGenerator")
+     * 和默认的一致，所以没有自定义需求，不需要使用
+     * @return
+     */
     @Bean
     public KeyGenerator keyGenerator() {
         return (target, method, params) -> {
@@ -42,7 +45,9 @@ public class RedisConfig extends CachingConfigurerSupport {
         };
     }
 
-    // 缓存管理器
+    /**
+     * 缓存管理器
+     */
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
 

@@ -27,6 +27,7 @@ public class RestErrorAttributes implements ErrorAttributes, HandlerExceptionRes
         request.setAttribute(ERROR_ATTRIBUTE, ex);
     }
 
+    @Override
     public Throwable getError(WebRequest webRequest) {
         Throwable exception = this.getAttribute(webRequest, ERROR_ATTRIBUTE);
         if(exception == null) {

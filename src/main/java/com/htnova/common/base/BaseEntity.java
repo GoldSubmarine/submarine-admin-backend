@@ -54,7 +54,6 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 更新时间
      */
-//    @TableField(fill= FieldFill.INSERT_UPDATE, update="now()")
     @TableField(fill= FieldFill.INSERT_UPDATE)
     protected Date updateTime;
 

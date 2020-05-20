@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +28,10 @@ import java.util.TimeZone;
  * @author jeeplus
  * @version 2016-11-15
  */
+@Slf4j
 public class JsonMapper extends ObjectMapper {
 
 	private static final long serialVersionUID = 1L;
-
-	private static Logger logger = LoggerFactory.getLogger(JsonMapper.class);
 
 	private static JsonMapper mapper;
 
@@ -101,7 +101,7 @@ public class JsonMapper extends ObjectMapper {
 		try {
 			return this.writeValueAsString(object);
 		} catch (IOException e) {
-			logger.warn("write to json string error:" + object, e);
+			log.warn("write to json string error:" + object, e);
 			return null;
 		}
 	}
@@ -122,7 +122,7 @@ public class JsonMapper extends ObjectMapper {
 		try {
 			return this.readValue(jsonString, clazz);
 		} catch (IOException e) {
-			logger.warn("parse json string error:" + jsonString, e);
+			log.warn("parse json string error:" + jsonString, e);
 			return null;
 		}
 	}
@@ -139,7 +139,7 @@ public class JsonMapper extends ObjectMapper {
 		try {
 			return (T) this.readValue(jsonString, javaType);
 		} catch (IOException e) {
-			logger.warn("parse json string error:" + jsonString, e);
+			log.warn("parse json string error:" + jsonString, e);
 			return null;
 		}
 	}
@@ -161,7 +161,7 @@ public class JsonMapper extends ObjectMapper {
 		try {
 			return (T) this.readerForUpdating(object).readValue(jsonString);
 		} catch (IOException e) {
-			logger.warn("update json string:" + jsonString + " to object:" + object + " error.", e);
+			log.warn("update json string:" + jsonString + " to object:" + object + " error.", e);
 		}
 		return null;
 	}

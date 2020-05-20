@@ -72,7 +72,7 @@ public enum ResultStatus {
     /**
      * 所有成功或失败的提示都要定义code
      */
-    private int code;
+    private final int code;
 
     /**
      * 可能会有占位符，前端根据返回的 Result.data 字段，进行拼接

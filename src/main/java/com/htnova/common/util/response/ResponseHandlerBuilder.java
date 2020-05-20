@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class ResponseHandlerBuilder{
 
-    private HashMap<RequestMatcher, ResponseHandler> handlers = new LinkedHashMap<>();
+    private final HashMap<RequestMatcher, ResponseHandler> handlers = new LinkedHashMap<>();
 
     private ResponseHandler defaultHandler;
 
@@ -27,7 +27,7 @@ public class ResponseHandlerBuilder{
     }
 
     public ResponseHandler build(){
-        if(Objects.isNull(handlers) || handlers.isEmpty()){
+        if(handlers.isEmpty()){
             return defaultHandler;
         }else {
             return new DelegatingResponseHandler(handlers,defaultHandler);

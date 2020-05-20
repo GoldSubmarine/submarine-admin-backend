@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class DelegatingResponseHandler implements ResponseHandler {
 
-    private Map<RequestMatcher, ResponseHandler> handlers;
+    private final Map<RequestMatcher, ResponseHandler> handlers;
 
-    private ResponseHandler defaultHandler;
+    private final ResponseHandler defaultHandler;
 
     DelegatingResponseHandler(Map<RequestMatcher, ResponseHandler> handlers, ResponseHandler defaultHandler) {
         this.handlers = handlers;
