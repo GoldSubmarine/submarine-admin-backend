@@ -4,6 +4,9 @@ public interface GlobalConst {
 
     String PACKAGE = "com.htnova";
 
+    // 东八区
+    String TIME_ZONE_ID = "+8";
+
     int PAGE_NUM = 1;
 
     int PAGE_SIZE = 10;

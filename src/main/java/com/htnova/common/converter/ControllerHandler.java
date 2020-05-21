@@ -17,14 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @ControllerAdvice
 public class ControllerHandler {
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        GenericConversionService genericConversionService = (GenericConversionService) binder.getConversionService();
-        if (genericConversionService != null) {
-            genericConversionService.addConverter(new DateConverter());
-        }
-    }
-
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity handleMultipartException(MultipartException e, RedirectAttributes redirectAttributes) {
 //        redirectAttributes.addFlashAttribute("message", e.getCause().getMessage());

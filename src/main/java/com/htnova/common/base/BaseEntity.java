@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 import com.htnova.common.constant.GlobalConst;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -43,7 +43,7 @@ public abstract class BaseEntity implements Serializable {
      * 创建时间
      */
     @TableField(fill= FieldFill.INSERT)
-    protected Date createTime;
+    protected LocalDateTime createTime;
 
     /**
      * 更新人
@@ -55,7 +55,7 @@ public abstract class BaseEntity implements Serializable {
      * 更新时间
      */
     @TableField(fill= FieldFill.INSERT_UPDATE)
-    protected Date updateTime;
+    protected LocalDateTime updateTime;
 
     /**
      * 逻辑删除（0未删除，1已删除）

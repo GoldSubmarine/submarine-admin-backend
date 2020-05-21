@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -37,7 +37,7 @@ public abstract class BaseDto implements Serializable {
     /**
      * 创建时间
      */
-    protected Date createTime;
+    protected LocalDateTime createTime;
 
     /**
      * 更新人
@@ -48,7 +48,7 @@ public abstract class BaseDto implements Serializable {
     /**
      * 更新时间
      */
-    protected Date updateTime;
+    protected LocalDateTime updateTime;
 
     /**
      * 逻辑删除（0未删除，1已删除）
