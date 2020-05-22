@@ -5,17 +5,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.system.manage.dto.DictionaryDto;
 import com.htnova.system.manage.entity.Dictionary;
 import com.htnova.system.manage.mapper.DictionaryMapper;
+import java.util.List;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.List;
-
 @Service
 public class DictionaryService extends ServiceImpl<DictionaryMapper, Dictionary> {
-
-    @Resource
-    private DictionaryMapper dictionaryMapper;
+    @Resource private DictionaryMapper dictionaryMapper;
 
     @Transactional(readOnly = true)
     public IPage<Dictionary> findDictionaryList(DictionaryDto dictionaryDto, IPage<Void> xPage) {

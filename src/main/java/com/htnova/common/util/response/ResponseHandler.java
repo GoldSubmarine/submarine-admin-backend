@@ -1,27 +1,24 @@
 package com.htnova.common.util.response;
 
-
 import com.htnova.common.dto.Result;
 import com.htnova.common.util.JsonMapper;
-import org.springframework.http.HttpStatus;
-
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.springframework.http.HttpStatus;
 
 @FunctionalInterface
-public interface ResponseHandler{
+public interface ResponseHandler {
+    void handle(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException;
 
-    void handle(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
-
-
-    static ResponseHandlerBuilder builder(){
+    static ResponseHandlerBuilder builder() {
         return new ResponseHandlerBuilder();
     }
 
-    static ResponseHandler create(Result<?> result){
+    static ResponseHandler create(Result<?> result) {
         return (request, response) -> {
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json; charset=utf-8");
@@ -30,7 +27,7 @@ public interface ResponseHandler{
         };
     }
 
-    static ResponseHandler create(HttpStatus httpStatus, Result<?> result){
+    static ResponseHandler create(HttpStatus httpStatus, Result<?> result) {
         return (request, response) -> {
             response.setStatus(httpStatus.value());
             response.setCharacterEncoding("utf-8");

@@ -13,46 +13,29 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @TableName("file_store")
 public class FileStore extends BaseEntity {
-    
+    /** 原始文件名 */
+    private String name;
 
-	/**
-	* 原始文件名
-	*/
-	private String name;
+    /** 磁盘真实文件名 */
+    private String realName;
 
-	/**
-	* 磁盘真实文件名
-	*/
-	private String realName;
+    /** 文件大小 */
+    private Double size;
 
-	/**
-	* 文件大小
-	*/
-	private Double size;
+    /** 文件类型 */
+    private String type;
 
-	/**
-	* 文件类型
-	*/
-	private String type;
+    /** url */
+    private String url;
 
-	/**
-	* url
-	*/
-	private String url;
+    /** md5 值 */
+    private String md5;
 
-	/**
-	* md5 值
-	*/
-	private String md5;
+    /** 存储类型（本地，oss） */
+    private StoreType storeType;
 
-	/**
-	* 存储类型（本地，oss）
-	*/
-	private StoreType storeType;
-
-	public enum StoreType {
-		local,
-		OSS;
-	}
-
+    public enum StoreType {
+        local,
+        OSS
+    }
 }

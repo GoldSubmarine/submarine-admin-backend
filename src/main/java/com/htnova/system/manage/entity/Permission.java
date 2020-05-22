@@ -11,33 +11,20 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class Permission extends BaseTreeEntity<Permission> {
-
-    /**
-     * 类型
-     */
+    /** 类型 */
     private PermissionType type;
 
-    /**
-     * 名称（中文）
-     */
+    /** 名称（中文） */
     private String name;
 
-    /**
-     * 权限值
-     */
+    /** 权限值 */
     private String value;
 
     public enum PermissionType {
-
-        /**
-         * 菜单
-         */
+        /** 菜单 */
         menu,
 
-        /**
-         * 按钮
-         */
+        /** 按钮 */
         button
     }
-
 }

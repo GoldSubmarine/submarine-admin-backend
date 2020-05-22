@@ -7,16 +7,17 @@ import com.htnova.common.util.SocketUtil;
 import com.htnova.common.util.SpringContextUtil;
 import com.htnova.common.util.UserUtil;
 import com.htnova.security.entity.AuthUser;
-
 import java.util.List;
 
 public class SocketEventInterceptor implements EventInterceptor {
+
     @Override
-    public void onEvent(NamespaceClient client, String eventName, List<Object> args, AckRequest ackRequest) {
+    public void onEvent(
+            NamespaceClient client, String eventName, List<Object> args, AckRequest ackRequest) {
         // 清一下上次可能遗留的 threadLocal
         UserUtil.clearAuthUser();
         String httpSessionId = SocketUtil.getHttpSessionId(client.getHandshakeData());
-        if(SocketUtil.isExpired(httpSessionId)) {
+        if (SocketUtil.isExpired(httpSessionId)) {
             client.disconnect();
             return;
         }

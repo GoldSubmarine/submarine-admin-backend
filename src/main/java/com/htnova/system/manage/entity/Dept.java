@@ -11,32 +11,25 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class Dept extends BaseTreeEntity<Dept> {
-
-    /**
-     * 名称（中文）
-     */
+    /** 名称（中文） */
     private String name;
 
-
-    /**
-     * 编码
-     */
+    /** 编码 */
     private String code;
 
-    /**
-     * 发布修改部门名称的事件
-     */
+    /** 发布修改部门名称的事件 */
     public UpdateName updateName() {
         return new UpdateName();
     }
 
     public class UpdateName {
+
         public String getName() {
             return name;
         }
+
         public Long getId() {
             return id;
         }
     }
-
 }

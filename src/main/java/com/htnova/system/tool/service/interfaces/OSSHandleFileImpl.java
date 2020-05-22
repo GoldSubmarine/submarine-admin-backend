@@ -4,6 +4,9 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.PutObjectResult;
 import com.htnova.system.tool.entity.FileStore;
+import java.io.IOException;
+import java.util.UUID;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,15 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.UUID;
-
 @Slf4j
 @ConditionalOnProperty(value = "upload.type", havingValue = "oss")
 @Service
 public class OSSHandleFileImpl implements HandleFile {
-
     @Value("${upload.oss.namespace}")
     private String namespace;
 
@@ -50,8 +48,9 @@ public class OSSHandleFileImpl implements HandleFile {
         String fileHashPath = fileName.substring(0, 6).replaceAll("(\\w\\w)", "$1/");
         String url = namespace + "/" + fileHashPath + fileName;
         try {
-            PutObjectResult putObjectResult = ossClient.putObject(bucketName, url, file.getInputStream());
-            log.debug("file upload success. requestId: {}, ",putObjectResult.getRequestId());
+            PutObjectResult putObjectResult =
+                    ossClient.putObject(bucketName, url, file.getInputStream());
+            log.debug("file upload success. requestId: {}, ", putObjectResult.getRequestId());
             return FileStore.builder()
                     .size((double) file.getSize() / 1000)
                     .url(getPrefix() + url)
@@ -61,14 +60,14 @@ public class OSSHandleFileImpl implements HandleFile {
                     .md5(DigestUtils.md5DigestAsHex(file.getInputStream()))
                     .storeType(FileStore.StoreType.OSS)
                     .build();
-        }catch (Exception e){
-            log.error("file upload error",e);
+        } catch (Exception e) {
+            log.error("file upload error", e);
             throw e;
         } finally {
-            try{
+            try {
                 ossClient.shutdown();
-            }catch (Exception e){
-                log.debug("cos client shutdown error",e);
+            } catch (Exception e) {
+                log.debug("cos client shutdown error", e);
             }
         }
     }

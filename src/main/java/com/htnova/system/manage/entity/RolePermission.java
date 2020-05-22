@@ -11,20 +11,12 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class RolePermission extends BaseEntity {
-
-    /**
-     * 权限id
-     */
+    /** 权限id */
     private Long permissionId;
 
-    /**
-     * 角色id
-     */
+    /** 角色id */
     private Long roleId;
 
-    /**
-     * 类型
-     */
+    /** 类型 */
     private Permission.PermissionType type;
-
 }

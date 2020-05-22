@@ -6,6 +6,4 @@ import com.htnova.system.manage.entity.Permission;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface PermissionMapStruct extends BaseMapStruct<PermissionDto, Permission> {
-
-}
+public interface PermissionMapStruct extends BaseMapStruct<PermissionDto, Permission> {}

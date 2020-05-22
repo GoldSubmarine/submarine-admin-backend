@@ -13,28 +13,16 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class DictionaryItem extends BaseEntity {
-
-
-    /**
-     * 字典id
-     */
-    @JsonSerialize(using= ToStringSerializer.class)
+    /** 字典id */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long dictionaryId;
 
-    /**
-     * 字典标签
-     */
+    /** 字典标签 */
     private String label;
 
-    /**
-     * 字典值
-     */
+    /** 字典值 */
     private String value;
 
-    /**
-     * 排序
-     */
+    /** 排序 */
     private Integer sort;
-
-
 }

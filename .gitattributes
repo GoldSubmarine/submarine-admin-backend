@@ -1,0 +1,8 @@
+# 防止不设置 core.autocrlf 导致混合 crlf 和 lf 提交的情况.建议执行下列 3 行命令
+# git config --global core.autocrlf input
+# git config --global core.safecrlf true
+# git config --global core.eol lf
+
+# 如果 google-java-format 始终不通过，请检查是否有混用换行符的情况
+
+* text eol=lf

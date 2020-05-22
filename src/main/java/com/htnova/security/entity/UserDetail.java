@@ -2,6 +2,10 @@ package com.htnova.security.entity;
 
 import com.htnova.system.manage.entity.Permission;
 import com.htnova.system.manage.entity.User;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,16 +13,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDetail implements UserDetails {
-
     private User user;
 
     @Override
@@ -59,7 +57,7 @@ public class UserDetail implements UserDetails {
         return User.UserStatus.enable.equals(user.getStatus());
     }
 
-    public static UserDetail createByUser(User user){
-        return  new UserDetail(user);
+    public static UserDetail createByUser(User user) {
+        return new UserDetail(user);
     }
 }

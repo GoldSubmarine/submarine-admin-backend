@@ -6,6 +6,4 @@ import com.htnova.system.manage.entity.Dept;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface DeptMapStruct extends BaseMapStruct<DeptDto, Dept> {
-
-}
+public interface DeptMapStruct extends BaseMapStruct<DeptDto, Dept> {}

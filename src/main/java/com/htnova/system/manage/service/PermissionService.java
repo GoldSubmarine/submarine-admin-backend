@@ -8,22 +8,18 @@ import com.htnova.system.manage.dto.PermissionDto;
 import com.htnova.system.manage.entity.Permission;
 import com.htnova.system.manage.entity.RolePermission;
 import com.htnova.system.manage.mapper.PermissionMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PermissionService extends ServiceImpl<PermissionMapper, Permission> {
+    @Resource private PermissionMapper permissionMapper;
 
-    @Resource
-    private PermissionMapper permissionMapper;
-
-    @Resource
-    private RolePermissionService rolePermissionService;
+    @Resource private RolePermissionService rolePermissionService;
 
     @Transactional(readOnly = true)
     public IPage<Permission> findPermissionList(PermissionDto permissionDto, IPage<Void> xPage) {
@@ -38,8 +34,11 @@ public class PermissionService extends ServiceImpl<PermissionMapper, Permission>
     @Transactional
     public void savePermission(Permission permission) {
         Permission parent = super.getById(permission.getPid());
-        if(parent != null) {
-            permission.setPids(String.format("%s%s,", Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
+        if (parent != null) {
+            permission.setPids(
+                    String.format(
+                            "%s%s,",
+                            Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
         }
         super.saveOrUpdate(permission);
     }
@@ -52,10 +51,13 @@ public class PermissionService extends ServiceImpl<PermissionMapper, Permission>
     @Transactional
     public void deletePermission(long id) {
         // 删除角色的关联表
-        rolePermissionService.remove(new LambdaQueryWrapper<>(new RolePermission()).eq(RolePermission::getPermissionId, id));
+        rolePermissionService.remove(
+                new LambdaQueryWrapper<>(new RolePermission())
+                        .eq(RolePermission::getPermissionId, id));
         // 删除子级和自身
         List<Permission> permissionList = super.lambdaQuery().like(Permission::getPids, id).list();
-        List<Long> ids = permissionList.stream().map(BaseEntity::getId).collect(Collectors.toList());
+        List<Long> ids =
+                permissionList.stream().map(BaseEntity::getId).collect(Collectors.toList());
         ids.add(id);
         super.removeByIds(ids);
     }

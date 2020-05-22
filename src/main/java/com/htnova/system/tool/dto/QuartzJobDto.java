@@ -12,35 +12,21 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class QuartzJobDto extends BaseEntity {
+    /** 任务名称 */
+    private String jobName;
 
-	/**
-	* 任务名称
-	*/
-	private String jobName;
+    /** bean名称 */
+    private String beanName;
 
-	/**
-	* bean名称
-	*/
-	private String beanName;
+    /** 方法名称 */
+    private String methodName;
 
-	/**
-	* 方法名称
-	*/
-	private String methodName;
+    /** 参数 */
+    private String params;
 
-	/**
-	* 参数
-	*/
-	private String params;
+    /** cron表达式 */
+    private String cronExpression;
 
-	/**
-	* cron表达式
-	*/
-	private String cronExpression;
-
-	/**
-	* 是否启用
-	*/
-	private QuartzJob.StatusType status;
-
+    /** 是否启用 */
+    private QuartzJob.StatusType status;
 }

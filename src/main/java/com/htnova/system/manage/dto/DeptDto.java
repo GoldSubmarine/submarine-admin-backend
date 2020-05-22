@@ -11,15 +11,9 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class DeptDto extends BaseTreeDto<DeptDto> {
-
-    /**
-     * 名称（中文）
-     */
+    /** 名称（中文） */
     private String name;
 
-    /**
-     * 编码
-     */
+    /** 编码 */
     private String code;
-
 }

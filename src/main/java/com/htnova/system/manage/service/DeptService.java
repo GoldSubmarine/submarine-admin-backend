@@ -6,25 +6,21 @@ import com.htnova.common.base.BaseEntity;
 import com.htnova.system.manage.dto.DeptDto;
 import com.htnova.system.manage.entity.Dept;
 import com.htnova.system.manage.mapper.DeptMapper;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @Service
 public class DeptService extends ServiceImpl<DeptMapper, Dept> {
+    @Resource private DeptMapper deptMapper;
 
-    @Resource
-    private DeptMapper deptMapper;
-
-    @Resource
-    private ApplicationContext applicationContext;
+    @Resource private ApplicationContext applicationContext;
 
     @Transactional(readOnly = true)
     public IPage<Dept> findDeptList(DeptDto deptDto, IPage<Void> xPage) {
@@ -39,14 +35,20 @@ public class DeptService extends ServiceImpl<DeptMapper, Dept> {
     @Transactional
     public void saveDept(Dept dept) {
         Dept originalDept = null;
-        if(Objects.nonNull(dept.getId())) {
+        if (Objects.nonNull(dept.getId())) {
             originalDept = this.getDeptById(dept.getId());
         }
         Dept parent = super.getById(dept.getPid());
-        if(parent != null) {
-            dept.setPids(String.format("%s%s,", Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
+        if (parent != null) {
+            dept.setPids(
+                    String.format(
+                            "%s%s,",
+                            Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
         }
-        if(Objects.nonNull(dept.getId()) && !StringUtils.equals(dept.getName(), Optional.ofNullable(originalDept).map(Dept::getName).orElse(null))) {
+        if (Objects.nonNull(dept.getId())
+                && !StringUtils.equals(
+                        dept.getName(),
+                        Optional.ofNullable(originalDept).map(Dept::getName).orElse(null))) {
             applicationContext.publishEvent(dept.updateName());
         }
         super.saveOrUpdate(dept);

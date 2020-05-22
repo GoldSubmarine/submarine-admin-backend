@@ -6,6 +6,4 @@ import com.htnova.system.manage.entity.Role;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface RoleMapStruct extends BaseMapStruct<RoleDto, Role> {
-
-}
+public interface RoleMapStruct extends BaseMapStruct<RoleDto, Role> {}

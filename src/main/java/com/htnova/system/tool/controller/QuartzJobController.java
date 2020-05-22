@@ -13,29 +13,21 @@ import com.htnova.system.tool.mapstruct.QuartzJobMapStruct;
 import com.htnova.system.tool.mapstruct.QuartzLogMapStruct;
 import com.htnova.system.tool.service.QuartzJobService;
 import com.htnova.system.tool.service.QuartzLogService;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import java.util.List;
-
-/**
- * @menu 定时任务
- */
+/** @menu 定时任务 */
 @RestController
 @RequestMapping("/quartz-job")
 public class QuartzJobController {
+    @Resource private QuartzJobService quartzJobService;
 
-    @Resource
-    private QuartzJobService quartzJobService;
+    @Resource private QuartzLogService quartzLogService;
 
-    @Resource
-    private QuartzLogService quartzLogService;
-
-    /**
-     * 分页查询
-     */
+    /** 分页查询 */
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
     @GetMapping("/list/page")
     public XPage<QuartzJobDto> findListByPage(QuartzJobDto quartzJobDto, XPage<Void> xPage) {
@@ -43,9 +35,7 @@ public class QuartzJobController {
         return DtoConverter.toDto(quartzJobPage, QuartzJobMapStruct.class);
     }
 
-    /**
-     * 查询
-     */
+    /** 查询 */
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
     @GetMapping("/list/all")
     public List<QuartzJobDto> findList(QuartzJobDto quartzJobDto) {
@@ -53,9 +43,7 @@ public class QuartzJobController {
         return DtoConverter.toDto(quartzJobList, QuartzJobMapStruct.class);
     }
 
-    /**
-     * 详情
-     */
+    /** 详情 */
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
     @GetMapping("/detail/{id}")
     public QuartzJobDto getById(@PathVariable long id) {
@@ -63,19 +51,16 @@ public class QuartzJobController {
         return DtoConverter.toDto(quartzJob, QuartzJobMapStruct.class);
     }
 
-    /**
-     * 保存
-     */
+    /** 保存 */
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.add', 'quartzJob.edit')")
     @PostMapping("/save")
     public Result<Void> save(@Valid @RequestBody QuartzJobDto quartzJobDto) {
-        quartzJobService.saveQuartzJob(DtoConverter.toEntity(quartzJobDto, QuartzJobMapStruct.class));
+        quartzJobService.saveQuartzJob(
+                DtoConverter.toEntity(quartzJobDto, QuartzJobMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
-    /**
-     * 删除
-     */
+    /** 删除 */
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.del')")
     @DeleteMapping("/del/{id}")
     public Result<Void> delete(@PathVariable long id) {
@@ -83,9 +68,7 @@ public class QuartzJobController {
         return Result.build(ResultStatus.DELETE_SUCCESS);
     }
 
-    /**
-     * 改变任务状态
-     */
+    /** 改变任务状态 */
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.add')")
     @PostMapping("/status")
     public Result<Void> changeScheduleJobStatus(@RequestBody QuartzJobDto quartzJobDto) {
@@ -93,9 +76,7 @@ public class QuartzJobController {
         return Result.build(ResultStatus.QUARTZ_PAUSE_SUCCESS);
     }
 
-    /**
-     * 执行一次任务
-     */
+    /** 执行一次任务 */
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.add')")
     @PostMapping("/run")
     public Result<Void> runScheduleJob(@RequestBody QuartzJobDto quartzJobDto) {
@@ -103,9 +84,7 @@ public class QuartzJobController {
         return Result.build(ResultStatus.QUARTZ_RUN_SUCCESS);
     }
 
-    /**
-     * 查看日志
-     */
+    /** 查看日志 */
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
     @GetMapping("/log/page")
     public XPage<QuartzLogDto> findLogByPage(QuartzLogDto quartzLogDto, XPage<Void> xPage) {

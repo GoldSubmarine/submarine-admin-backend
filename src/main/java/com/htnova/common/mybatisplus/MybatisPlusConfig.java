@@ -10,9 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @MapperScan("com.htnova.**.mapper")
 public class MybatisPlusConfig {
 
-    /**
-     * 分页插件
-     */
+    /** 分页插件 */
     @Bean
     public PaginationInterceptor paginationInterceptor() {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
@@ -20,9 +18,7 @@ public class MybatisPlusConfig {
         return paginationInterceptor;
     }
 
-    /**
-     * 自动填充功能
-     */
+    /** 自动填充功能 */
     @Bean
     public GlobalConfig globalConfig() {
         GlobalConfig globalConfig = new GlobalConfig();

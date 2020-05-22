@@ -5,18 +5,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.system.manage.entity.UserRole;
 import com.htnova.system.manage.mapper.UserRoleMapper;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRole> {
-
-    @Resource
-    private UserRoleMapper userRoleMapper;
+    @Resource private UserRoleMapper userRoleMapper;
 
     @Transactional(readOnly = true)
     public IPage<UserRole> findUserRoleList(UserRole userRole, IPage<Void> xPage) {
@@ -32,8 +29,11 @@ public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRole> {
     public void saveUserRole(long userId, List<Long> roleIdList) {
         // 删除旧的
         super.remove(new LambdaQueryWrapper<>(new UserRole()).eq(UserRole::getUserId, userId));
-        //保存新的
-        List<UserRole> userRoleList = roleIdList.stream().map(item -> UserRole.builder().roleId(item).userId(userId).build()).collect(Collectors.toList());
+        // 保存新的
+        List<UserRole> userRoleList =
+                roleIdList.stream()
+                        .map(item -> UserRole.builder().roleId(item).userId(userId).build())
+                        .collect(Collectors.toList());
         super.saveBatch(userRoleList);
     }
 
@@ -46,5 +46,4 @@ public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRole> {
     public void deleteUserRole(Long id) {
         super.removeById(id);
     }
-
 }

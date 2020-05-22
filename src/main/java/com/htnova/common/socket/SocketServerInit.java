@@ -1,19 +1,16 @@
 package com.htnova.common.socket;
 
 import com.corundumstudio.socketio.SocketIOServer;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class SocketServerInit {
-
-    @Resource
-    private SocketIOServer socketIOServer;
+    @Resource private SocketIOServer socketIOServer;
 
     @PostConstruct
     public void start() {

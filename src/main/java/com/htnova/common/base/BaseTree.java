@@ -3,7 +3,6 @@ package com.htnova.common.base;
 import java.util.List;
 
 public interface BaseTree<T> {
-
     Long getId();
 
     void setId(Long id);

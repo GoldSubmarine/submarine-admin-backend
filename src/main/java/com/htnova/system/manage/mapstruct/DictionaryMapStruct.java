@@ -6,6 +6,4 @@ import com.htnova.system.manage.entity.Dictionary;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface DictionaryMapStruct extends BaseMapStruct<DictionaryDto, Dictionary> {
-
-}
+public interface DictionaryMapStruct extends BaseMapStruct<DictionaryDto, Dictionary> {}

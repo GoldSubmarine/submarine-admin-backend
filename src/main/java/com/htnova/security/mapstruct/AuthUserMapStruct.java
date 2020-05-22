@@ -6,7 +6,5 @@ import org.mapstruct.Mapper;
 
 @Mapper
 public interface AuthUserMapStruct {
-
     AuthUser toAuthUser(User user);
-
 }

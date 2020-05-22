@@ -6,23 +6,19 @@ import com.htnova.system.tool.dto.FileStoreDto;
 import com.htnova.system.tool.entity.FileStore;
 import com.htnova.system.tool.mapper.FileStoreMapper;
 import com.htnova.system.tool.service.interfaces.HandleFile;
+import java.io.IOException;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-
 @Service
 public class FileStoreService extends ServiceImpl<FileStoreMapper, FileStore> {
+    @Resource private FileStoreMapper fileStoreMapper;
 
-    @Resource
-    private FileStoreMapper fileStoreMapper;
-
-    @Resource
-    private HandleFile handleFile;
+    @Resource private HandleFile handleFile;
 
     @Transactional(readOnly = true)
     public IPage<FileStore> findFileStoreList(FileStoreDto fileStoreDto, IPage<Void> xPage) {
@@ -62,5 +58,4 @@ public class FileStoreService extends ServiceImpl<FileStoreMapper, FileStore> {
         FileStore fileStore = this.lambdaQuery().eq(FileStore::getRealName, realName).one();
         handleFile.download(fileStore, response);
     }
-
 }

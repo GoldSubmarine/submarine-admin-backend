@@ -6,6 +6,4 @@ import com.htnova.system.tool.entity.QuartzLog;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface QuartzLogMapStruct extends BaseMapStruct<QuartzLogDto, QuartzLog> {
-
-}
+public interface QuartzLogMapStruct extends BaseMapStruct<QuartzLogDto, QuartzLog> {}

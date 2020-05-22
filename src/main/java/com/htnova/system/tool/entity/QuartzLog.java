@@ -13,51 +13,32 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @TableName("quartz_log")
 public class QuartzLog extends BaseEntity {
-	/**
-	* 任务名称
-	*/
-	private String jobName;
+    /** 任务名称 */
+    private String jobName;
 
-	/**
-	* bean名称
-	*/
-	private String beanName;
+    /** bean名称 */
+    private String beanName;
 
-	/**
-	* 方法名称
-	*/
-	private String methodName;
+    /** 方法名称 */
+    private String methodName;
 
-	/**
-	* 参数
-	*/
-	private String params;
+    /** 参数 */
+    private String params;
 
-	/**
-	* cron表达式
-	*/
-	private String cronExpression;
+    /** cron表达式 */
+    private String cronExpression;
 
-	/**
-	* 状态
-	*/
-	private StatusType status;
+    /** 状态 */
+    private StatusType status;
 
-	/**
-	* 耗时
-	*/
-	private Long time;
+    /** 耗时 */
+    private Long time;
 
-	/**
-	* 错误详情
-	*/
-	private String detail;
+    /** 错误详情 */
+    private String detail;
 
-    
     public enum StatusType {
-    	success,
-		fail
-	}
-
-    
+        success,
+        fail
+    }
 }

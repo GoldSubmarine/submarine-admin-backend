@@ -5,20 +5,18 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.htnova.system.manage.dto.DictionaryItemDto;
 import com.htnova.system.manage.entity.DictionaryItem;
 import com.htnova.system.manage.mapper.DictionaryItemMapper;
+import java.util.List;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.List;
-
 @Service
 public class DictionaryItemService extends ServiceImpl<DictionaryItemMapper, DictionaryItem> {
-
-    @Resource
-    private DictionaryItemMapper dictionaryItemMapper;
+    @Resource private DictionaryItemMapper dictionaryItemMapper;
 
     @Transactional(readOnly = true)
-    public IPage<DictionaryItem> findDictionaryItemList(DictionaryItemDto dictionaryItemDto, IPage<Void> xPage) {
+    public IPage<DictionaryItem> findDictionaryItemList(
+            DictionaryItemDto dictionaryItemDto, IPage<Void> xPage) {
         return dictionaryItemMapper.findPage(xPage, dictionaryItemDto);
     }
 

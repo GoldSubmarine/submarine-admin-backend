@@ -29,6 +29,7 @@
         <commons-lang3.version>3.10</commons-lang3.version>
         <commons-pool2.version>2.8.0</commons-pool2.version>
         <aliyun-oss.version>3.9.1</aliyun-oss.version>
+        <git-code-format-maven-plugin.version>2.4</git-code-format-maven-plugin.version>
     </properties>
 
     <!-- nexus私服配置 -->
@@ -206,6 +207,33 @@
                     <compilerArgs>
                         <compilerArg>-Amapstruct.unmappedTargetPolicy=IGNORE</compilerArg>
                     </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.cosium.code</groupId>
+                <artifactId>git-code-format-maven-plugin</artifactId>
+                <version>${git-code-format-maven-plugin.version}</version>
+                <executions>
+                    <!-- On commit, format the modified java files -->
+                    <execution>
+                        <id>install-formatter-hook</id>
+                        <goals>
+                            <goal>install-hooks</goal>
+                        </goals>
+                    </execution>
+                    <!-- On Maven verify phase, fail if any file
+                    (including unmodified) is badly formatted -->
+                    <execution>
+                        <id>validate-code-format</id>
+                        <goals>
+                            <goal>validate-code-format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <googleJavaFormatOptions>
+                        <aosp>true</aosp>
+                    </googleJavaFormatOptions>
                 </configuration>
             </plugin>
         </plugins>

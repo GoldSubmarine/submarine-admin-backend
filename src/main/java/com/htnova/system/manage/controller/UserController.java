@@ -10,29 +10,21 @@ import com.htnova.system.manage.entity.User;
 import com.htnova.system.manage.mapstruct.UserMapStruct;
 import com.htnova.system.manage.service.UserRoleService;
 import com.htnova.system.manage.service.UserService;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
-
-/**
- * @menu 用户
- */
+/** @menu 用户 */
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    @Resource private UserService userService;
 
-    @Resource
-    private UserService userService;
+    @Resource private UserRoleService userRoleService;
 
-    @Resource
-    private UserRoleService userRoleService;
-
-    /**
-     * 分页查询
-     */
+    /** 分页查询 */
     @GetMapping("/list/page")
     @PreAuthorize("hasAnyAuthority('user.find')")
     public XPage<UserDto> findListByPage(UserDto userDto, XPage<Void> xPage) {
@@ -40,9 +32,7 @@ public class UserController {
         return DtoConverter.toDto(userPage, UserMapStruct.class);
     }
 
-    /**
-     * 查询
-     */
+    /** 查询 */
     @PreAuthorize("hasAnyAuthority('user.find')")
     @GetMapping("/list/all")
     public List<UserDto> findList(UserDto userDto) {
@@ -50,9 +40,7 @@ public class UserController {
         return DtoConverter.toDto(userList, UserMapStruct.class);
     }
 
-    /**
-     * 详情
-     */
+    /** 详情 */
     @PreAuthorize("hasAnyAuthority('user.find')")
     @GetMapping("/detail/{id}")
     public UserDto getById(@PathVariable long id) {
@@ -60,19 +48,16 @@ public class UserController {
         return DtoConverter.toDto(user, UserMapStruct.class);
     }
 
-    /**
-     * 保存
-     */
+    /** 保存 */
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/save")
     public Result<String> save(@RequestBody UserDto userDto) {
-        String randomPass = userService.saveUser(DtoConverter.toEntity(userDto, UserMapStruct.class));
+        String randomPass =
+                userService.saveUser(DtoConverter.toEntity(userDto, UserMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
     }
 
-    /**
-     * 角色绑定
-     */
+    /** 角色绑定 */
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/bind-role")
     public Result<Void> bingRole(@RequestBody UserDto userDto) {
@@ -80,27 +65,21 @@ public class UserController {
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
-    /**
-     * 修改密码
-     */
+    /** 修改密码 */
     @PostMapping("/changePass")
     public Result<Void> changePass(@RequestBody Map<String, String> json) {
         userService.changePass(json.get("oldPassword"), json.get("newPassword"));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
-    /**
-     * 重置密码
-     */
+    /** 重置密码 */
     @PostMapping("/resetPass")
     public Result<String> resetPass(@RequestBody UserDto userDto) {
         String pass = userService.resetPass(userDto.getId());
         return Result.build(ResultStatus.SAVE_SUCCESS, pass);
     }
 
-    /**
-     * 删除
-     */
+    /** 删除 */
     @PreAuthorize("hasAnyAuthority('user.del')")
     @DeleteMapping("/del/{id}")
     public Result<Void> delete(@PathVariable long id) {

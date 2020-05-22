@@ -9,35 +9,27 @@ import com.htnova.system.manage.dto.DictionaryDto;
 import com.htnova.system.manage.entity.Dictionary;
 import com.htnova.system.manage.mapstruct.DictionaryMapStruct;
 import com.htnova.system.manage.service.DictionaryService;
+import java.util.List;
+import javax.annotation.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import java.util.List;
-
-/**
- * @menu 字典
- */
+/** @menu 字典 */
 @RestController
 @RequestMapping("/dictionary")
 public class DictionaryController {
+    @Resource private DictionaryService dictionaryService;
 
-    @Resource
-    private DictionaryService dictionaryService;
-
-    /**
-     * 分页查询
-     */
+    /** 分页查询 */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
     @GetMapping("/list/page")
     public XPage<DictionaryDto> findListByPage(DictionaryDto dictionaryDto, XPage<Void> xPage) {
-        IPage<Dictionary> dictionaryPage = dictionaryService.findDictionaryList(dictionaryDto, xPage);
+        IPage<Dictionary> dictionaryPage =
+                dictionaryService.findDictionaryList(dictionaryDto, xPage);
         return DtoConverter.toDto(dictionaryPage, DictionaryMapStruct.class);
     }
 
-    /**
-     * 查询
-     */
+    /** 查询 */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
     @GetMapping("/list/all")
     public List<DictionaryDto> findList(DictionaryDto dictionaryDto) {
@@ -45,9 +37,7 @@ public class DictionaryController {
         return DtoConverter.toDto(dictionaryList, DictionaryMapStruct.class);
     }
 
-    /**
-     * 详情
-     */
+    /** 详情 */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
     @GetMapping("/detail/{id}")
     public DictionaryDto getById(@PathVariable long id) {
@@ -55,19 +45,16 @@ public class DictionaryController {
         return DtoConverter.toDto(dictionary, DictionaryMapStruct.class);
     }
 
-    /**
-     * 保存
-     */
+    /** 保存 */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.add', 'dictionary.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody DictionaryDto dictionaryDto) {
-        dictionaryService.saveDictionary(DtoConverter.toEntity(dictionaryDto, DictionaryMapStruct.class));
+        dictionaryService.saveDictionary(
+                DtoConverter.toEntity(dictionaryDto, DictionaryMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
-    /**
-     * 删除
-     */
+    /** 删除 */
     @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.del')")
     @DeleteMapping("/del/{id}")
     public Result<Void> delete(@PathVariable long id) {

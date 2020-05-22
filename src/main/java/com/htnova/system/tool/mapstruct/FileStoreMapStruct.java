@@ -6,6 +6,4 @@ import com.htnova.system.tool.entity.FileStore;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface FileStoreMapStruct extends BaseMapStruct<FileStoreDto, FileStore> {
-
-}
+public interface FileStoreMapStruct extends BaseMapStruct<FileStoreDto, FileStore> {}

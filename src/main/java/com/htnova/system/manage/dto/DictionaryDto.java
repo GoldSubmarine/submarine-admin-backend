@@ -11,10 +11,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class DictionaryDto extends BaseDto {
-
-    /**
-     * 字典名
-     */
+    /** 字典名 */
     private String name;
-
 }

@@ -12,20 +12,12 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class PermissionDto extends BaseTreeDto<PermissionDto> {
-
-    /**
-     * 类型
-     */
+    /** 类型 */
     private Permission.PermissionType type;
 
-    /**
-     * 名称（中文）
-     */
+    /** 名称（中文） */
     private String name;
 
-    /**
-     * 权限值
-     */
+    /** 权限值 */
     private String value;
-
 }

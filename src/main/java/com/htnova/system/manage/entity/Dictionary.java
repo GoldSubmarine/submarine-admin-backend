@@ -11,11 +11,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class Dictionary extends BaseEntity {
-
-    /**
-     * 字典名
-     */
+    /** 字典名 */
     private String name;
-
-
 }
