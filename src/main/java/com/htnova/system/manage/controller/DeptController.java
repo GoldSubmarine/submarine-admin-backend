@@ -23,7 +23,7 @@ public class DeptController {
     /** 部门分页查询 */
     @GetMapping("/list/page")
     public XPage<DeptDto> findListByPage(DeptDto deptDto, XPage<Void> xPage) {
-        IPage<Dept> deptPage = deptService.findDeptList(deptDto, xPage);
+        IPage<Dept> deptPage = deptService.findDeptList(deptDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(deptPage, DeptMapStruct.class);
     }
 

@@ -5,6 +5,7 @@ import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
+import com.htnova.common.dto.XPageImpl;
 import com.htnova.system.manage.dto.RoleDto;
 import com.htnova.system.manage.dto.RolePermissionDto;
 import com.htnova.system.manage.entity.Role;
@@ -26,7 +27,7 @@ public class RoleController {
     /** 角色分页查询 */
     @GetMapping("/list/page")
     public XPage<RoleDto> findListByPage(RoleDto roleDto, XPage<Void> xPage) {
-        IPage<Role> rolePage = roleService.findRoleList(roleDto, xPage);
+        IPage<Role> rolePage = roleService.findRoleList(roleDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(rolePage, RoleMapStruct.class);
     }
 

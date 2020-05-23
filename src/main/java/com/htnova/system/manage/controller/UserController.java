@@ -5,6 +5,7 @@ import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
+import com.htnova.common.dto.XPageImpl;
 import com.htnova.system.manage.dto.UserDto;
 import com.htnova.system.manage.entity.User;
 import com.htnova.system.manage.mapstruct.UserMapStruct;
@@ -28,7 +29,7 @@ public class UserController {
     @GetMapping("/list/page")
     @PreAuthorize("hasAnyAuthority('user.find')")
     public XPage<UserDto> findListByPage(UserDto userDto, XPage<Void> xPage) {
-        IPage<User> userPage = userService.findUserList(userDto, xPage);
+        IPage<User> userPage = userService.findUserList(userDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(userPage, UserMapStruct.class);
     }
 

@@ -20,16 +20,7 @@ public class DtoConverter {
 
     public static <D, E> XPage<D> toDto(
             IPage<E> iPage, Class<? extends BaseMapStruct<D, E>> mapStruct) {
-        XPage<D> resultPage = new XPage<>();
-        resultPage.setTotal(iPage.getTotal());
-        resultPage.setSize(iPage.getSize());
-        resultPage.setCurrent(iPage.getCurrent());
-        resultPage.setOrders(iPage.orders());
-        resultPage.setOptimizeCountSql(iPage.optimizeCountSql());
-        resultPage.setSearchCount(iPage.isSearchCount());
-        BaseMapStruct<D, E> mapper = Mappers.getMapper(mapStruct);
-        resultPage.setRecords(mapper.toDto(iPage.getRecords()));
-        return resultPage;
+        return XPage.fromIPage(iPage, mapStruct);
     }
 
     /** 调用 list 的 toDto 方法 */

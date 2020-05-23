@@ -1,20 +1,47 @@
 package com.htnova.common.dto;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Lists;
-import lombok.Data;
+import com.htnova.common.base.BaseMapStruct;
+import org.mapstruct.factory.Mappers;
 
-@Data
-public class XPage<T> extends Page<T> {
-    private static final long serialVersionUID = 5194933845448697148L;
+import java.util.List;
 
-    /** 默认排序 */
-    private OrderItem defaultOrderItem = OrderItem.desc("create_time");
+public interface XPage<T> {
 
-    public XPage() {
-        super();
-        // 初始化排序
-        this.setOrders(Lists.newArrayList(defaultOrderItem));
+    long getPageSize();
+    void setPageSize(long size);
+
+    long getPageNum();
+    void setPageNum(long num);
+
+    long getTotal();
+    void setTotal(long total);
+
+    List<OrderItem> getOrders();
+    void setOrders(List<OrderItem> orderItemList);
+
+    List<T> getList();
+    void setList(List<T> orderItemList);
+
+    static <V, T> IPage<V> toIPage(XPage<T> xPage) {
+        Page<V> page = new Page<>();
+        page.setSize(xPage.getPageSize());
+        page.setCurrent(xPage.getPageNum());
+        page.setOrders(xPage.getOrders());
+        return page;
+    }
+
+    static <T, V> XPage<T> fromIPage(IPage<V> iPage, Class<? extends BaseMapStruct<T, V>> mapStruct) {
+        XPageImpl<T> xPage = new XPageImpl<>();
+        xPage.setPageNum(iPage.getCurrent());
+        xPage.setPageSize(iPage.getSize());
+        xPage.setTotal(iPage.getTotal());
+        xPage.setOrders(iPage.orders());
+
+        BaseMapStruct<T, V> mapper = Mappers.getMapper(mapStruct);
+        xPage.setList(mapper.toDto(iPage.getRecords()));
+        return xPage;
     }
 }

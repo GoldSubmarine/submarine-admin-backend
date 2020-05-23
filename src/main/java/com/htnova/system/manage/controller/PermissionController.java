@@ -6,6 +6,7 @@ import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.converter.TreeConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
+import com.htnova.common.dto.XPageImpl;
 import com.htnova.system.manage.dto.PermissionDto;
 import com.htnova.system.manage.entity.Permission;
 import com.htnova.system.manage.mapstruct.PermissionMapStruct;
@@ -26,7 +27,7 @@ public class PermissionController {
     @GetMapping("/list/page")
     public XPage<PermissionDto> findListByPage(PermissionDto permissionDto, XPage<Void> xPage) {
         IPage<Permission> permissionPage =
-                permissionService.findPermissionList(permissionDto, xPage);
+                permissionService.findPermissionList(permissionDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(permissionPage, PermissionMapStruct.class);
     }
 

@@ -5,6 +5,7 @@ import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
+import com.htnova.common.dto.XPageImpl;
 import com.htnova.system.tool.dto.FileStoreDto;
 import com.htnova.system.tool.entity.FileStore;
 import com.htnova.system.tool.mapstruct.FileStoreMapStruct;
@@ -28,7 +29,7 @@ public class FileStoreController {
     @PreAuthorize("hasAnyAuthority('fileStore', 'fileStore.find')")
     @GetMapping("/list/page")
     public XPage<FileStoreDto> findListByPage(FileStoreDto fileStoreDto, XPage<Void> xPage) {
-        IPage<FileStore> fileStorePage = fileStoreService.findFileStoreList(fileStoreDto, xPage);
+        IPage<FileStore> fileStorePage = fileStoreService.findFileStoreList(fileStoreDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(fileStorePage, FileStoreMapStruct.class);
     }
 
