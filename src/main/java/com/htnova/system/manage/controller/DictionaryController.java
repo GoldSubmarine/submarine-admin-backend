@@ -5,7 +5,6 @@ import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
-import com.htnova.common.dto.XPageImpl;
 import com.htnova.system.manage.dto.DictionaryDto;
 import com.htnova.system.manage.entity.Dictionary;
 import com.htnova.system.manage.mapstruct.DictionaryMapStruct;

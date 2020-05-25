@@ -5,7 +5,6 @@ import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
-import com.htnova.common.dto.XPageImpl;
 import com.htnova.system.tool.dto.QuartzJobDto;
 import com.htnova.system.tool.dto.QuartzLogDto;
 import com.htnova.system.tool.entity.QuartzJob;
@@ -32,7 +31,8 @@ public class QuartzJobController {
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
     @GetMapping("/list/page")
     public XPage<QuartzJobDto> findListByPage(QuartzJobDto quartzJobDto, XPage<Void> xPage) {
-        IPage<QuartzJob> quartzJobPage = quartzJobService.findQuartzJobList(quartzJobDto, XPage.toIPage(xPage));
+        IPage<QuartzJob> quartzJobPage =
+                quartzJobService.findQuartzJobList(quartzJobDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(quartzJobPage, QuartzJobMapStruct.class);
     }
 
@@ -89,7 +89,8 @@ public class QuartzJobController {
     @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
     @GetMapping("/log/page")
     public XPage<QuartzLogDto> findLogByPage(QuartzLogDto quartzLogDto, XPage<Void> xPage) {
-        IPage<QuartzLog> quartzLogPage = quartzLogService.findQuartzLogList(quartzLogDto, XPage.toIPage(xPage));
+        IPage<QuartzLog> quartzLogPage =
+                quartzLogService.findQuartzLogList(quartzLogDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(quartzLogPage, QuartzLogMapStruct.class);
     }
 }

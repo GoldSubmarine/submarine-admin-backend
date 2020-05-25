@@ -4,25 +4,29 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.htnova.common.base.BaseMapStruct;
-import org.mapstruct.factory.Mappers;
-
 import java.util.List;
+import org.mapstruct.factory.Mappers;
 
 public interface XPage<T> {
 
     long getPageSize();
+
     void setPageSize(long size);
 
     long getPageNum();
+
     void setPageNum(long num);
 
     long getTotal();
+
     void setTotal(long total);
 
     List<OrderItem> getOrders();
+
     void setOrders(List<OrderItem> orderItemList);
 
     List<T> getList();
+
     void setList(List<T> orderItemList);
 
     static <V, T> IPage<V> toIPage(XPage<T> xPage) {
@@ -33,7 +37,8 @@ public interface XPage<T> {
         return page;
     }
 
-    static <T, V> XPage<T> fromIPage(IPage<V> iPage, Class<? extends BaseMapStruct<T, V>> mapStruct) {
+    static <T, V> XPage<T> fromIPage(
+            IPage<V> iPage, Class<? extends BaseMapStruct<T, V>> mapStruct) {
         XPageImpl<T> xPage = new XPageImpl<>();
         xPage.setPageNum(iPage.getCurrent());
         xPage.setPageSize(iPage.getSize());

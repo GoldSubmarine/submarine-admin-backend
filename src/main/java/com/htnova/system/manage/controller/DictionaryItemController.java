@@ -5,7 +5,6 @@ import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
-import com.htnova.common.dto.XPageImpl;
 import com.htnova.system.manage.dto.DictionaryItemDto;
 import com.htnova.system.manage.entity.DictionaryItem;
 import com.htnova.system.manage.mapstruct.DictionaryItemMapStruct;
@@ -27,7 +26,8 @@ public class DictionaryItemController {
     public XPage<DictionaryItemDto> findListByPage(
             DictionaryItemDto dictionaryItemDto, XPage<Void> xPage) {
         IPage<DictionaryItem> dictionaryItemPage =
-                dictionaryItemService.findDictionaryItemList(dictionaryItemDto, XPage.toIPage(xPage));
+                dictionaryItemService.findDictionaryItemList(
+                        dictionaryItemDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(dictionaryItemPage, DictionaryItemMapStruct.class);
     }
 
