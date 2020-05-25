@@ -6,6 +6,11 @@ public interface GlobalConst {
     // 东八区
     String TIME_ZONE_ID = "+8";
 
+    /**
+     * socket默认错误路径
+     */
+    String SOCKET_ERROR_PATH = "/socket/error";
+
     int PAGE_NUM = 1;
 
     int PAGE_SIZE = 10;

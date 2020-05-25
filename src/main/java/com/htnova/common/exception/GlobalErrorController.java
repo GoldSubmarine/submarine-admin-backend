@@ -80,7 +80,6 @@ public class GlobalErrorController implements ErrorController {
                     if (bindingResult != null) {
                         if (bindingResult.hasErrors()) {
                             result = Result.build(ResultStatus.BIND_ERROR);
-                            //							result =
                             // result.setMsg(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage());
                         } else {
                             result = Result.build(ResultStatus.NO_ERROR);
@@ -88,11 +87,7 @@ public class GlobalErrorController implements ErrorController {
                     } else {
                         if (error instanceof ServiceException) {
                             ServiceException serviceException = (ServiceException) error;
-                            result =
-                                    Result.build(
-                                            serviceException.getCode(),
-                                            serviceException.getMessage(),
-                                            serviceException.getData());
+                            result = serviceException.getResult();
                         } else {
                             result = Result.build(ResultStatus.SERVER_ERROR);
                         }

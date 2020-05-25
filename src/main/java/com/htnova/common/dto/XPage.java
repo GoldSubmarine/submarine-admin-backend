@@ -25,9 +25,9 @@ public interface XPage<T> {
 
     void setOrders(List<OrderItem> orderItemList);
 
-    List<T> getList();
+    List<T> getData();
 
-    void setList(List<T> orderItemList);
+    void setData(List<T> orderItemList);
 
     static <V, T> IPage<V> toIPage(XPage<T> xPage) {
         Page<V> page = new Page<>();
@@ -46,7 +46,7 @@ public interface XPage<T> {
         xPage.setOrders(iPage.orders());
 
         BaseMapStruct<T, V> mapper = Mappers.getMapper(mapStruct);
-        xPage.setList(mapper.toDto(iPage.getRecords()));
+        xPage.setData(mapper.toDto(iPage.getRecords()));
         return xPage;
     }
 }

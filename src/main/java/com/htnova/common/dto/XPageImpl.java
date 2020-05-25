@@ -27,5 +27,5 @@ public class XPageImpl<T> implements XPage<T> {
     private List<OrderItem> orders = Lists.newArrayList(OrderItem.desc("create_time"));
 
     /** 查询数据列表 */
-    private List<T> list = Collections.emptyList();
+    private List<T> data = Collections.emptyList();
 }
