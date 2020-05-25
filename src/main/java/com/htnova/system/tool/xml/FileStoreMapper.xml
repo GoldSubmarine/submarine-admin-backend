@@ -22,7 +22,7 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM file_store a WHERE a.del_flag = #{fileStoreDto.delFlag}
+        FROM t_sys_file_store a WHERE a.del_flag = #{fileStoreDto.delFlag}
             
 		<if test="fileStoreDto.id != null">
 			AND a.id = #{fileStoreDto.id}

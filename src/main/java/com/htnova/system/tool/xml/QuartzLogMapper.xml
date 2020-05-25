@@ -23,7 +23,7 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM quartz_log a WHERE a.del_flag = #{quartzLogDto.delFlag}
+        FROM t_sys_quartz_log a WHERE a.del_flag = #{quartzLogDto.delFlag}
             
 		<if test="quartzLogDto.id != null">
 			AND a.id = #{quartzLogDto.id}

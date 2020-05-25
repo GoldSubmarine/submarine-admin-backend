@@ -20,7 +20,7 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM dictionary_item a WHERE a.del_flag = #{dictionaryItemDto.delFlag}
+        FROM t_sys_dictionary_item a WHERE a.del_flag = #{dictionaryItemDto.delFlag}
         <if test="dictionaryItemDto.id != null and dictionaryItemDto.id != ''">
             AND a.id = #{dictionaryItemDto.id}
         </if>

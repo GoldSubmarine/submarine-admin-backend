@@ -1,6 +1,7 @@
 package com.htnova.system.manage.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.htnova.common.base.BaseEntity;
 import java.util.List;
@@ -13,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 @SuperBuilder
+@TableName("t_sys_user")
 public class User extends BaseEntity {
     /** 登录名 */
     private String username;

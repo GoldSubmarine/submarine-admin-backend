@@ -21,7 +21,7 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM permission a WHERE a.del_flag = #{permissionDto.delFlag}
+        FROM t_sys_permission a WHERE a.del_flag = #{permissionDto.delFlag}
         <if test="permissionDto.name != null and permissionDto.name != ''">
             AND a.name LIKE concat('%',#{permissionDto.name},'%')
         </if>

@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 @SuperBuilder
-@TableName("file_store")
+@TableName("t_sys_file_store")
 public class FileStore extends BaseEntity {
     /** 原始文件名 */
     private String name;

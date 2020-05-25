@@ -28,7 +28,7 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM user a WHERE a.del_flag = #{userDto.delFlag}
+        FROM t_sys_user a WHERE a.del_flag = #{userDto.delFlag}
         <if test="userDto.id != null and userDto.id != ''">
             AND a.id = #{userDto.id}
         </if>

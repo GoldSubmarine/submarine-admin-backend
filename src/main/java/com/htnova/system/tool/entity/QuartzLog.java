@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 @SuperBuilder
-@TableName("quartz_log")
+@TableName("t_sys_quartz_log")
 public class QuartzLog extends BaseEntity {
     /** 任务名称 */
     private String jobName;

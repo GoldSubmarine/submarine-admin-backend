@@ -19,7 +19,7 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM role_permission a WHERE a.del_flag = #{rolePermissionDto.delFlag}
+        FROM t_sys_role_permission a WHERE a.del_flag = #{rolePermissionDto.delFlag}
         <if test="rolePermissionDto.id != null and rolePermissionDto.id != ''">
             AND a.id = #{rolePermissionDto.id}
         </if>
@@ -62,8 +62,8 @@
     <!--根据id-->
     <select id="getByRoleId" resultType="Permission">
         SELECT b.* FROM
-          role_permission a
-        LEFT JOIN permission b ON a.permission_id = b.id
+            t_sys_role_permission a
+        LEFT JOIN t_sys_permission b ON a.permission_id = b.id
         WHERE
           a.del_flag = 0 AND a.role_id = #{id}
     </select>
@@ -71,8 +71,8 @@
     <!--根据ids-->
     <select id="getByRoleIds" resultType="Permission">
         SELECT b.* FROM
-          role_permission a
-        LEFT JOIN permission b ON a.permission_id = b.id
+            t_sys_role_permission a
+        LEFT JOIN t_sys_permission b ON a.permission_id = b.id
         WHERE
           a.del_flag = 0 AND a.role_id IN
         <foreach item="item" index="index" collection="ids"  open="(" separator="," close=")">

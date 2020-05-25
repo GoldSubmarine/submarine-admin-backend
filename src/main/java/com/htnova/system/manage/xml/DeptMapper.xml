@@ -20,7 +20,7 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM dept a WHERE a.del_flag = #{deptDto.delFlag}
+        FROM t_sys_dept a WHERE a.del_flag = #{deptDto.delFlag}
         <if test="deptDto.id != null and deptDto.id != ''">
             AND a.id = #{deptDto.id}
         </if>

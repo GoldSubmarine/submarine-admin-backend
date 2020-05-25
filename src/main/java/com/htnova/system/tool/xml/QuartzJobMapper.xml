@@ -21,7 +21,7 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM quartz_job a WHERE a.del_flag = #{quartzJobDto.delFlag}
+        FROM t_sys_quartz_job a WHERE a.del_flag = #{quartzJobDto.delFlag}
             
 		<if test="quartzJobDto.id != null">
 			AND a.id = #{quartzJobDto.id}

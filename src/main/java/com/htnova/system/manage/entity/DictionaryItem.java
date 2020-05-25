@@ -1,5 +1,6 @@
 package com.htnova.system.manage.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.htnova.common.base.BaseEntity;
@@ -12,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 @SuperBuilder
+@TableName("t_sys_dictionary_item")
 public class DictionaryItem extends BaseEntity {
     /** 字典id */
     @JsonSerialize(using = ToStringSerializer.class)

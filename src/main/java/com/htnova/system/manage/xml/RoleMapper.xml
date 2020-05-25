@@ -19,7 +19,7 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM role a WHERE a.del_flag = #{roleDto.delFlag}
+        FROM t_sys_role a WHERE a.del_flag = #{roleDto.delFlag}
         <if test="roleDto.id != null and roleDto.id != ''">
             AND a.id = #{roleDto.id}
         </if>

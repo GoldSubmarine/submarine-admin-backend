@@ -1,5 +1,6 @@
 package com.htnova.system.manage.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.htnova.common.base.BaseTreeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 @SuperBuilder
+@TableName("t_sys_permission")
 public class Permission extends BaseTreeEntity<Permission> {
     /** 类型 */
     private PermissionType type;

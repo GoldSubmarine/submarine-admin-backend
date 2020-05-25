@@ -18,7 +18,7 @@
     <sql id="findList">
         SELECT
             <include refid="SelectColumns"/>
-        FROM user_role a WHERE a.del_flag = #{userRole.delFlag}
+        FROM t_sys_user_role a WHERE a.del_flag = #{userRole.delFlag}
         <if test="userRole.id != null and userRole.id != ''">
             AND a.id = #{userRole.id}
         </if>
@@ -58,8 +58,8 @@
     <!--根据userid-->
     <select id="getRoleByUserId" resultType="Role">
         SELECT b.* FROM
-            user_role a
-            LEFT JOIN role b ON a.role_id= b.id
+            t_sys_user_role a
+            LEFT JOIN t_sys_role b ON a.role_id= b.id
         WHERE
             a.del_flag = 0 AND a.user_id = #{userId}
     </select>

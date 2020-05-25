@@ -1,6 +1,7 @@
 package com.htnova.system.manage.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.htnova.common.base.BaseEntity;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 @SuperBuilder
+@TableName("t_sys_role")
 public class Role extends BaseEntity {
     // 超级管理员，开发人员
     public static final String SUPER_ADMIN_CODE = "SuperAdmin";
