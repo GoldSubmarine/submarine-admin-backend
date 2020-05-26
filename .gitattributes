@@ -6,3 +6,6 @@
 # 如果 google-java-format 始终不通过，请检查是否有混用换行符的情况
 
 * text eol=lf
+*.jar binary
+*.png binary
+*.jpg binary
