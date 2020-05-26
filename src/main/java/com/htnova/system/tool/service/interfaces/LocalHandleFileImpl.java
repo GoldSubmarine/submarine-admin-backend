@@ -5,6 +5,7 @@ import com.htnova.common.exception.ServiceException;
 import com.htnova.system.tool.entity.FileStore;
 import java.io.*;
 import java.util.UUID;
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -21,10 +23,15 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @ConditionalOnProperty(name = "upload.type", havingValue = "local", matchIfMissing = true)
 public class LocalHandleFileImpl implements HandleFile {
-    public static final String PREFIX_URL = "file/download/";
 
     @Value("${upload.local.path}")
     private String uploadPath;
+
+    @Resource private ServerProperties serverProperties;
+
+    private String getPrefixUrl() {
+        return serverProperties.getServlet().getContextPath() + "/file/download/";
+    }
 
     @Override
     @Transactional
@@ -54,7 +61,7 @@ public class LocalHandleFileImpl implements HandleFile {
         double size = file.getSize();
         return FileStore.builder()
                 .size(size / 1000)
-                .url(PREFIX_URL + fileHashPath + fileName)
+                .url(getPrefixUrl() + fileHashPath + fileName)
                 .realName(fileName)
                 .type(file.getContentType())
                 .name(file.getOriginalFilename())
@@ -66,7 +73,7 @@ public class LocalHandleFileImpl implements HandleFile {
     @Override
     @Transactional
     public void download(FileStore fileStore, HttpServletResponse response) throws IOException {
-        File file = new File(uploadPath + StringUtils.remove(fileStore.getUrl(), PREFIX_URL));
+        File file = new File(uploadPath + StringUtils.remove(fileStore.getUrl(), getPrefixUrl()));
         if (!file.exists()) {
             throw new ServiceException(ResultStatus.FILE_NOT_FOUND);
         }
@@ -82,7 +89,7 @@ public class LocalHandleFileImpl implements HandleFile {
     @Override
     @Transactional
     public void delete(FileStore fileStore) {
-        String filePath = StringUtils.remove(fileStore.getUrl(), PREFIX_URL);
+        String filePath = StringUtils.remove(fileStore.getUrl(), getPrefixUrl());
         File file = new File(uploadPath + filePath);
         if (file.delete()) {
             log.info("文件 {} 已被删除", file.getName());

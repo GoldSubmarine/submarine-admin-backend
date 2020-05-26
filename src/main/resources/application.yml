@@ -1,7 +1,7 @@
 server:
   port: 19687
   servlet:
-    context-path: /scaffold
+    context-path: /api
 
 spring:
   application:
