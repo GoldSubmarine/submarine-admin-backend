@@ -78,6 +78,7 @@ public class LocationController {
     public Result<Void> save(@Valid @RequestBody LocationDto locationDto) {
         locationService.saveLocation(DtoConverter.toEntity(locationDto, LocationMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
+
     }
 
     /**
