@@ -39,4 +39,7 @@ public class FileStoreDto extends BaseEntity {
     /** 存储类型（本地，oss） */
     @NotNull(message = "存储类型（本地，oss）不能为空")
     private FileStore.StoreType storeType;
+
+    // 前端查询使用
+    private String ids;
 }

@@ -41,6 +41,14 @@ public class FileStoreController {
         return DtoConverter.toDto(fileStoreList, FileStoreMapStruct.class);
     }
 
+    /** 根据ids查询 */
+    @PreAuthorize("hasAnyAuthority('fileStore', 'fileStore.find')")
+    @GetMapping("/list/ids")
+    public List<FileStoreDto> findListByIds(FileStoreDto fileStoreDto) {
+        List<FileStore> fileStoreList = fileStoreService.findFileStoreByIds(fileStoreDto.getIds());
+        return DtoConverter.toDto(fileStoreList, FileStoreMapStruct.class);
+    }
+
     /** 详情 */
     @PreAuthorize("hasAnyAuthority('fileStore', 'fileStore.find')")
     @GetMapping("/detail/{id}")
