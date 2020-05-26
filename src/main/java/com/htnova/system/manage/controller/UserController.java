@@ -25,8 +25,8 @@ public class UserController {
     @Resource private UserRoleService userRoleService;
 
     /** 分页查询 */
-    @GetMapping("/list/page")
     @PreAuthorize("hasAnyAuthority('user.find')")
+    @GetMapping("/list/page")
     public XPage<UserDto> findListByPage(UserDto userDto, XPage<Void> xPage) {
         IPage<User> userPage = userService.findUserList(userDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(userPage, UserMapStruct.class);
@@ -66,6 +66,7 @@ public class UserController {
     }
 
     /** 修改密码 */
+    @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/changePass")
     public Result<Void> changePass(@RequestBody Map<String, String> json) {
         userService.changePass(json.get("oldPassword"), json.get("newPassword"));
@@ -73,6 +74,7 @@ public class UserController {
     }
 
     /** 重置密码 */
+    @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/resetPass")
     public Result<String> resetPass(@RequestBody UserDto userDto) {
         String pass = userService.resetPass(userDto.getId());

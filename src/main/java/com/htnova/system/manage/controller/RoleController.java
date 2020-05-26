@@ -13,6 +13,7 @@ import com.htnova.system.manage.service.RolePermissionService;
 import com.htnova.system.manage.service.RoleService;
 import java.util.List;
 import javax.annotation.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /** @menu 角色 */
@@ -24,6 +25,7 @@ public class RoleController {
     @Resource private RolePermissionService rolePermissionService;
 
     /** 角色分页查询 */
+    @PreAuthorize("hasAnyAuthority('role.find')")
     @GetMapping("/list/page")
     public XPage<RoleDto> findListByPage(RoleDto roleDto, XPage<Void> xPage) {
         IPage<Role> rolePage = roleService.findRoleList(roleDto, XPage.toIPage(xPage));
@@ -31,6 +33,7 @@ public class RoleController {
     }
 
     /** 角色查询 */
+    @PreAuthorize("hasAnyAuthority('role.find')")
     @GetMapping("/list/all")
     public List<RoleDto> findList(RoleDto roleDto) {
         List<Role> roleList = roleService.findRoleList(roleDto);
@@ -38,6 +41,7 @@ public class RoleController {
     }
 
     /** 角色详情 */
+    @PreAuthorize("hasAnyAuthority('role.find')")
     @GetMapping("/detail/{id}")
     public RoleDto getById(@PathVariable long id) {
         Role role = roleService.getRoleById(id);
@@ -45,6 +49,7 @@ public class RoleController {
     }
 
     /** 角色保存 */
+    @PreAuthorize("hasAnyAuthority('role.add', 'role.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody RoleDto roleDto) {
         roleService.saveRole(DtoConverter.toEntity(roleDto, RoleMapStruct.class));
@@ -52,6 +57,7 @@ public class RoleController {
     }
 
     /** 角色的权限保存 */
+    @PreAuthorize("hasAnyAuthority('role.add', 'role.edit')")
     @PostMapping("/permission/save")
     public Result<Void> saveRolePermission(@RequestBody RolePermissionDto rolePermissionDto) {
         rolePermissionService.saveRolePermission(
@@ -62,6 +68,7 @@ public class RoleController {
     }
 
     /** 角色删除 */
+    @PreAuthorize("hasAnyAuthority('role.del')")
     @DeleteMapping("/del/{id}")
     public Result<Void> delete(@PathVariable long id) {
         roleService.deleteRole(id);

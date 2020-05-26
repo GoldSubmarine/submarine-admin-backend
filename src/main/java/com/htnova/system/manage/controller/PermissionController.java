@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /** @menu 权限 */
@@ -23,6 +24,7 @@ public class PermissionController {
     @Resource private PermissionService permissionService;
 
     /** 权限分页查询 */
+    @PreAuthorize("hasAnyAuthority('permission.find')")
     @GetMapping("/list/page")
     public XPage<PermissionDto> findListByPage(PermissionDto permissionDto, XPage<Void> xPage) {
         IPage<Permission> permissionPage =
@@ -31,6 +33,7 @@ public class PermissionController {
     }
 
     /** 权限查询 */
+    @PreAuthorize("hasAnyAuthority('permission.find')")
     @GetMapping("/list/all")
     public List<PermissionDto> findList(PermissionDto permissionDto) {
         List<Permission> permissionList = permissionService.findPermissionList(permissionDto);
@@ -38,6 +41,7 @@ public class PermissionController {
     }
 
     /** 权限详情 */
+    @PreAuthorize("hasAnyAuthority('permission.find')")
     @GetMapping("/detail/{id}")
     public PermissionDto getById(@PathVariable long id) {
         Permission permission = permissionService.getPermissionById(id);
@@ -49,6 +53,7 @@ public class PermissionController {
      *
      * @return List<PermissionDto>: 返回值为list，可能有多个root节点
      */
+    @PreAuthorize("hasAnyAuthority('permission.find')")
     @GetMapping("/tree/list")
     public List<PermissionDto> getPermissionTree(PermissionDto permissionDto) {
         List<Permission> permissionList = permissionService.findPermissionList(permissionDto);
@@ -57,6 +62,7 @@ public class PermissionController {
     }
 
     /** 权限保存 */
+    @PreAuthorize("hasAnyAuthority('permission.add', 'permission.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody PermissionDto permissionDto) {
         permissionService.savePermission(
@@ -65,6 +71,7 @@ public class PermissionController {
     }
 
     /** 模块权限保存 */
+    @PreAuthorize("hasAnyAuthority('permission.add', 'permission.edit')")
     @PostMapping("/save/module")
     public Result<Void> saveModule(@RequestBody PermissionDto permissionDto) {
         Permission permission = DtoConverter.toEntity(permissionDto, PermissionMapStruct.class);
@@ -88,6 +95,7 @@ public class PermissionController {
     }
 
     /** 权限删除 */
+    @PreAuthorize("hasAnyAuthority('permission.del')")
     @DeleteMapping("/del/{id}")
     public Result<Void> delete(@PathVariable long id) {
         permissionService.deletePermission(id);

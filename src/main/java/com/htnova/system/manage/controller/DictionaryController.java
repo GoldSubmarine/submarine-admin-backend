@@ -21,7 +21,7 @@ public class DictionaryController {
     @Resource private DictionaryService dictionaryService;
 
     /** 分页查询 */
-    @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
+    @PreAuthorize("hasAnyAuthority('dictionary.find')")
     @GetMapping("/list/page")
     public XPage<DictionaryDto> findListByPage(DictionaryDto dictionaryDto, XPage<Void> xPage) {
         IPage<Dictionary> dictionaryPage =
@@ -30,7 +30,7 @@ public class DictionaryController {
     }
 
     /** 查询 */
-    @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
+    @PreAuthorize("hasAnyAuthority('dictionary.find')")
     @GetMapping("/list/all")
     public List<DictionaryDto> findList(DictionaryDto dictionaryDto) {
         List<Dictionary> dictionaryList = dictionaryService.findDictionaryList(dictionaryDto);
@@ -38,7 +38,7 @@ public class DictionaryController {
     }
 
     /** 详情 */
-    @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.find')")
+    @PreAuthorize("hasAnyAuthority('dictionary.find')")
     @GetMapping("/detail/{id}")
     public DictionaryDto getById(@PathVariable long id) {
         Dictionary dictionary = dictionaryService.getDictionaryById(id);
@@ -46,7 +46,7 @@ public class DictionaryController {
     }
 
     /** 保存 */
-    @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.add', 'dictionary.edit')")
+    @PreAuthorize("hasAnyAuthority('dictionary.add', 'dictionary.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody DictionaryDto dictionaryDto) {
         dictionaryService.saveDictionary(
@@ -55,7 +55,7 @@ public class DictionaryController {
     }
 
     /** 删除 */
-    @PreAuthorize("hasAnyAuthority('dictionary', 'dictionary.del')")
+    @PreAuthorize("hasAnyAuthority('dictionary.del')")
     @DeleteMapping("/del/{id}")
     public Result<Void> delete(@PathVariable long id) {
         dictionaryService.deleteDictionary(id);

@@ -25,7 +25,7 @@ public class FileStoreController {
     @Resource private FileStoreService fileStoreService;
 
     /** 分页查询 */
-    @PreAuthorize("hasAnyAuthority('fileStore', 'fileStore.find')")
+    @PreAuthorize("hasAnyAuthority('fileStore.find')")
     @GetMapping("/list/page")
     public XPage<FileStoreDto> findListByPage(FileStoreDto fileStoreDto, XPage<Void> xPage) {
         IPage<FileStore> fileStorePage =
@@ -34,7 +34,7 @@ public class FileStoreController {
     }
 
     /** 查询 */
-    @PreAuthorize("hasAnyAuthority('fileStore', 'fileStore.find')")
+    @PreAuthorize("hasAnyAuthority('fileStore.find')")
     @GetMapping("/list/all")
     public List<FileStoreDto> findList(FileStoreDto fileStoreDto) {
         List<FileStore> fileStoreList = fileStoreService.findFileStoreList(fileStoreDto);
@@ -42,7 +42,7 @@ public class FileStoreController {
     }
 
     /** 根据ids查询 */
-    @PreAuthorize("hasAnyAuthority('fileStore', 'fileStore.find')")
+    @PreAuthorize("hasAnyAuthority('fileStore.find')")
     @GetMapping("/list/ids")
     public List<FileStoreDto> findListByIds(FileStoreDto fileStoreDto) {
         List<FileStore> fileStoreList = fileStoreService.findFileStoreByIds(fileStoreDto.getIds());
@@ -50,7 +50,7 @@ public class FileStoreController {
     }
 
     /** 详情 */
-    @PreAuthorize("hasAnyAuthority('fileStore', 'fileStore.find')")
+    @PreAuthorize("hasAnyAuthority('fileStore.find')")
     @GetMapping("/detail/{id}")
     public FileStoreDto getById(@PathVariable long id) {
         FileStore fileStore = fileStoreService.getFileStoreById(id);
@@ -58,7 +58,7 @@ public class FileStoreController {
     }
 
     /** 保存 */
-    @PreAuthorize("hasAnyAuthority('fileStore', 'fileStore.add', 'fileStore.edit')")
+    @PreAuthorize("hasAnyAuthority('fileStore.add', 'fileStore.edit')")
     @PostMapping("/save")
     public Result<Void> save(@Valid @RequestBody FileStoreDto fileStoreDto) {
         fileStoreService.saveFileStore(
@@ -67,7 +67,7 @@ public class FileStoreController {
     }
 
     /** 删除 */
-    @PreAuthorize("hasAnyAuthority('fileStore', 'fileStore.del')")
+    @PreAuthorize("hasAnyAuthority('fileStore.del')")
     @DeleteMapping("/del/{id}")
     public Result<Void> delete(@PathVariable long id) {
         fileStoreService.deleteFileStore(id);

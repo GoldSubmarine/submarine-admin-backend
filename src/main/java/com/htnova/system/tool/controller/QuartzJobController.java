@@ -28,7 +28,7 @@ public class QuartzJobController {
     @Resource private QuartzLogService quartzLogService;
 
     /** 分页查询 */
-    @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
+    @PreAuthorize("hasAnyAuthority('quartzJob.find')")
     @GetMapping("/list/page")
     public XPage<QuartzJobDto> findListByPage(QuartzJobDto quartzJobDto, XPage<Void> xPage) {
         IPage<QuartzJob> quartzJobPage =
@@ -37,7 +37,7 @@ public class QuartzJobController {
     }
 
     /** 查询 */
-    @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
+    @PreAuthorize("hasAnyAuthority('quartzJob.find')")
     @GetMapping("/list/all")
     public List<QuartzJobDto> findList(QuartzJobDto quartzJobDto) {
         List<QuartzJob> quartzJobList = quartzJobService.findQuartzJobList(quartzJobDto);
@@ -45,7 +45,7 @@ public class QuartzJobController {
     }
 
     /** 详情 */
-    @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
+    @PreAuthorize("hasAnyAuthority('quartzJob.find')")
     @GetMapping("/detail/{id}")
     public QuartzJobDto getById(@PathVariable long id) {
         QuartzJob quartzJob = quartzJobService.getQuartzJobById(id);
@@ -53,7 +53,7 @@ public class QuartzJobController {
     }
 
     /** 保存 */
-    @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.add', 'quartzJob.edit')")
+    @PreAuthorize("hasAnyAuthority('quartzJob.add', 'quartzJob.edit')")
     @PostMapping("/save")
     public Result<Void> save(@Valid @RequestBody QuartzJobDto quartzJobDto) {
         quartzJobService.saveQuartzJob(
@@ -62,7 +62,7 @@ public class QuartzJobController {
     }
 
     /** 删除 */
-    @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.del')")
+    @PreAuthorize("hasAnyAuthority('quartzJob.del')")
     @DeleteMapping("/del/{id}")
     public Result<Void> delete(@PathVariable long id) {
         quartzJobService.deleteQuartzJob(id);
@@ -70,7 +70,7 @@ public class QuartzJobController {
     }
 
     /** 改变任务状态 */
-    @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.add')")
+    @PreAuthorize("hasAnyAuthority('quartzJob.add')")
     @PostMapping("/status")
     public Result<Void> changeScheduleJobStatus(@RequestBody QuartzJobDto quartzJobDto) {
         quartzJobService.changeScheduleJobStatus(quartzJobDto.getId(), quartzJobDto.getStatus());
@@ -78,7 +78,7 @@ public class QuartzJobController {
     }
 
     /** 执行一次任务 */
-    @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.add')")
+    @PreAuthorize("hasAnyAuthority('quartzJob.add')")
     @PostMapping("/run")
     public Result<Void> runScheduleJob(@RequestBody QuartzJobDto quartzJobDto) {
         quartzJobService.runScheduleJob(quartzJobDto.getId());
@@ -86,7 +86,7 @@ public class QuartzJobController {
     }
 
     /** 查看日志 */
-    @PreAuthorize("hasAnyAuthority('quartzJob', 'quartzJob.find')")
+    @PreAuthorize("hasAnyAuthority('quartzJob.find')")
     @GetMapping("/log/page")
     public XPage<QuartzLogDto> findLogByPage(QuartzLogDto quartzLogDto, XPage<Void> xPage) {
         IPage<QuartzLog> quartzLogPage =
