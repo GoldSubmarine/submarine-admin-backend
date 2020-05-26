@@ -2,7 +2,6 @@ package com.htnova.system.manage.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.common.constant.ResultStatus;
-import com.htnova.common.converter.DateFormatConfig;
 import com.htnova.common.converter.DtoConverter;
 import com.htnova.common.converter.TreeConverter;
 import com.htnova.common.dto.Result;
@@ -11,8 +10,6 @@ import com.htnova.system.manage.dto.PermissionDto;
 import com.htnova.system.manage.entity.Permission;
 import com.htnova.system.manage.mapstruct.PermissionMapStruct;
 import com.htnova.system.manage.service.PermissionService;
-
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

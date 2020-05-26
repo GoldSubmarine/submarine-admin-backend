@@ -19,9 +19,7 @@ import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 
-/**
- * 全局 json 格式化
- */
+/** 全局 json 格式化 */
 @JsonComponent
 public class DateFormatConfig implements Converter<String, LocalDateTime> {
 

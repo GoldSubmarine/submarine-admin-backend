@@ -20,7 +20,7 @@ public class SocketExceptionListener implements ExceptionListener {
      */
     @Override
     public void onEventException(Exception e, List<Object> args, SocketIOClient client) {
-        if(e instanceof ServiceException) {
+        if (e instanceof ServiceException) {
             client.sendEvent(GlobalConst.SOCKET_ERROR_PATH, ((ServiceException) e).getResult());
         } else {
             client.sendEvent(GlobalConst.SOCKET_ERROR_PATH, new ServiceException().getResult());

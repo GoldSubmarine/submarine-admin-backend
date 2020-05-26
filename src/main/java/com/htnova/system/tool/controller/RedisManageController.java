@@ -4,8 +4,6 @@ import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnEvent;
-import com.htnova.common.constant.ResultStatus;
-import com.htnova.common.exception.ServiceException;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,7 @@ public class RedisManageController {
     public void onEvent(SocketIOClient client, AckRequest ackRequest, String msg) {
         log.info("client {} msg {} AckRequest {}", client, msg, ackRequest);
         client.sendEvent("/redis/list");
-        throw new ServiceException(ResultStatus.DELETE_SUCCESS);
+        //        throw new ServiceException(ResultStatus.DELETE_SUCCESS);
     }
 
     public void pushMsg() {
