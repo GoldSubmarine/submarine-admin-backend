@@ -2,20 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.htnova.system.tool.mapper.FileStoreMapper">
     <sql id="SelectColumns">
-		a.id as id,
-		a.name as name,
-		a.real_name as realName,
-		a.size as size,
-		a.type as type,
-		a.url as url,
-		a.md5 as md5,
-		a.store_type as storeType,
-		a.remark as remark,
-		a.create_by as createBy,
-		a.create_time as createTime,
-		a.update_by as updateBy,
-		a.update_time as updateTime,
-		a.del_flag as delFlag
+		a.id as `id`,
+		a.name as `name`,
+		a.real_name as `realName`,
+		a.size as `size`,
+		a.type as `type`,
+		a.url as `url`,
+		a.md5 as `md5`,
+		a.store_type as `storeType`,
+		a.remark as `remark`,
+		a.create_by as `createBy`,
+		a.create_time as `createTime`,
+		a.update_by as `updateBy`,
+		a.update_time as `updateTime`,
+		a.del_flag as `delFlag`
     </sql>
 
     <!--列表查询-->

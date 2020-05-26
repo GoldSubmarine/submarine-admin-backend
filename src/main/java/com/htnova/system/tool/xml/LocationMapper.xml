@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.system.tool.mapper.LocationMapper">
+    <sql id="SelectColumns">
+		a.id as `id`,
+		a.pid as `pid`,
+		a.pids as `pids`,
+		a.deep as `deep`,
+		a.name as `name`,
+		a.point as `point`,
+		a.remark as `remark`,
+		a.create_by as `createBy`,
+		a.create_time as `createTime`,
+		a.update_by as `updateBy`,
+		a.update_time as `updateTime`,
+		a.del_flag as `delFlag`
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM t_sys_location a WHERE a.del_flag = #{locationDto.delFlag}
+            
+		<if test="locationDto.id != null">
+			AND a.id = #{locationDto.id}
+		</if>
+		<if test="locationDto.pid != null">
+			AND a.pid = #{locationDto.pid}
+		</if>
+		<if test="locationDto.deep != null">
+			AND a.deep = #{locationDto.deep}
+		</if>
+		<if test="locationDto.name != null and locationDto.name != ''">
+			AND a.name LIKE concat('%', #{locationDto.name}, '%')
+		</if>
+		<if test="locationDto.point != null and locationDto.point != ''">
+			AND a.point = #{locationDto.point}
+		</if>
+		<if test="locationDto.remark != null and locationDto.remark != ''">
+			AND a.remark = #{locationDto.remark}
+		</if>
+		<if test="locationDto.createBy != null and locationDto.createBy != ''">
+			AND a.create_by = #{locationDto.createBy}
+		</if>
+		<if test="locationDto.createTime != null">
+			AND a.create_time = #{locationDto.createTime}
+		</if>
+		<if test="locationDto.updateBy != null and locationDto.updateBy != ''">
+			AND a.update_by = #{locationDto.updateBy}
+		</if>
+		<if test="locationDto.updateTime != null">
+			AND a.update_time = #{locationDto.updateTime}
+		</if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="Location">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="Location">
+        <include refid="findList"/>
+    </select>
+
+</mapper>
