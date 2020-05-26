@@ -26,7 +26,7 @@ spring:
     login-page: /login
     login-processing-url: /auth/login
     login-success-page: /
-    logout-url: /logout
+    logout-url: /auth/logout
     error-page: /error-page
 
 mybatis-plus:
