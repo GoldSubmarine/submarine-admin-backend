@@ -9,3 +9,5 @@
 *.jar binary
 *.png binary
 *.jpg binary
+
+*.sql linguist-language=java
