@@ -29,7 +29,7 @@
         <commons-lang3.version>3.10</commons-lang3.version>
         <commons-pool2.version>2.8.0</commons-pool2.version>
         <aliyun-oss.version>3.9.1</aliyun-oss.version>
-        <git-code-format-maven-plugin.version>2.4</git-code-format-maven-plugin.version>
+        <spotless.version>1.31.1</spotless.version>
     </properties>
 
     <!-- nexus私服配置 -->
@@ -210,32 +210,22 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.cosium.code</groupId>
-                <artifactId>git-code-format-maven-plugin</artifactId>
-                <version>${git-code-format-maven-plugin.version}</version>
-                <executions>
-                    <!-- On commit, format the modified java files -->
-                    <execution>
-                        <id>install-formatter-hook</id>
-                        <goals>
-                            <goal>install-hooks</goal>
-                        </goals>
-                    </execution>
-                    <!-- On Maven verify phase, fail if any file
-                    (including unmodified) is badly formatted -->
-                    <execution>
-                        <id>validate-code-format</id>
-                        <goals>
-                            <goal>validate-code-format</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <googleJavaFormatOptions>
-                        <aosp>true</aosp>
-                    </googleJavaFormatOptions>
-                </configuration>
-            </plugin>
+            <groupId>com.diffplug.spotless</groupId>
+            <artifactId>spotless-maven-plugin</artifactId>
+            <version>${spotless.version}</version>
+            <configuration>
+                <java>
+                    <includes>
+                        <include>src/**/*.java</include>
+                    </includes>
+                    <googleJavaFormat>
+                        <version>1.7</version>
+                        <!-- Optional, available versions: GOOGLE, AOSP  https://github.com/google/google-java-format/blob/master/core/src/main/java/com/google/googlejavaformat/java/JavaFormatterOptions.java -->
+                        <style>AOSP</style>
+                    </googleJavaFormat>
+                </java>
+            </configuration>
+        </plugin>
         </plugins>
     </build>
 
