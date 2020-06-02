@@ -4,7 +4,7 @@ spring:
     druid:
       username: root
       password: root
-      url: jdbc:p6spy:mysql://192.168.39.36:3306/submarine?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false
+      url: jdbc:p6spy:mysql://192.168.39.36:3306/submarine?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true
       driverClassName: com.p6spy.engine.spy.P6SpyDriver
       validationQuery: SELECT 1
       testWhileIdle: true

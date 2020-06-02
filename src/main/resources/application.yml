@@ -22,6 +22,8 @@ spring:
     redis:
       flush-mode: on_save
       namespace: springboot-session
+  activiti:
+    database-schema-update: true
   security:
     login-page: /login
     login-processing-url: /auth/login
