@@ -15,6 +15,9 @@ public class PermissionDto extends BaseTreeDto<PermissionDto> {
     /** 类型 */
     private Permission.PermissionType type;
 
+    /** 前端类型 */
+    private Permission.FrontType frontType;
+
     /** 名称（中文） */
     private String name;
 

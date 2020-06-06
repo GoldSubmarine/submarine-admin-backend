@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.htnova.common.base.BaseEntity;
+import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,6 +53,12 @@ public class User extends BaseEntity {
     /** 部门名称 */
     private String deptName;
 
+    /** APP登录密钥 */
+    @JsonIgnore private String token;
+
+    /** APP上次访问时间 */
+    @JsonIgnore private Date lastAccessDate;
+
     /** 角色 */
     @TableField(exist = false)
     private List<Role> roleList;
@@ -63,5 +70,25 @@ public class User extends BaseEntity {
     public enum UserStatus {
         enable,
         disable
+    }
+
+    public SaveEvent saveEvent() {
+        return new SaveEvent();
+    }
+
+    public class SaveEvent {
+        public User getUser() {
+            return User.this;
+        }
+    }
+
+    public DeleteEvent deleteEvent() {
+        return new DeleteEvent();
+    }
+
+    public class DeleteEvent {
+        public User getUser() {
+            return User.this;
+        }
     }
 }

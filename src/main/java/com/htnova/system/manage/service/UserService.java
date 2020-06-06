@@ -8,21 +8,27 @@ import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.exception.ServiceException;
 import com.htnova.common.util.CommonUtil;
 import com.htnova.common.util.UserUtil;
+import com.htnova.security.entity.AuthUser;
+import com.htnova.security.mapstruct.AuthUserMapStruct;
 import com.htnova.system.manage.dto.UserDto;
 import com.htnova.system.manage.entity.*;
 import com.htnova.system.manage.mapper.UserMapper;
 import com.htnova.system.manage.mapper.UserRoleMapper;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.factory.Mappers;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -39,6 +45,10 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     @Resource private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Resource private ApplicationContext applicationContext;
+
+    @Resource private PermissionService permissionService;
+
     @Transactional(readOnly = true)
     public IPage<User> findUserList(UserDto userDto, IPage<Void> xPage) {
         return userMapper.findPage(xPage, userDto);
@@ -49,14 +59,30 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         return userMapper.findList(userDto);
     }
 
+    @Transactional(readOnly = true)
+    public AuthUser getAuthUser(User user) {
+        AuthUserMapStruct mapper = Mappers.getMapper(AuthUserMapStruct.class);
+        return mapper.toAuthUser(user);
+    }
+
     @Transactional
     public String saveUser(User user) {
+        // 编辑
+        checkUserNameDuplicate(user);
         Dept dept = deptService.getDeptById(user.getDeptId());
         user.setDeptIds(Optional.ofNullable(dept.getPids()).orElse("") + dept.getId() + ",");
         user.setDeptName(dept.getName());
         String randomPass = computePassword(user);
         super.saveOrUpdate(user);
+        applicationContext.publishEvent(user.saveEvent());
         return randomPass;
+    }
+
+    private void checkUserNameDuplicate(User user) {
+        List<User> list = super.lambdaQuery().eq(User::getUsername, user.getUsername()).list();
+        if (!list.isEmpty() && !list.get(0).getId().equals(user.getId())) {
+            throw new ServiceException(ResultStatus.USERNAME_DUPLICATE);
+        }
     }
 
     private String computePassword(User user) {
@@ -79,6 +105,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
             throw new ServiceException(ResultStatus.OLD_PASSWORD_WRONG);
         }
         source.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        source.setToken(CommonUtil.getRandomString(16));
         super.saveOrUpdate(source);
     }
 
@@ -87,6 +114,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         User source = userMapper.selectById(id);
         String pass = CommonUtil.getRandomNum(6);
         source.setPassword(bCryptPasswordEncoder.encode(pass));
+        source.setToken(CommonUtil.getRandomString(16));
         super.saveOrUpdate(source);
         return pass;
     }
@@ -100,7 +128,18 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     @Transactional
     public User getByUsername(String username) {
-        User user = super.lambdaQuery().eq(User::getUsername, username).one();
+        User user =
+                super.lambdaQuery()
+                        .eq(User::getUsername, username)
+                        .eq(User::getStatus, User.UserStatus.enable)
+                        .one();
+        fillRolePermission(user);
+        return user;
+    }
+
+    @Transactional
+    public User getByToken(String token) {
+        User user = super.lambdaQuery().eq(User::getToken, token).one();
         fillRolePermission(user);
         return user;
     }
@@ -119,22 +158,35 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     @Transactional
     public void deleteUser(Long id) {
         // 删除用户角色关联表
+        User user = super.getById(id);
         userRoleService.remove(
                 new LambdaQueryWrapper<>(new UserRole()).eq(UserRole::getUserId, id));
         super.removeById(id);
+        applicationContext.publishEvent(user.deleteEvent());
     }
-
-    // ===============冗余字段更新start===============
 
     @Async
     @TransactionalEventListener
     @Transactional
-    public void updateOrgName(Dept.UpdateName updateName) {
-        User user = new User();
-        user.setDeptName(updateName.getName());
-        super.update(
-                user, new LambdaQueryWrapper<>(new User()).eq(User::getDeptId, user.getDeptId()));
-        log.debug("Dept.UpdateName: {}", updateName);
+    public void deptSaveEventHandle(Dept.SaveEvent saveEvent) {
+        Dept dept = saveEvent.getDept();
+        super.lambdaUpdate()
+                .eq(User::getDeptId, dept.getId())
+                .set(User::getDeptName, dept.getName())
+                .update();
+        log.debug("User reply {}", saveEvent);
     }
-    // ===============冗余字段更新end===============
+
+    @EventListener
+    @Transactional
+    public void deptDeleteEventHandle(Dept.DeleteEvent deleteEvent) {
+        Dept dept = deleteEvent.getDept();
+        if (Objects.nonNull(dept.getId())) {
+            List<User> list = super.lambdaQuery().eq(User::getDeptId, dept.getId()).list();
+            if (!list.isEmpty()) {
+                throw new ServiceException(ResultStatus.DEPT_HAS_USER, list);
+            }
+        }
+        log.debug("User reply {}", deleteEvent);
+    }
 }

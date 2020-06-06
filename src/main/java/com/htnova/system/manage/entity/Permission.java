@@ -16,6 +16,9 @@ public class Permission extends BaseTreeEntity<Permission> {
     /** 类型 */
     private PermissionType type;
 
+    /** 前端类型 */
+    private FrontType frontType;
+
     /** 名称（中文） */
     private String name;
 
@@ -28,5 +31,10 @@ public class Permission extends BaseTreeEntity<Permission> {
 
         /** 按钮 */
         button
+    }
+
+    public enum FrontType {
+        WEB,
+        APP
     }
 }

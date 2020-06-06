@@ -19,19 +19,23 @@ public class Dept extends BaseTreeEntity<Dept> {
     /** 编码 */
     private String code;
 
-    /** 发布修改部门名称的事件 */
-    public UpdateName updateName() {
-        return new UpdateName();
+    public SaveEvent saveEvent() {
+        return new SaveEvent();
     }
 
-    public class UpdateName {
-
-        public String getName() {
-            return name;
+    public class SaveEvent {
+        public Dept getDept() {
+            return Dept.this;
         }
+    }
 
-        public Long getId() {
-            return id;
+    public DeleteEvent deleteEvent() {
+        return new DeleteEvent();
+    }
+
+    public class DeleteEvent {
+        public Dept getDept() {
+            return Dept.this;
         }
     }
 }
