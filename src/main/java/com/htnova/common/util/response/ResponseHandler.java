@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
 
 @FunctionalInterface
 public interface ResponseHandler {
@@ -20,16 +19,7 @@ public interface ResponseHandler {
 
     static ResponseHandler create(Result<?> result) {
         return (request, response) -> {
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("application/json; charset=utf-8");
-            PrintWriter writer = response.getWriter();
-            writer.write(JsonMapper.toJsonString(result));
-        };
-    }
-
-    static ResponseHandler create(HttpStatus httpStatus, Result<?> result) {
-        return (request, response) -> {
-            response.setStatus(httpStatus.value());
+            response.setStatus(result.getStatus());
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json; charset=utf-8");
             PrintWriter writer = response.getWriter();

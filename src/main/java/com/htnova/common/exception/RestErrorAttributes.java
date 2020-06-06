@@ -5,13 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
-@Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RestErrorAttributes implements ErrorAttributes, HandlerExceptionResolver {
     private static final String ERROR_ATTRIBUTE = RestErrorAttributes.class.getName() + ".ERROR";

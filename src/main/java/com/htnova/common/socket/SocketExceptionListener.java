@@ -3,7 +3,8 @@ package com.htnova.common.socket;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.listener.ExceptionListener;
 import com.htnova.common.constant.GlobalConst;
-import com.htnova.common.exception.ServiceException;
+import com.htnova.common.dto.Result;
+import com.htnova.common.exception.ExceptionTranslate;
 import io.netty.channel.ChannelHandlerContext;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +21,8 @@ public class SocketExceptionListener implements ExceptionListener {
      */
     @Override
     public void onEventException(Exception e, List<Object> args, SocketIOClient client) {
-        if (e instanceof ServiceException) {
-            client.sendEvent(GlobalConst.SOCKET_ERROR_PATH, ((ServiceException) e).getResult());
-        } else {
-            client.sendEvent(GlobalConst.SOCKET_ERROR_PATH, new ServiceException().getResult());
-        }
+        Result<?> result = ExceptionTranslate.translate(e);
+        client.sendEvent(GlobalConst.SOCKET_ERROR_PATH, result);
         log.error("socket 错误", e);
     }
 

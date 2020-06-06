@@ -1,8 +1,6 @@
 package com.htnova.common.exception;
 
 import com.htnova.common.constant.ResultStatus;
-import com.htnova.common.dto.Result;
-import java.io.Serializable;
 import lombok.Data;
 
 /** Service层公用的Exception, 从由Spring管理事务的函数中抛出时会触发事务回滚. */
@@ -12,7 +10,7 @@ public class ServiceException extends RuntimeException {
 
     private final Integer code;
 
-    private final Serializable data;
+    private final transient Object data;
 
     /** 默认为 ResultStatus.SERVER_ERROR 错误 */
     public ServiceException() {
@@ -32,9 +30,5 @@ public class ServiceException extends RuntimeException {
         super(resultStatus.getMsg());
         this.code = resultStatus.getCode();
         this.data = objects;
-    }
-
-    public Result<Serializable> getResult() {
-        return Result.build(this.getCode(), this.getMessage(), this.getData());
     }
 }

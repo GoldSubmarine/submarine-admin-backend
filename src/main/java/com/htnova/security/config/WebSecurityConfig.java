@@ -5,6 +5,7 @@ import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.Result;
 import com.htnova.common.util.response.ResponseHandler;
 import com.htnova.security.entity.UserDetail;
+import com.htnova.security.exception.EmptyPermissionException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +32,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,7 +47,9 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.util.CollectionUtils;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true) //  启用方法级别的权限认证
@@ -68,7 +73,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(serverProperties.getError().getPath());
+        web.ignoring()
+                .antMatchers(
+                        serverProperties.getError().getPath(), AppConst.APP_URL_PREFIX + "/**");
     }
 
     @Override
@@ -107,9 +114,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         getAjaxHttpRequestMatcher())
                 .and()
                 .authorizeRequests()
-                .antMatchers(AppConst.APP_LOGIN_URL, "/file/download/**")
-                .permitAll()
-                .antMatchers("/druid/**")
+                .antMatchers(securityConfig.getLoginPage(), "/druid/**", "/file/download/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated() // 其他地址的访问均需验证权限
@@ -125,7 +130,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationProvider getAuthenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider daoAuthenticationProvider =
+                new DaoAuthenticationProvider() {
+                    @Override
+                    protected Authentication createSuccessAuthentication(
+                            Object principal, Authentication authentication, UserDetails user) {
+                        UserDetail userDetail = (UserDetail) user;
+                        if (CollectionUtils.isEmpty(userDetail.getUser().getPermissionList())) {
+                            throw new EmptyPermissionException("未分配权限，不能登录");
+                        }
+                        return super.createSuccessAuthentication(principal, authentication, user);
+                    }
+                };
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
         return daoAuthenticationProvider;
@@ -187,7 +203,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     HttpServletResponse response,
                     AuthenticationException e)
                     throws IOException, ServletException {
-                Result<?> result = getResult(e);
+                Result<?> result = translateAuthenticationException(e);
                 ResponseHandler responseHandler =
                         ResponseHandler.builder()
                                 // ajax请求 返回 LOGIN_SUCCESS，并返回 redirectUrl
@@ -205,18 +221,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                 .build();
                 responseHandler.handle(request, response);
             }
-
-            private Result<?> getResult(AuthenticationException e) {
-                Result<?> result = Result.build(ResultStatus.LOGIN_ERROR);
-                if (e instanceof AccountStatusException) {
-                    result = Result.build(ResultStatus.ACCOUNT_FREEZE);
-                } else if (e instanceof UsernameNotFoundException
-                        || e instanceof BadCredentialsException) {
-                    result = Result.build(ResultStatus.USERNAME_PASSWORD_ERROR);
-                }
-                return result;
-            }
         };
+    }
+
+    public static Result<?> translateAuthenticationException(AuthenticationException e) {
+        log.error("error:", e);
+        if (e instanceof AccountStatusException) {
+            return Result.build(HttpStatus.BAD_REQUEST, ResultStatus.ACCOUNT_FREEZE);
+        } else if (e instanceof UsernameNotFoundException || e instanceof BadCredentialsException) {
+            return Result.build(HttpStatus.BAD_REQUEST, ResultStatus.USERNAME_PASSWORD_ERROR);
+        } else if (e instanceof EmptyPermissionException) {
+            return Result.build(HttpStatus.BAD_REQUEST, ResultStatus.EMPTY_PERMISSION);
+        }
+        return Result.build(HttpStatus.BAD_REQUEST, ResultStatus.LOGIN_ERROR);
     }
 
     private AuthenticationEntryPoint getAuthenticationEntryPoint() {
@@ -234,8 +251,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                 // ajax请求 返回 FORBIDDEN
                                 .handlerFor(
                                         ResponseHandler.create(
-                                                HttpStatus.UNAUTHORIZED,
-                                                Result.build(ResultStatus.UNAUTHORIZED)),
+                                                Result.build(
+                                                        HttpStatus.UNAUTHORIZED,
+                                                        ResultStatus.UNAUTHORIZED)),
                                         getAjaxHttpRequestMatcher())
                                 // 默认 直接302 到 登录页面
                                 .defaultHandler(
@@ -268,8 +286,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                 // ajax请求 返回 FORBIDDEN
                                 .handlerFor(
                                         ResponseHandler.create(
-                                                HttpStatus.FORBIDDEN,
-                                                Result.build(ResultStatus.FORBIDDEN)),
+                                                Result.build(
+                                                        HttpStatus.FORBIDDEN,
+                                                        ResultStatus.FORBIDDEN)),
                                         getAjaxHttpRequestMatcher())
                                 // 默认 直接302 到 错误页面
                                 .defaultHandler(

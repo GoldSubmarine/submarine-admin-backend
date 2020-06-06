@@ -22,6 +22,7 @@ public enum ResultStatus {
     BIND_ERROR(10005, "参数错误"),
     FORMAT_ERROR(10006, "格式化错误"),
     NO_ERROR(10007, "No errors"),
+    REQUEST_SUCCESS(10008, "请求成功"),
 
     // ===============认证授权相关(11)=============
 
@@ -33,9 +34,10 @@ public enum ResultStatus {
     USERNAME_PASSWORD_ERROR(11005, "用户名密码错误"),
     PASSWORD_WRONG(11006, "密码错误"),
     ACCOUNT_FREEZE(11007, "当前账号已冻结，请联系管理员"),
-    OLD_PASSWORD_WRONG(11008, "原密码错误"),
+    OLD_PASSWORD_WRONG(11008, "旧密码错误"),
     UNAUTHORIZED(11009, "未认证的访问"),
     FORBIDDEN(11010, "未授权的访问"),
+    EMPTY_PERMISSION(11011, "未分配权限不能登录"),
 
     // ===============接口签名相关(12)=============
 
@@ -50,17 +52,25 @@ public enum ResultStatus {
     FILE_NOT_FOUND(13001, "文件不存在"),
     UPLOAD_FAILED(13002, "文件上传失败"),
 
-    // ===============定时任务相关(14)=============
-    QUARTZ_CREATE_FAIL(14000, "创建定时任务失败"),
-    QUARTZ_PAUSE_FAIL(14001, "暂停定时任务失败"),
-    QUARTZ_PAUSE_SUCCESS(14002, "停用定时任务成功"),
-    QUARTZ_RESUME_FAIL(14003, "恢复定时任务失败"),
-    QUARTZ_RUN_FAIL(14004, "运行定时任务出错"),
-    QUARTZ_RUN_SUCCESS(14005, "运行定时任务成功"),
-    QUARTZ_DELETE_FAIL(14006, "删除定时任务出错"),
-    QUARTZ_EXPRESSION_INVALID(14007, "cron表达式错误"),
-    QUARTZ_METHOD_NOT_EXIST(14008, "当前方法不存在"),
-    QUARTZ_JOB_NAME_IS_EXIST(14009, "当前任务名已存在，不能重复");
+    // ===============系统相关(14)=============
+
+    DEPT_HAS_CHILD(14000, "该部门下面有子部门不能删除"),
+    DEPT_HAS_USER(14001, "该部门下面有用户不能删除"),
+    DEPT_CODE_DUPLICATE(14002, "部门编码重复"),
+    USERNAME_DUPLICATE(14003, "用户名已存在"),
+
+    // ===============定时任务相关(15)=============
+
+    QUARTZ_CREATE_FAIL(15000, "创建定时任务失败"),
+    QUARTZ_PAUSE_FAIL(15001, "暂停定时任务失败"),
+    QUARTZ_PAUSE_SUCCESS(15002, "停用定时任务成功"),
+    QUARTZ_RESUME_FAIL(15003, "恢复定时任务失败"),
+    QUARTZ_RUN_FAIL(15004, "运行定时任务出错"),
+    QUARTZ_RUN_SUCCESS(15005, "运行定时任务成功"),
+    QUARTZ_DELETE_FAIL(15006, "删除定时任务出错"),
+    QUARTZ_EXPRESSION_INVALID(15007, "cron表达式错误"),
+    QUARTZ_METHOD_NOT_EXIST(15008, "当前方法不存在"),
+    QUARTZ_JOB_NAME_IS_EXIST(15009, "当前任务名已存在，不能重复");
 
     // ===============业务相关(99)=============
 
