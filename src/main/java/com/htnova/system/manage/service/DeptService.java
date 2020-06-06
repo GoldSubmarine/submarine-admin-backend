@@ -7,14 +7,15 @@ import com.htnova.common.exception.ServiceException;
 import com.htnova.system.manage.dto.DeptDto;
 import com.htnova.system.manage.entity.Dept;
 import com.htnova.system.manage.mapper.DeptMapper;
-import java.util.List;
-import java.util.Objects;
-import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class DeptService extends ServiceImpl<DeptMapper, Dept> {
