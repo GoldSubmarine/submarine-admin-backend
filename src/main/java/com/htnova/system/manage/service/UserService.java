@@ -14,6 +14,11 @@ import com.htnova.system.manage.dto.UserDto;
 import com.htnova.system.manage.entity.*;
 import com.htnova.system.manage.mapper.UserMapper;
 import com.htnova.system.manage.mapper.UserRoleMapper;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.ApplicationContext;
@@ -23,12 +28,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
-
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service

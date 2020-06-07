@@ -30,7 +30,8 @@
         <commons-pool2.version>2.8.0</commons-pool2.version>
         <aliyun-oss.version>3.9.1</aliyun-oss.version>
         <spotless.version>1.31.1</spotless.version>
-        <activiti.version>7.1.0.M6</activiti.version>
+        <flowable.version>6.5.0</flowable.version>
+        <exec-maven-plugin.version.version>1.6.0</exec-maven-plugin.version.version>
     </properties>
 
     <!-- nexus私服配置 -->
@@ -82,10 +83,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-spring-boot-starter</artifactId>
-            <version>${activiti.version}</version>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter</artifactId>
+            <version>${flowable.version}</version>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.flowable</groupId>-->
+        <!--            <artifactId>flowable-ldap-configurator</artifactId>-->
+        <!--            <version>${flowable.version}</version>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -232,6 +238,24 @@
                         </googleJavaFormat>
                     </java>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>config git hooks</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>git</executable>
+                            <commandlineArgs>config core.hooksPath hooks</commandlineArgs>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

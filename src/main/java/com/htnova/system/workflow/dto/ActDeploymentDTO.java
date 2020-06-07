@@ -1,19 +1,18 @@
-package com.htnova.system.tool.dto;
+package com.htnova.system.workflow.dto;
 
-import com.htnova.common.constant.GlobalConst;
+import com.htnova.common.util.DateUtil;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.activiti.engine.repository.Deployment;
+import org.flowable.engine.repository.Deployment;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class ActivitiDeploymentDTO {
+public class ActDeploymentDTO {
 
     // 数据库id
     private String id;
@@ -33,14 +32,11 @@ public class ActivitiDeploymentDTO {
     // 部署的时间
     private LocalDateTime deploymentTime;
 
-    public ActivitiDeploymentDTO(Deployment deployment) {
+    public ActDeploymentDTO(Deployment deployment) {
         this.setId(deployment.getId());
         this.setName(deployment.getName());
         this.setCategory(deployment.getCategory());
         this.setKey(deployment.getKey());
-        this.setDeploymentTime(
-                LocalDateTime.ofInstant(
-                        deployment.getDeploymentTime().toInstant(),
-                        ZoneId.of(GlobalConst.TIME_ZONE_ID)));
+        this.setDeploymentTime(DateUtil.converter(deployment.getDeploymentTime()));
     }
 }

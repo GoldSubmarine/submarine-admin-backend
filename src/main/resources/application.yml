@@ -22,14 +22,15 @@ spring:
     redis:
       flush-mode: on_save
       namespace: springboot-session
-  activiti:
-    database-schema-update: true
   security:
     login-page: /login
     login-processing-url: /auth/login
     login-success-page: /
     logout-url: /auth/logout
     error-page: /error-page
+
+flowable:
+  database-schema-update: true
 
 mybatis-plus:
   mapper-locations: classpath:com/htnova/**/xml/*.xml

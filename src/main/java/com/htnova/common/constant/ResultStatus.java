@@ -70,10 +70,13 @@ public enum ResultStatus {
     QUARTZ_DELETE_FAIL(15006, "删除定时任务出错"),
     QUARTZ_EXPRESSION_INVALID(15007, "cron表达式错误"),
     QUARTZ_METHOD_NOT_EXIST(15008, "当前方法不存在"),
-    QUARTZ_JOB_NAME_IS_EXIST(15009, "当前任务名已存在，不能重复");
+    QUARTZ_JOB_NAME_IS_EXIST(15009, "当前任务名已存在，不能重复"),
 
-    // ===============业务相关(99)=============
+    // ===============工作流相关(15)=============
+    DEPLOY_SUCCESS(15000, "部署成功"),
 
+// ===============业务相关(99)=============
+;
     /** 所有成功或失败的提示都要定义code */
     private final int code;
 

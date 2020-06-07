@@ -1,6 +1,8 @@
 package com.htnova.common.mybatisplus;
 
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
+import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -24,5 +26,11 @@ public class MybatisPlusConfig {
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setMetaObjectHandler(new MetaHandler());
         return globalConfig;
+    }
+
+    /** 雪花算法 */
+    @Bean
+    public IdentifierGenerator snowflake() {
+        return new DefaultIdentifierGenerator();
     }
 }
