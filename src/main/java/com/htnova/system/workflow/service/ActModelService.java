@@ -2,8 +2,11 @@ package com.htnova.system.workflow.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.htnova.common.constant.ResultStatus;
+import com.htnova.common.exception.ServiceException;
 import com.htnova.system.workflow.dto.ActModelDTO;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +35,8 @@ public class ActModelService {
 
     public IPage<Model> findActModelList(ActModelDTO actModelDTO, IPage<Model> page) {
         // 获取查询流程定义对对象
-        ModelQuery modelQuery = this.repositoryService.createModelQuery().orderByCreateTime();
+        ModelQuery modelQuery =
+                this.repositoryService.createModelQuery().latestVersion().orderByCreateTime();
         // 排序
         if (!CollectionUtils.isEmpty(page.orders())) {
             if (page.orders().get(0).isAsc()) {
@@ -59,12 +63,27 @@ public class ActModelService {
         return page;
     }
 
-    public void saveActModel(ActModelDTO actModelDTO) {
+    public void saveActModel(String modelId, String xml) {
+        // 保存EditorSource数据
+        repositoryService.addModelEditorSource(modelId, xml.getBytes());
+        // 版本号加一
+        Model model = repositoryService.getModel(modelId);
+        model.setVersion(model.getVersion() + 1);
+        repositoryService.saveModel(model);
+    }
+
+    public void save(ActModelDTO actModelDTO) {
+        // 检测key是否重复
+        long count = repositoryService.createModelQuery().modelKey(actModelDTO.getKey()).count();
+        if (StringUtils.isBlank(actModelDTO.getId()) && count > 0) {
+            throw new ServiceException(ResultStatus.MODEL_KEY_DUPLICATE);
+        }
         // 保存模型表
         Model model = repositoryService.newModel();
         model.setName(actModelDTO.getName());
         model.setCategory(actModelDTO.getCategory());
         model.setKey(actModelDTO.getKey());
+        model.setVersion(actModelDTO.getVersion() + 1);
         try {
             String metaInfoStr = new ObjectMapper().writeValueAsString(actModelDTO.getMetaInfo());
             model.setMetaInfo(metaInfoStr);
@@ -73,16 +92,22 @@ public class ActModelService {
         }
         repositoryService.saveModel(model);
 
-        // 保存EditorSource数据
-        repositoryService.addModelEditorSource(
-                model.getId(), actModelDTO.getEditorSourceValue().getBytes());
+        // 如果已经存在模型数据，就复制一份
+        if (StringUtils.isNotBlank(actModelDTO.getId())) {
+            byte[] modelEditorSource = repositoryService.getModelEditorSource(actModelDTO.getId());
+            if (Objects.nonNull(modelEditorSource)) {
+                repositoryService.addModelEditorSource(model.getId(), modelEditorSource);
+            }
+        }
     }
 
     public ActModelDTO getActModelById(String id) {
         Model model = repositoryService.createModelQuery().modelId(id).singleResult();
         byte[] modelEditorSource = repositoryService.getModelEditorSource(model.getId());
         ActModelDTO actModelDTO = new ActModelDTO(model);
-        actModelDTO.setEditorSourceValue(new String(modelEditorSource));
+        if (Objects.nonNull(modelEditorSource)) {
+            actModelDTO.setEditorSourceValue(new String(modelEditorSource));
+        }
         return actModelDTO;
     }
 

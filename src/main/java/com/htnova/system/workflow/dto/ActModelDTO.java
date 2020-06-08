@@ -51,23 +51,20 @@ public class ActModelDTO {
     private String editorSourceValue;
 
     public ActModelDTO(Model model) {
-        ActModelDTO actModelDTO =
-                ActModelDTO.builder()
-                        .id(model.getId())
-                        .name(model.getName())
-                        .key(model.getKey())
-                        .category(model.getCategory())
-                        .version(model.getVersion())
-                        .deploymentId(model.getDeploymentId())
-                        .createTime(DateUtil.converter(model.getCreateTime()))
-                        .lastUpdateTime(DateUtil.converter(model.getLastUpdateTime()))
-                        .tenantId(model.getTenantId())
-                        .build();
+        this.id = model.getId();
+        this.name = model.getName();
+        this.key = model.getKey();
+        this.category = model.getCategory();
+        this.version = model.getVersion();
+        this.deploymentId = model.getDeploymentId();
+        this.createTime = DateUtil.converter(model.getCreateTime());
+        this.lastUpdateTime = DateUtil.converter(model.getLastUpdateTime());
+        this.tenantId = model.getTenantId();
 
         try {
             ActModelMeta actModelMeta =
                     new ObjectMapper().readValue(model.getMetaInfo(), ActModelMeta.class);
-            actModelDTO.setMetaInfo(actModelMeta);
+            this.metaInfo = actModelMeta;
         } catch (Exception e) {
             log.error("反序列化失败：", e);
         }

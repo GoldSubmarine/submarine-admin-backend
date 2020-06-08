@@ -31,6 +31,12 @@ spring:
 
 flowable:
   database-schema-update: true
+  dmn:
+    enabled: false
+  cmmn:
+    enabled: false
+  content:
+    enabled: false
 
 mybatis-plus:
   mapper-locations: classpath:com/htnova/**/xml/*.xml

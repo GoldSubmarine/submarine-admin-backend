@@ -33,10 +33,17 @@ public class ActModelController {
         return result;
     }
 
+    /** 保存模型 */
+    @PostMapping("/save/xml")
+    public Result<Void> saveActModel(@RequestBody ActModelDTO actModelDTO) {
+        actModelService.saveActModel(actModelDTO.getId(), actModelDTO.getEditorSourceValue());
+        return Result.build(ResultStatus.SAVE_SUCCESS);
+    }
+
     /** 保存 */
     @PostMapping("/save")
     public Result<Void> save(@RequestBody ActModelDTO actModelDTO) {
-        actModelService.saveActModel(actModelDTO);
+        actModelService.save(actModelDTO);
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

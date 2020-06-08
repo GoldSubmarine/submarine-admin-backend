@@ -72,8 +72,9 @@ public enum ResultStatus {
     QUARTZ_METHOD_NOT_EXIST(15008, "当前方法不存在"),
     QUARTZ_JOB_NAME_IS_EXIST(15009, "当前任务名已存在，不能重复"),
 
-    // ===============工作流相关(15)=============
-    DEPLOY_SUCCESS(15000, "部署成功"),
+    // ===============工作流相关(16)=============
+    DEPLOY_SUCCESS(16000, "部署成功"),
+    MODEL_KEY_DUPLICATE(16001, "模型key已存在"),
 
 // ===============业务相关(99)=============
 ;

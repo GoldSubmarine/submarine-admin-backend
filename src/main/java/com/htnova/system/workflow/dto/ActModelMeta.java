@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class ActModelMeta {
 
     /** 自定义属性 */
-    private String customAttributes;
+    private String description;
 }
