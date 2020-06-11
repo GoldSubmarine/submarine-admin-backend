@@ -5,15 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.exception.ServiceException;
 import com.htnova.system.workflow.dto.ActModelDTO;
+import com.htnova.system.workflow.dto.ActProcessDTO;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.engine.RepositoryService;
-import org.flowable.engine.repository.Model;
-import org.flowable.engine.repository.ModelQuery;
+import org.flowable.engine.repository.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 @Slf4j
@@ -22,21 +23,47 @@ public class ActModelService {
 
     @Resource private RepositoryService repositoryService;
 
+    @Transactional
     public void deploy(String id) {
         ActModelDTO actModel = getActModelById(id);
-        this.repositoryService
-                .createDeployment()
-                .name(actModel.getName())
-                .addString(actModel.getName(), actModel.getEditorSourceValue())
-                .category(actModel.getCategory())
-                .key(actModel.getKey())
-                .deploy();
+        Deployment deployment =
+                repositoryService
+                        .createDeployment()
+                        .name(actModel.getName())
+                        .addString(
+                                actModel.getName() + ActProcessDTO.BPMN_SUFFIX,
+                                actModel.getEditorSourceValue())
+                        .addString(
+                                actModel.getName() + ActProcessDTO.SVG_NAME,
+                                actModel.getEditorSourceExtraValue())
+                        .category(actModel.getCategory())
+                        .key(actModel.getKey())
+                        .deploy();
+        Model model = repositoryService.getModel(id);
+        model.setDeploymentId(deployment.getId());
+        repositoryService.saveModel(model);
+
+        // 设置流程分类
+        List<ProcessDefinition> list =
+                repositoryService
+                        .createProcessDefinitionQuery()
+                        .deploymentId(deployment.getId())
+                        .list();
+        for (ProcessDefinition processDefinition : list) {
+            repositoryService.setProcessDefinitionCategory(
+                    processDefinition.getId(), actModel.getCategory());
+        }
+        if (CollectionUtils.isEmpty(list)) {
+            throw new ServiceException(ResultStatus.DEFINITION_NOT_FOUND);
+        }
     }
 
     public IPage<Model> findActModelList(ActModelDTO actModelDTO, IPage<Model> page) {
         // 获取查询流程定义对对象
-        ModelQuery modelQuery =
-                this.repositoryService.createModelQuery().latestVersion().orderByCreateTime();
+        ModelQuery modelQuery = repositoryService.createModelQuery().orderByCreateTime();
+        if (actModelDTO.isLastVersion()) {
+            modelQuery.latestVersion();
+        }
         // 排序
         if (!CollectionUtils.isEmpty(page.orders())) {
             if (page.orders().get(0).isAsc()) {
@@ -47,13 +74,13 @@ public class ActModelService {
         }
         // 动态查询
         if (StringUtils.isNotBlank(actModelDTO.getCategory())) {
-            modelQuery.modelCategoryLike(actModelDTO.getCategory());
+            modelQuery.modelCategoryLike("%" + actModelDTO.getCategory() + "%");
         }
         if (StringUtils.isNotBlank(actModelDTO.getName())) {
-            modelQuery.modelNameLike(actModelDTO.getName());
+            modelQuery.modelNameLike("%" + actModelDTO.getName() + "%");
         }
         if (StringUtils.isNotBlank(actModelDTO.getKey())) {
-            modelQuery.modelKey(actModelDTO.getKey());
+            modelQuery.modelKey("%" + actModelDTO.getKey() + "%");
         }
         long start = (page.getCurrent() - 1) * page.getSize();
         long end = start + page.getSize();
@@ -63,19 +90,16 @@ public class ActModelService {
         return page;
     }
 
-    public void saveActModel(String modelId, String xml) {
-        // 保存EditorSource数据
-        repositoryService.addModelEditorSource(modelId, xml.getBytes());
-        // 版本号加一
-        Model model = repositoryService.getModel(modelId);
-        model.setVersion(model.getVersion() + 1);
-        repositoryService.saveModel(model);
-    }
-
+    @Transactional
     public void save(ActModelDTO actModelDTO) {
         // 检测key是否重复
-        long count = repositoryService.createModelQuery().modelKey(actModelDTO.getKey()).count();
-        if (StringUtils.isBlank(actModelDTO.getId()) && count > 0) {
+        Model lastModel =
+                repositoryService
+                        .createModelQuery()
+                        .modelKey(actModelDTO.getKey())
+                        .latestVersion()
+                        .singleResult();
+        if (StringUtils.isBlank(actModelDTO.getId()) && Objects.nonNull(lastModel)) {
             throw new ServiceException(ResultStatus.MODEL_KEY_DUPLICATE);
         }
         // 保存模型表
@@ -83,7 +107,9 @@ public class ActModelService {
         model.setName(actModelDTO.getName());
         model.setCategory(actModelDTO.getCategory());
         model.setKey(actModelDTO.getKey());
-        model.setVersion(actModelDTO.getVersion() + 1);
+        if (Objects.nonNull(lastModel)) {
+            model.setVersion(lastModel.getVersion() + 1);
+        }
         try {
             String metaInfoStr = new ObjectMapper().writeValueAsString(actModelDTO.getMetaInfo());
             model.setMetaInfo(metaInfoStr);
@@ -92,26 +118,29 @@ public class ActModelService {
         }
         repositoryService.saveModel(model);
 
-        // 如果已经存在模型数据，就复制一份
-        if (StringUtils.isNotBlank(actModelDTO.getId())) {
-            byte[] modelEditorSource = repositoryService.getModelEditorSource(actModelDTO.getId());
-            if (Objects.nonNull(modelEditorSource)) {
-                repositoryService.addModelEditorSource(model.getId(), modelEditorSource);
-            }
-        }
+        // 保存EditorSource数据
+        repositoryService.addModelEditorSource(
+                model.getId(), actModelDTO.getEditorSourceValue().getBytes());
+        repositoryService.addModelEditorSourceExtra(
+                model.getId(), actModelDTO.getEditorSourceExtraValue().getBytes());
     }
 
     public ActModelDTO getActModelById(String id) {
         Model model = repositoryService.createModelQuery().modelId(id).singleResult();
         byte[] modelEditorSource = repositoryService.getModelEditorSource(model.getId());
+        byte[] modelEditorSourceExtra = repositoryService.getModelEditorSourceExtra(model.getId());
         ActModelDTO actModelDTO = new ActModelDTO(model);
         if (Objects.nonNull(modelEditorSource)) {
             actModelDTO.setEditorSourceValue(new String(modelEditorSource));
         }
+        if (Objects.nonNull(modelEditorSourceExtra)) {
+            actModelDTO.setEditorSourceExtraValue(new String(modelEditorSourceExtra));
+        }
         return actModelDTO;
     }
 
+    @Transactional
     public void deleteActModel(String modelId) {
-        this.repositoryService.deleteModel(modelId);
+        repositoryService.deleteModel(modelId);
     }
 }

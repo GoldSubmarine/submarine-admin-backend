@@ -75,6 +75,9 @@ public enum ResultStatus {
     // ===============工作流相关(16)=============
     DEPLOY_SUCCESS(16000, "部署成功"),
     MODEL_KEY_DUPLICATE(16001, "模型key已存在"),
+    DEFINITION_NOT_FOUND(16002, "部署失败，没有获取到流程定义"),
+    RESOURCE_NOT_FOUND(16003, "没有获取到资源"),
+    STATUS_SET_SUCCESS(16004, "状态切换成功"),
 
 // ===============业务相关(99)=============
 ;

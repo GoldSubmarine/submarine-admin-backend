@@ -13,7 +13,7 @@ import org.flowable.engine.repository.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/act/model")
+@RequestMapping("/workflow/model")
 public class ActModelController {
 
     @Resource private ActModelService actModelService;
@@ -31,13 +31,6 @@ public class ActModelController {
         result.setData(
                 iPage.getRecords().stream().map(ActModelDTO::new).collect(Collectors.toList()));
         return result;
-    }
-
-    /** 保存模型 */
-    @PostMapping("/save/xml")
-    public Result<Void> saveActModel(@RequestBody ActModelDTO actModelDTO) {
-        actModelService.saveActModel(actModelDTO.getId(), actModelDTO.getEditorSourceValue());
-        return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
     /** 保存 */
