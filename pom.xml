@@ -31,7 +31,7 @@
         <aliyun-oss.version>3.9.1</aliyun-oss.version>
         <spotless.version>1.31.1</spotless.version>
         <flowable.version>6.5.0</flowable.version>
-        <exec-maven-plugin.version.version>1.6.0</exec-maven-plugin.version.version>
+        <exec-maven-plugin.version.version>3.0.0</exec-maven-plugin.version.version>
     </properties>
 
     <!-- nexus私服配置 -->
