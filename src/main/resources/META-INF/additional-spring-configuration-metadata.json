@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "name": "spring.security.login-success-page",
+      "type": "java.lang.String",
+      "description": "Description for spring.security.login-success-page."
+    },
+    {
+      "name": "spring.security.logout-url",
+      "type": "java.lang.String",
+      "description": "Description for spring.security.logout-url."
+    },
+    {
+      "name": "spring.security.error-page",
+      "type": "java.lang.String",
+      "description": "Description for spring.security.error-page."
+    },
+    {
+      "name": "spring.security.login-page",
+      "type": "java.lang.String",
+      "description": "Description for spring.security.login-page."
+    },
+    {
+      "name": "spring.security.login-processing-url",
+      "type": "java.lang.String",
+      "description": "Description for spring.security.login-processing-url."
+    }
+  ] }

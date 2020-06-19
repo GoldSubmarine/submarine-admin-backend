@@ -3,6 +3,7 @@ package com.htnova.common.dto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.htnova.common.base.BaseMapStruct;
 import java.util.List;
 import org.mapstruct.factory.Mappers;
@@ -48,5 +49,15 @@ public interface XPage<T> {
         BaseMapStruct<T, V> mapper = Mappers.getMapper(mapStruct);
         xPage.setData(mapper.toDto(iPage.getRecords()));
         return xPage;
+    }
+
+    @JsonIgnore
+    default long getStartIndex() {
+        return (this.getPageNum() - 1) * this.getPageSize();
+    }
+
+    @JsonIgnore
+    default long getEndIndex() {
+        return this.getPageNum() * this.getPageSize();
     }
 }

@@ -1,0 +1,28 @@
+package com.htnova.system.workflow.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@SuperBuilder
+public class ProcessVariableDTO {
+
+    /** 申请人id */
+    private String applyUserId;
+
+    /** 申请人姓名 */
+    private String applyUserName;
+
+    /** 流程定义id */
+    private String processDefinitionId;
+
+    /** 流程定义名称 */
+    private String processDefinitionName;
+
+    /** 流程定义key */
+    private String processDefinitionKey;
+}

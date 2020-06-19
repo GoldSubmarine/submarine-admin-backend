@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="leave_apply_1" name="请假审批" isExecutable="true">
+    <startEvent id="startEvent1" name="startEvent_1" flowable:formKey="leave">
+      <extensionElements>
+        <flowable:formProperty id="new_property_1" name="aa" type="string" variable="aab" default="bb"></flowable:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="sid-4B1F5617-A3C6-40A2-AB3D-BB8CE32FDCD7" name="批准申请" flowable:assignee="1" flowable:formKey="approve">
+      <extensionElements>
+        <modeler:activiti-idm-assignee xmlns:modeler="http://flowable.org/modeler"><![CDATA[true]]></modeler:activiti-idm-assignee>
+        <modeler:assignee-info-firstname xmlns:modeler="http://flowable.org/modeler"><![CDATA[admin]]></modeler:assignee-info-firstname>
+        <modeler:assignee-info-lastname xmlns:modeler="http://flowable.org/modeler"><![CDATA[admin]]></modeler:assignee-info-lastname>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="sid-5840A251-81C0-4240-82B3-E8E481603630" sourceRef="startEvent1" targetRef="sid-4B1F5617-A3C6-40A2-AB3D-BB8CE32FDCD7"></sequenceFlow>
+    <endEvent id="sid-4796FDE7-4A5D-4152-AA97-556592447811" name="endEvent_1"></endEvent>
+    <sequenceFlow id="sid-56D104F5-93DA-425E-9004-0C65004D7D77" sourceRef="sid-4B1F5617-A3C6-40A2-AB3D-BB8CE32FDCD7" targetRef="sid-4796FDE7-4A5D-4152-AA97-556592447811"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_leave_apply_1">
+    <bpmndi:BPMNPlane bpmnElement="leave_apply_1" id="BPMNPlane_leave_apply_1">
+      <bpmndi:BPMNShape bpmnElement="startEvent1" id="BPMNShape_startEvent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="255.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-4B1F5617-A3C6-40A2-AB3D-BB8CE32FDCD7" id="BPMNShape_sid-4B1F5617-A3C6-40A2-AB3D-BB8CE32FDCD7">
+        <omgdc:Bounds height="80.0" width="100.0" x="330.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-4796FDE7-4A5D-4152-AA97-556592447811" id="BPMNShape_sid-4796FDE7-4A5D-4152-AA97-556592447811">
+        <omgdc:Bounds height="28.0" width="28.0" x="465.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-5840A251-81C0-4240-82B3-E8E481603630" id="BPMNEdge_sid-5840A251-81C0-4240-82B3-E8E481603630">
+        <omgdi:waypoint x="284.94998702926875" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="307.5" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="307.5" y="70.0"></omgdi:waypoint>
+        <omgdi:waypoint x="329.99999999999244" y="70.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-56D104F5-93DA-425E-9004-0C65004D7D77" id="BPMNEdge_sid-56D104F5-93DA-425E-9004-0C65004D7D77">
+        <omgdi:waypoint x="429.94999999999305" y="70.0"></omgdi:waypoint>
+        <omgdi:waypoint x="452.5" y="70.0"></omgdi:waypoint>
+        <omgdi:waypoint x="452.5" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="74.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

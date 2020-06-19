@@ -18,7 +18,6 @@ public class ActProcessDTO {
 
     // 数据库id
     private String id;
-    private String rev;
 
     // 流程定义的类别
     private String category;
@@ -70,24 +69,31 @@ public class ActProcessDTO {
     // 只展示最新版本
     private boolean lastVersion;
 
-    public ActProcessDTO(ProcessDefinition processDefinition, LocalDateTime deploymentTime) {
+    public ActProcessDTO(ProcessDefinition processDefinition) {
         this.setId(processDefinition.getId());
         this.setCategory(processDefinition.getCategory());
         this.setKey(processDefinition.getKey());
         this.setName(processDefinition.getName());
+        this.setDescription(processDefinition.getDescription());
         this.setVersion(processDefinition.getVersion());
         this.setResourceName(processDefinition.getResourceName());
-        this.setDgrmResourceName(processDefinition.getDiagramResourceName());
         this.setDeploymentId(processDefinition.getDeploymentId());
+        this.setDgrmResourceName(processDefinition.getDiagramResourceName());
+        this.setHasStartFormKey(processDefinition.hasStartFormKey());
+        this.setHasGraphicalNotation(processDefinition.hasGraphicalNotation());
         this.setSuspensionState(
                 processDefinition.isSuspended()
                         ? SuspensionState.suspended
                         : SuspensionState.active);
+        this.setTenantId(processDefinition.getTenantId());
+        this.setDerivedFrom(processDefinition.getDerivedFrom());
+        this.setDerivedFromRoot(processDefinition.getDerivedFromRoot());
+        this.setDerivedVersion(processDefinition.getDerivedVersion());
+    }
+
+    public ActProcessDTO(ProcessDefinition processDefinition, LocalDateTime deploymentTime) {
+        this(processDefinition);
         this.setDeploymentTime(deploymentTime);
-        this.setId(processDefinition.getId());
-        this.setName(processDefinition.getName());
-        this.setCategory(processDefinition.getCategory());
-        this.setKey(processDefinition.getKey());
     }
 
     public enum SuspensionState {

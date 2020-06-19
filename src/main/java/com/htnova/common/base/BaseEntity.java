@@ -1,6 +1,8 @@
 package com.htnova.common.base;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.htnova.common.constant.GlobalConst;
@@ -45,4 +47,9 @@ public abstract class BaseEntity implements Serializable {
 
     /** 逻辑删除（0未删除，1已删除） */
     @Builder.Default @TableLogic protected Integer delFlag = GlobalConst.UNDEL_FLAG;
+
+    @JsonIgnore
+    public String getTableName() {
+        return AnnotationUtil.getAnnotationValue(this.getClass(), TableName.class);
+    }
 }

@@ -1,4 +1,4 @@
-package com.htnova.common.activiti;
+package com.htnova.common.flowable;
 
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import javax.annotation.Resource;

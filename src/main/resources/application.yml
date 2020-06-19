@@ -38,6 +38,11 @@ flowable:
     enabled: false
   content:
     enabled: true
+  app:
+    enabled: false
+  idm:
+    enabled: false
+  rest-api-enabled: false
 #  process:
 #    async:
 #      executor:

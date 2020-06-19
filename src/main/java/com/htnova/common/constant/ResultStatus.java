@@ -78,6 +78,8 @@ public enum ResultStatus {
     DEFINITION_NOT_FOUND(16002, "部署失败，没有获取到流程定义"),
     RESOURCE_NOT_FOUND(16003, "没有获取到资源"),
     STATUS_SET_SUCCESS(16004, "状态切换成功"),
+    FORM_KEY_NOT_FOUND(16005, "没有获取到formKey，请检查流程图"),
+    REVOKE_SUCCESS(16006, "撤销成功"),
 
 // ===============业务相关(99)=============
 ;

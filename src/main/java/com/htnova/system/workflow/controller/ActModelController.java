@@ -10,6 +10,7 @@ import com.htnova.system.workflow.service.ActModelService;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.flowable.engine.repository.Model;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +20,7 @@ public class ActModelController {
     @Resource private ActModelService actModelService;
 
     /** 分页查询 */
-    //    @PreAuthorize("hasAnyAuthority('fileStore.find')")
+    @PreAuthorize("hasAnyAuthority('actModel.find')")
     @GetMapping("/list/page")
     public XPage<ActModelDTO> findListByPage(ActModelDTO actModelDTO, XPage<ActModelDTO> xPage) {
         IPage<Model> iPage = actModelService.findActModelList(actModelDTO, XPage.toIPage(xPage));
@@ -34,6 +35,7 @@ public class ActModelController {
     }
 
     /** 保存 */
+    @PreAuthorize("hasAnyAuthority('actModel.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody ActModelDTO actModelDTO) {
         actModelService.save(actModelDTO);
@@ -41,6 +43,7 @@ public class ActModelController {
     }
 
     /** 部署 */
+    @PreAuthorize("hasAnyAuthority('actModel.edit')")
     @PostMapping("/deploy/{id}")
     public Result<Void> deploy(@PathVariable String id) {
         actModelService.deploy(id);
@@ -48,12 +51,14 @@ public class ActModelController {
     }
 
     /** 详情 */
+    @PreAuthorize("hasAnyAuthority('actModel.find')")
     @GetMapping("/detail/{id}")
     public ActModelDTO getById(@PathVariable String id) {
         return actModelService.getActModelById(id);
     }
 
     /** 删除 */
+    @PreAuthorize("hasAnyAuthority('actModel.del')")
     @DeleteMapping("/del/{id}")
     public Result<Void> delete(@PathVariable String id) {
         actModelService.deleteActModel(id);
