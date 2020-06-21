@@ -62,8 +62,6 @@ public class ActTaskController {
     @GetMapping("/history/operate")
     public List<ActTaskDTO> getHistoryOperate(ActTaskDTO actTaskDTO) {
         return actTaskService.histoicFlowList(
-                actTaskDTO.getProcessDefinitionId(),
-                actTaskDTO.getStartActivityId(),
-                actTaskDTO.getEndActivityId());
+                actTaskDTO.getProcessDefinitionId(), actTaskDTO.getEndActivityId());
     }
 }

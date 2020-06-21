@@ -179,9 +179,12 @@ public class ActTaskService {
      * 获取流转历史列表
      *
      * @param procInsId 流程实例
-     * @param startAct 开始活动节点名称
      * @param endAct 结束活动节点名称
      */
+    public List<ActTaskDTO> histoicFlowList(String procInsId, String endAct) {
+        return histoicFlowList(procInsId, null, endAct);
+    }
+
     public List<ActTaskDTO> histoicFlowList(String procInsId, String startAct, String endAct) {
         List<ActTaskDTO> actList = Lists.newArrayList();
         List<HistoricActivityInstance> list =

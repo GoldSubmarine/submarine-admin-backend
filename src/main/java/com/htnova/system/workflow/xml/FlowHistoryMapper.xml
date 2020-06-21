@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.system.workflow.mapper.FlowHistoryMapper">
+    <sql id="SelectColumns">
+		a.id as `id`,
+		a.process_instance_id as `processInstanceId`,
+		a.busi_id as `busiId`,
+		a.json as `json`,
+		a.img as `img`,
+		a.remark as `remark`,
+		a.create_by as `createBy`,
+		a.create_time as `createTime`,
+		a.update_by as `updateBy`,
+		a.update_time as `updateTime`,
+		a.del_flag as `delFlag`
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM t_flow_history a WHERE a.del_flag = #{flowHistoryDto.delFlag}
+            
+		<if test="flowHistoryDto.id != null">
+			AND a.id = #{flowHistoryDto.id}
+		</if>
+		<if test="flowHistoryDto.processInstanceId != null and flowHistoryDto.processInstanceId != ''">
+			AND a.process_instance_id = #{flowHistoryDto.processInstanceId}
+		</if>
+		<if test="flowHistoryDto.busiId != null">
+			AND a.busi_id = #{flowHistoryDto.busiId}
+		</if>
+		<if test="flowHistoryDto.json != null and flowHistoryDto.json != ''">
+			AND a.json LIKE concat('%', #{flowHistoryDto.json}, '%')
+		</if>
+		<if test="flowHistoryDto.img != null and flowHistoryDto.img != ''">
+			AND a.img = #{flowHistoryDto.img}
+		</if>
+		<if test="flowHistoryDto.remark != null and flowHistoryDto.remark != ''">
+			AND a.remark = #{flowHistoryDto.remark}
+		</if>
+		<if test="flowHistoryDto.createBy != null">
+			AND a.create_by = #{flowHistoryDto.createBy}
+		</if>
+		<if test="flowHistoryDto.createTime != null">
+			AND a.create_time = #{flowHistoryDto.createTime}
+		</if>
+		<if test="flowHistoryDto.updateBy != null">
+			AND a.update_by = #{flowHistoryDto.updateBy}
+		</if>
+		<if test="flowHistoryDto.updateTime != null">
+			AND a.update_time = #{flowHistoryDto.updateTime}
+		</if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="FlowHistory">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="FlowHistory">
+        <include refid="findList"/>
+    </select>
+
+</mapper>

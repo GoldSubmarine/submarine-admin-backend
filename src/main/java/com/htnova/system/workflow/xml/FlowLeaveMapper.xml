@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.system.workflow.mapper.FlowLeaveMapper">
+    <sql id="SelectColumns">
+		a.id as `id`,
+		a.begin_time as `beginTime`,
+		a.end_time as `endTime`,
+		a.duration as `duration`,
+		a.reason as `reason`,
+		a.remark as `remark`,
+		a.process_instance_id as `processInstanceId`,
+		a.create_by as `createBy`,
+		a.create_time as `createTime`,
+		a.update_by as `updateBy`,
+		a.update_time as `updateTime`,
+		a.del_flag as `delFlag`
+    </sql>
+
+    <!--列表查询-->
+    <sql id="findList">
+        SELECT
+            <include refid="SelectColumns"/>
+        FROM t_flow_leave a WHERE a.del_flag = #{flowLeaveDto.delFlag}
+            
+		<if test="flowLeaveDto.id != null">
+			AND a.id = #{flowLeaveDto.id}
+		</if>
+		<if test="flowLeaveDto.beginTime != null">
+			AND a.begin_time = #{flowLeaveDto.beginTime}
+		</if>
+		<if test="flowLeaveDto.endTime != null">
+			AND a.end_time = #{flowLeaveDto.endTime}
+		</if>
+		<if test="flowLeaveDto.duration != null">
+			AND a.duration = #{flowLeaveDto.duration}
+		</if>
+		<if test="flowLeaveDto.reason != null and flowLeaveDto.reason != ''">
+			AND a.reason LIKE concat('%', #{flowLeaveDto.reason}, '%')
+		</if>
+		<if test="flowLeaveDto.remark != null and flowLeaveDto.remark != ''">
+			AND a.remark LIKE concat('%', #{flowLeaveDto.remark}, '%')
+		</if>
+		<if test="flowLeaveDto.processInstanceId != null and flowLeaveDto.processInstanceId != ''">
+			AND a.process_instance_id = #{flowLeaveDto.processInstanceId}
+		</if>
+		<if test="flowLeaveDto.createBy != null">
+			AND a.create_by = #{flowLeaveDto.createBy}
+		</if>
+		<if test="flowLeaveDto.createTime != null">
+			AND a.create_time = #{flowLeaveDto.createTime}
+		</if>
+		<if test="flowLeaveDto.updateBy != null">
+			AND a.update_by = #{flowLeaveDto.updateBy}
+		</if>
+		<if test="flowLeaveDto.updateTime != null">
+			AND a.update_time = #{flowLeaveDto.updateTime}
+		</if>
+    </sql>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="FlowLeave">
+        <include refid="findList"/>
+    </select>
+
+    <!--列表查询-->
+    <select id="findList" resultType="FlowLeave">
+        <include refid="findList"/>
+    </select>
+
+</mapper>
