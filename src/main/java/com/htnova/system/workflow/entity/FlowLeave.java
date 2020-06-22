@@ -35,4 +35,16 @@ public class FlowLeave extends BaseEntity implements ActTask {
     /** 流程定义id */
     @TableField(exist = false)
     private String processDefinitionId;
+
+    /** 当前节点的id */
+    @TableField(exist = false)
+    private String taskId;
+
+    /** 审批建议 */
+    @TableField(exist = false)
+    private String comment;
+
+    /** 审批截图（base64） */
+    @TableField(exist = false)
+    private String img;
 }

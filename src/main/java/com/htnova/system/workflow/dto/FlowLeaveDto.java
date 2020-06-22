@@ -31,4 +31,13 @@ public class FlowLeaveDto extends BaseDto implements ActTask {
 
     /** 流程定义id */
     private String processDefinitionId;
+
+    /** 当前节点的id */
+    private String taskId;
+
+    /** 审批建议 */
+    private String comment;
+
+    /** 审批截图（base64） */
+    private String img;
 }

@@ -3,13 +3,13 @@
   <process id="leave_apply" name="请假申请" isExecutable="true">
     <documentation>请假申请的描述</documentation>
     <startEvent id="startEvent_1" name="填写申请" flowable:formKey="leave"/>
-    <userTask id="wreygdfhsdh" flowable:assignee="$INITIATOR">
+    <userTask id="wreygdfhsdh" flowable:assignee="1">
       <extensionElements>
         <modeler:activiti-idm-initiator xmlns:modeler="http://flowable.org/modeler"><![CDATA[true]]></modeler:activiti-idm-initiator>
       </extensionElements>
     </userTask>
     <sequenceFlow id="sid-4FF4C6AD-A21C-4F73-8905-2429EC4DD4B0" sourceRef="startEvent_1" targetRef="wreygdfhsdh"/>
-    <userTask id="gjtysdgsterh" flowable:assignee="$INITIATOR">
+    <userTask id="gjtysdgsterh" flowable:assignee="1">
       <extensionElements>
         <modeler:activiti-idm-initiator xmlns:modeler="http://flowable.org/modeler"><![CDATA[true]]></modeler:activiti-idm-initiator>
       </extensionElements>

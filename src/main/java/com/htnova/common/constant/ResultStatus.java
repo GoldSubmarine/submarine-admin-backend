@@ -80,6 +80,7 @@ public enum ResultStatus {
     STATUS_SET_SUCCESS(16004, "状态切换成功"),
     FORM_KEY_NOT_FOUND(16005, "没有获取到formKey，请检查流程图"),
     REVOKE_SUCCESS(16006, "撤销成功"),
+    APPROVE_SUCCESS(16007, "审批完成"),
 
 // ===============业务相关(99)=============
 ;

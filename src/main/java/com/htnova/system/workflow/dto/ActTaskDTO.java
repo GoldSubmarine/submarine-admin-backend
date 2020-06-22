@@ -21,7 +21,9 @@ public class ActTaskDTO {
     private String description;
     private String owner;
     /** 受托人 */
-    private String assignee;
+    private String assigneeId;
+
+    private String assigneeName;
 
     /** 委派状态 */
     private DelegationState delegationState;
@@ -45,17 +47,21 @@ public class ActTaskDTO {
     private Date createTime;
     private Date beginTime;
     private Date endTime;
+    private Long durationInMillis;
     private String comment;
 
     private String startActivityId;
-    private String endActivityId;
+    /** 当前审批节点id */
+    private String activityId;
+
+    private String activityType;
 
     public ActTaskDTO(Task task) {
         this.setId(task.getId());
         this.setName(task.getName());
         this.setDescription(task.getDescription());
         this.setOwner(task.getOwner());
-        this.setAssignee(task.getAssignee());
+        this.setAssigneeId(task.getAssignee());
         this.setDelegationState(task.getDelegationState());
         this.setCategory(task.getCategory());
         this.setDueDate(task.getDueDate());
@@ -73,7 +79,7 @@ public class ActTaskDTO {
     }
 
     public ActTaskDTO(HistoricTaskInstance historicTask) {
-        this.setAssignee(historicTask.getAssignee());
+        this.setAssigneeId(historicTask.getAssignee());
         this.setId(historicTask.getId());
         this.setName(historicTask.getName());
         this.setEndTime(historicTask.getEndTime());

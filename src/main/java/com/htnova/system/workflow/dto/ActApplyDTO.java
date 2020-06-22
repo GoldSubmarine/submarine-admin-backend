@@ -24,7 +24,6 @@ public class ActApplyDTO {
     private String processInstanceName;
 
     private String processInstanceId;
-    private String endActivityId;
     private String businessKey;
     private String startUserId;
     private String startActivityId;
@@ -47,6 +46,8 @@ public class ActApplyDTO {
     private ProcessVariableDTO processVariables;
 
     private ApplyStatus status;
+    /** 当前节点的task id */
+    private String activityId;
 
     public ActApplyDTO(HistoricProcessInstance hisProcessIns) {
         this.processInstanceId =

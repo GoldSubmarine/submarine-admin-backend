@@ -1,7 +1,9 @@
 package com.htnova.system.workflow.service;
 
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.htnova.system.workflow.dto.FlowLeaveDto;
+import com.htnova.system.workflow.entity.FlowHistory;
 import com.htnova.system.workflow.entity.FlowLeave;
 import com.htnova.system.workflow.mapper.FlowLeaveMapper;
 import java.util.List;
@@ -35,6 +37,23 @@ public class FlowLeaveService extends ActBaseService<FlowLeaveMapper, FlowLeave>
                 flowLeave.getProcessDefinitionId(),
                 flowLeave.getTableName(),
                 flowLeave.getId().toString());
+    }
+
+    @Transactional
+    public void approve(FlowLeave flowLeave) {
+        super.saveOrUpdate(flowLeave);
+        flowHistoryService.saveFlowHistory(
+                FlowHistory.builder()
+                        .processInstanceId(flowLeave.getProcessInstanceId())
+                        .busiId(flowLeave.getId())
+                        .json(JSONUtil.toJsonStr(flowLeave))
+                        .img(flowLeave.getImg())
+                        .build());
+        actTaskService.approve(
+                flowLeave.getTaskId(),
+                flowLeave.getProcessInstanceId(),
+                flowLeave.getComment(),
+                null);
     }
 
     @Transactional(readOnly = true)

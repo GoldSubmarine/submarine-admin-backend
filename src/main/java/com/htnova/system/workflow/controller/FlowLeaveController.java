@@ -58,6 +58,13 @@ public class FlowLeaveController {
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
+    /** 审批完成 */
+    @PostMapping("/approve")
+    public Result<Void> approve(@RequestBody FlowLeaveDto flowLeaveDto) {
+        flowLeaveService.approve(DtoConverter.toEntity(flowLeaveDto, FlowLeaveMapStruct.class));
+        return Result.build(ResultStatus.APPROVE_SUCCESS);
+    }
+
     /** 删除 */
     @DeleteMapping("/del/{id}")
     public Result<Void> delete(@PathVariable long id) {

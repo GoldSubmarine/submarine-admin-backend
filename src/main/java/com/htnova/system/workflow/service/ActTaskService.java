@@ -166,6 +166,24 @@ public class ActTaskService {
         runtimeService.deleteProcessInstance(processInstanceId, deleteReason);
     }
 
+    /**
+     * 提交任务, 并保存意见
+     *
+     * @param taskId 任务ID
+     * @param procInsId 流程实例ID，如果为空，则不保存任务提交意见
+     * @param comment 任务提交意见的内容
+     * @param vars: task parameters
+     */
+    @Transactional
+    public void approve(String taskId, String procInsId, String comment, Map<String, Object> vars) {
+        // 添加意见
+        if (StringUtils.isNotBlank(procInsId) && StringUtils.isNotBlank(comment)) {
+            taskService.addComment(taskId, procInsId, comment);
+        }
+        // 提交任务
+        taskService.complete(taskId, vars);
+    }
+
     /** 跳转申请实例到某一节点 */
     public void changeActState(String processInstanceId, String currentActId, String newActId) {
         runtimeService
@@ -176,16 +194,16 @@ public class ActTaskService {
     }
 
     /**
-     * 获取流转历史列表
+     * 获取流转历史列表（不包含结束节点）
      *
      * @param procInsId 流程实例
-     * @param endAct 结束活动节点名称
+     * @param endActId 结束活动节点名称，即 taskDefinitionKey
      */
-    public List<ActTaskDTO> histoicFlowList(String procInsId, String endAct) {
-        return histoicFlowList(procInsId, null, endAct);
+    public List<ActTaskDTO> histoicFlowList(String procInsId, String endActId) {
+        return histoicFlowList(procInsId, null, endActId);
     }
 
-    public List<ActTaskDTO> histoicFlowList(String procInsId, String startAct, String endAct) {
+    public List<ActTaskDTO> histoicFlowList(String procInsId, String startActId, String endActId) {
         List<ActTaskDTO> actList = Lists.newArrayList();
         List<HistoricActivityInstance> list =
                 historyService
@@ -201,63 +219,27 @@ public class ActTaskService {
         for (int i = 0; i < list.size(); i++) {
             HistoricActivityInstance histIns = list.get(i);
             // 过滤开始节点前的节点
-            if (StringUtils.isNotBlank(startAct) && startAct.equals(histIns.getActivityId())) {
+            if (StringUtils.isNotBlank(startActId) && startActId.equals(histIns.getActivityId())) {
                 start = true;
             }
-            if (StringUtils.isNotBlank(startAct) && !start) {
+            if (StringUtils.isNotBlank(startActId) && !start) {
                 continue;
             }
             // 显示开始节点和结束节点，或执行人不为空的任务
-            if (StringUtils.isNotBlank(histIns.getAssignee())
-                    || "startEvent".equals(histIns.getActivityType())
-                    || "endEvent".equals(histIns.getActivityType())) {
-                // 给节点增加一个序号
-                Integer actNum = actMap.get(histIns.getActivityId());
-                if (actNum == null) {
-                    actMap.put(histIns.getActivityId(), actMap.size());
-                }
-                ActTaskDTO e = new ActTaskDTO();
-                // 获取流程发起人名称
-                if ("startEvent".equals(histIns.getActivityType())) {
-                    HistoricProcessInstance historicProcessInstance =
-                            historyService
-                                    .createHistoricProcessInstanceQuery()
-                                    .processInstanceId(procInsId)
-                                    .singleResult();
-                    if (Objects.nonNull(historicProcessInstance)) {
-                        if (StringUtils.isNotBlank(historicProcessInstance.getStartUserId())) {
-                            User user =
-                                    userService.getByUsername(
-                                            historicProcessInstance.getStartUserId());
-                            if (user != null) {
-                                e.setAssignee(histIns.getAssignee());
-                                // e.setAssigneeName(user.getName());
-                            }
-                        }
-                    }
-                }
-                // 获取任务执行人名称
-                if (StringUtils.isNotEmpty(histIns.getAssignee())) {
-                    User user = userService.getByUsername(histIns.getAssignee());
-                    if (user != null) {
-                        e.setAssignee(histIns.getAssignee());
-                        // e.setAssigneeName(user.getName());
-                    }
-                }
-                // 获取意见评论内容
-                if (StringUtils.isNotBlank(histIns.getTaskId())) {
-                    List<Comment> commentList = taskService.getTaskComments(histIns.getTaskId());
-                    if (commentList.size() > 0) {
-                        e.setComment(commentList.get(0).getFullMessage());
-                    }
-                }
-                actList.add(e);
+            if (StringUtils.isBlank(histIns.getAssignee())
+                    && !StringUtils.equalsAny(
+                            histIns.getActivityType(), "startEvent", "endEvent")) {
+                continue;
+            }
+            // 给节点增加一个序号
+            Integer actNum = actMap.get(histIns.getActivityId());
+            if (actNum == null) {
+                actMap.put(histIns.getActivityId(), actMap.size());
             }
 
             // 过滤结束节点后的节点
-            if (StringUtils.isNotBlank(endAct) && endAct.equals(histIns.getActivityId())) {
+            if (StringUtils.isNotBlank(endActId) && endActId.equals(histIns.getActivityId())) {
                 boolean bl = false;
-                Integer actNum = actMap.get(histIns.getActivityId());
                 // 该活动节点，后续节点是否在结束节点之前，在后续节点中是否存在
                 for (int j = i + 1; j < list.size(); j++) {
                     HistoricActivityInstance hi = list.get(j);
@@ -271,6 +253,49 @@ public class ActTaskService {
                     break;
                 }
             }
+
+            ActTaskDTO e = new ActTaskDTO();
+            // 获取流程发起人名称
+            if ("startEvent".equals(histIns.getActivityType())) {
+                HistoricProcessInstance historicProcessInstance =
+                        historyService
+                                .createHistoricProcessInstanceQuery()
+                                .processInstanceId(procInsId)
+                                .singleResult();
+                if (Objects.nonNull(historicProcessInstance)
+                        && StringUtils.isNotBlank(historicProcessInstance.getStartUserId())) {
+                    User user =
+                            userService.getUserById(
+                                    Long.parseLong(historicProcessInstance.getStartUserId()));
+                    if (user != null) {
+                        e.setAssigneeId(historicProcessInstance.getStartUserId());
+                        e.setAssigneeName(user.getName());
+                    }
+                }
+            }
+            // 获取任务执行人名称
+            if (StringUtils.isNotEmpty(histIns.getAssignee())) {
+                User user = userService.getUserById(Long.parseLong(histIns.getAssignee()));
+                if (user != null) {
+                    e.setAssigneeId(histIns.getAssignee());
+                    e.setAssigneeName(user.getName());
+                }
+            }
+            // 获取意见评论内容
+            if (StringUtils.isNotBlank(histIns.getTaskId())) {
+                List<Comment> commentList = taskService.getTaskComments(histIns.getTaskId());
+                if (commentList.size() > 0) {
+                    e.setComment(commentList.get(0).getFullMessage());
+                }
+            }
+            e.setActivityType(histIns.getActivityType());
+            e.setActivityId(histIns.getActivityId());
+            e.setProcessInstanceId(histIns.getProcessInstanceId());
+            e.setProcessDefinitionId(histIns.getProcessDefinitionId());
+            e.setBeginTime(histIns.getStartTime());
+            e.setEndTime(histIns.getEndTime());
+            e.setDurationInMillis(histIns.getDurationInMillis());
+            actList.add(e);
         }
         return actList;
     }
