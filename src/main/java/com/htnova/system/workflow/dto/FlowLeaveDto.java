@@ -1,6 +1,7 @@
 package com.htnova.system.workflow.dto;
 
 import com.htnova.common.base.BaseDto;
+import com.htnova.system.workflow.dto.TaskVariableDTO.ApproveType;
 import com.htnova.system.workflow.interfaces.ActTask;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -40,4 +41,7 @@ public class FlowLeaveDto extends BaseDto implements ActTask {
 
     /** 审批截图（base64） */
     private String img;
+
+    /** 审批是否通过 */
+    private ApproveType status;
 }

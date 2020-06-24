@@ -25,4 +25,7 @@ public class ProcessVariableDTO {
 
     /** 流程定义key */
     private String processDefinitionKey;
+
+    /** 下一个节点审批人（流程图中的变量） */
+    private String approver;
 }

@@ -53,15 +53,14 @@ public class FlowLeaveController {
     /** 保存 */
     @PostMapping("/save")
     public Result<Void> save(@Valid @RequestBody FlowLeaveDto flowLeaveDto) {
-        flowLeaveService.saveFlowLeave(
-                DtoConverter.toEntity(flowLeaveDto, FlowLeaveMapStruct.class));
+        flowLeaveService.saveFlowLeave(flowLeaveDto);
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
     /** 审批完成 */
     @PostMapping("/approve")
     public Result<Void> approve(@RequestBody FlowLeaveDto flowLeaveDto) {
-        flowLeaveService.approve(DtoConverter.toEntity(flowLeaveDto, FlowLeaveMapStruct.class));
+        flowLeaveService.approve(flowLeaveDto);
         return Result.build(ResultStatus.APPROVE_SUCCESS);
     }
 

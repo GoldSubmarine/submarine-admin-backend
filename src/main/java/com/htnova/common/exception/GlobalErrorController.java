@@ -59,6 +59,7 @@ public class GlobalErrorController implements ErrorController {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public String getErrorPath() {
         return null;
     }

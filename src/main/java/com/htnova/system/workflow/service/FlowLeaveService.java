@@ -2,12 +2,16 @@ package com.htnova.system.workflow.service;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.htnova.common.converter.DtoConverter;
+import com.htnova.common.util.UserUtil;
 import com.htnova.system.workflow.dto.FlowLeaveDto;
 import com.htnova.system.workflow.entity.FlowHistory;
 import com.htnova.system.workflow.entity.FlowLeave;
 import com.htnova.system.workflow.mapper.FlowLeaveMapper;
+import com.htnova.system.workflow.mapstruct.FlowLeaveMapStruct;
 import java.util.List;
 import javax.annotation.Resource;
+import org.flowable.engine.runtime.ProcessInstance;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,29 +35,41 @@ public class FlowLeaveService extends ActBaseService<FlowLeaveMapper, FlowLeave>
     }
 
     @Transactional
-    public void saveFlowLeave(FlowLeave flowLeave) {
+    public void saveFlowLeave(FlowLeaveDto flowLeaveDto) {
+        FlowLeave flowLeave = DtoConverter.toEntity(flowLeaveDto, FlowLeaveMapStruct.class);
         super.saveOrUpdate(flowLeave);
-        actTaskService.startProcess(
-                flowLeave.getProcessDefinitionId(),
-                flowLeave.getTableName(),
-                flowLeave.getId().toString());
+        ProcessInstance processInstance =
+                actTaskService.startProcess(
+                        flowLeaveDto.getProcessDefinitionId(),
+                        flowLeave.getTableName(),
+                        flowLeave.getId().toString());
+        flowLeaveDto.setProcessInstanceId(processInstance.getProcessInstanceId());
+        saveFlowHistory(flowLeaveDto, flowLeave.getId());
     }
 
     @Transactional
-    public void approve(FlowLeave flowLeave) {
+    public void approve(FlowLeaveDto flowLeaveDto) {
+        FlowLeave flowLeave = DtoConverter.toEntity(flowLeaveDto, FlowLeaveMapStruct.class);
         super.saveOrUpdate(flowLeave);
+        saveFlowHistory(flowLeaveDto, flowLeave.getId());
+        actTaskService.complete(
+                flowLeaveDto.getTaskId(),
+                flowLeaveDto.getProcessInstanceId(),
+                flowLeaveDto.getComment(),
+                flowLeaveDto.getStatus(),
+                null);
+    }
+
+    private void saveFlowHistory(FlowLeaveDto flowLeaveDto, long busiId) {
         flowHistoryService.saveFlowHistory(
                 FlowHistory.builder()
-                        .processInstanceId(flowLeave.getProcessInstanceId())
-                        .busiId(flowLeave.getId())
-                        .json(JSONUtil.toJsonStr(flowLeave))
-                        .img(flowLeave.getImg())
+                        .processInstanceId(flowLeaveDto.getProcessInstanceId())
+                        .busiId(busiId)
+                        .busiCode(FlowLeave.CODE)
+                        .json(JSONUtil.toJsonStr(flowLeaveDto))
+                        .img(flowLeaveDto.getImg())
+                        .createUserName(UserUtil.getAuthUser().getName())
                         .build());
-        actTaskService.approve(
-                flowLeave.getTaskId(),
-                flowLeave.getProcessInstanceId(),
-                flowLeave.getComment(),
-                null);
     }
 
     @Transactional(readOnly = true)

@@ -4,10 +4,11 @@
     <sql id="SelectColumns">
 		a.id as `id`,
 		a.process_instance_id as `processInstanceId`,
-		a.busi_id as `busiId`,
+		a.busi_code as `busiCode`,
 		a.json as `json`,
 		a.img as `img`,
 		a.remark as `remark`,
+		a.create_user_name as `createUserName`,
 		a.create_by as `createBy`,
 		a.create_time as `createTime`,
 		a.update_by as `updateBy`,
@@ -38,6 +39,9 @@
 		</if>
 		<if test="flowHistoryDto.remark != null and flowHistoryDto.remark != ''">
 			AND a.remark = #{flowHistoryDto.remark}
+		</if>
+		<if test="flowHistoryDto.createUserName != null">
+			AND a.create_user_name = #{flowHistoryDto.createUserName}
 		</if>
 		<if test="flowHistoryDto.createBy != null">
 			AND a.create_by = #{flowHistoryDto.createBy}

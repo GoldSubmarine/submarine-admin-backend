@@ -11,6 +11,8 @@ import com.htnova.system.workflow.dto.ActApplyDTO;
 import com.htnova.system.workflow.dto.ActApplyDTO.ApplyStatus;
 import com.htnova.system.workflow.dto.ActTaskDTO;
 import com.htnova.system.workflow.dto.ProcessVariableDTO;
+import com.htnova.system.workflow.dto.TaskVariableDTO;
+import com.htnova.system.workflow.dto.TaskVariableDTO.ApproveType;
 import com.htnova.system.workflow.mapper.ActMapper;
 import java.util.List;
 import java.util.Map;
@@ -174,8 +176,8 @@ public class ActTaskService {
      * @param comment 任务提交意见的内容
      * @param vars: task parameters
      */
-    @Transactional
-    public void approve(String taskId, String procInsId, String comment, Map<String, Object> vars) {
+    private void complete(
+            String taskId, String procInsId, String comment, Map<String, Object> vars) {
         // 添加意见
         if (StringUtils.isNotBlank(procInsId) && StringUtils.isNotBlank(comment)) {
             taskService.addComment(taskId, procInsId, comment);
@@ -184,12 +186,27 @@ public class ActTaskService {
         taskService.complete(taskId, vars);
     }
 
+    /** 审批 */
+    @Transactional
+    public void complete(
+            String taskId,
+            String procInsId,
+            String comment,
+            ApproveType approveType,
+            TaskVariableDTO vars) {
+        if (Objects.isNull(vars)) {
+            vars = new TaskVariableDTO();
+        }
+        vars.setStatus(approveType);
+        complete(taskId, procInsId, comment, BeanUtil.beanToMap(vars));
+    }
+
     /** 跳转申请实例到某一节点 */
-    public void changeActState(String processInstanceId, String currentActId, String newActId) {
+    public void changeActState(String processInstanceId, String currentActId, String toActId) {
         runtimeService
                 .createChangeActivityStateBuilder()
                 .processInstanceId(processInstanceId)
-                .moveActivityIdTo(currentActId, newActId)
+                .moveActivityIdTo(currentActId, toActId)
                 .changeState();
     }
 
@@ -303,7 +320,8 @@ public class ActTaskService {
     /** 获取流程表单（首先获取任务节点表单KEY，如果没有则取流程开始节点表单KEY） */
     public String getFormKey(String procDefId, String taskDefKey) {
         if (StringUtils.isNotBlank(taskDefKey)) {
-            return formService.getTaskFormKey(procDefId, taskDefKey);
+            String taskFormKey = formService.getTaskFormKey(procDefId, taskDefKey);
+            if (StringUtils.isNotBlank(taskFormKey)) return taskFormKey;
         }
         return formService.getStartFormKey(procDefId);
     }

@@ -32,7 +32,6 @@ public class FlowHistoryController {
     }
 
     /** 查询 */
-    @PreAuthorize("hasAnyAuthority('flowHistory.find')")
     @GetMapping("/list/all")
     public List<FlowHistoryDto> findList(FlowHistoryDto flowHistoryDto) {
         List<FlowHistory> flowHistoryList = flowHistoryService.findFlowHistoryList(flowHistoryDto);

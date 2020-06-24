@@ -1,5 +1,7 @@
 package com.htnova.system.workflow.interfaces;
 
+import com.htnova.system.workflow.dto.TaskVariableDTO.ApproveType;
+
 public interface ActTask {
 
     /** 启动流程时使用 */
@@ -16,4 +18,7 @@ public interface ActTask {
 
     /** 审批截图（base64） */
     String getImg();
+
+    /** 是否通过审批 */
+    ApproveType getStatus();
 }
