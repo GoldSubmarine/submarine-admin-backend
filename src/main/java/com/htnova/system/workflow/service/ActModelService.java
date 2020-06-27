@@ -1,10 +1,12 @@
 package com.htnova.system.workflow.service;
 
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.exception.ServiceException;
 import com.htnova.system.workflow.dto.ActModelDTO;
+import com.htnova.system.workflow.dto.ActModelExtraValue;
 import com.htnova.system.workflow.dto.ActProcessDTO;
 import java.util.List;
 import java.util.Objects;
@@ -34,8 +36,8 @@ public class ActModelService {
                                 actModel.getName() + ActProcessDTO.BPMN_SUFFIX,
                                 actModel.getEditorSourceValue())
                         .addString(
-                                actModel.getName() + ActProcessDTO.SVG_NAME,
-                                actModel.getEditorSourceExtraValue())
+                                actModel.getName() + ActProcessDTO.PNG_NAME,
+                                actModel.getEditorSourceExtraValue().getImg())
                         .category(actModel.getCategory())
                         .key(actModel.getKey())
                         .deploy();
@@ -122,7 +124,8 @@ public class ActModelService {
         repositoryService.addModelEditorSource(
                 model.getId(), actModelDTO.getEditorSourceValue().getBytes());
         repositoryService.addModelEditorSourceExtra(
-                model.getId(), actModelDTO.getEditorSourceExtraValue().getBytes());
+                model.getId(),
+                JSONUtil.toJsonStr(actModelDTO.getEditorSourceExtraValue()).getBytes());
     }
 
     public ActModelDTO getActModelById(String id) {
@@ -134,7 +137,8 @@ public class ActModelService {
             actModelDTO.setEditorSourceValue(new String(modelEditorSource));
         }
         if (Objects.nonNull(modelEditorSourceExtra)) {
-            actModelDTO.setEditorSourceExtraValue(new String(modelEditorSourceExtra));
+            actModelDTO.setEditorSourceExtraValue(
+                    JSONUtil.toBean(new String(modelEditorSourceExtra), ActModelExtraValue.class));
         }
         return actModelDTO;
     }

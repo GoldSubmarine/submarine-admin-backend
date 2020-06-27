@@ -107,11 +107,11 @@ public class ActProcessService {
                 processDefinition, DateUtil.converter(deployment.getDeploymentTime()));
     }
 
-    public String getActProcessResource(String id, String resourceName) {
+    public String getActProcessResource(String processDefinitionId, String resourceName) {
         ProcessDefinition processDefinition =
                 repositoryService
                         .createProcessDefinitionQuery()
-                        .processDefinitionId(id)
+                        .processDefinitionId(processDefinitionId)
                         .singleResult();
         InputStream resourceStream =
                 repositoryService.getResourceAsStream(

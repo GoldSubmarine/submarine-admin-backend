@@ -2,7 +2,6 @@ package com.htnova.system.workflow.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.util.UserUtil;
 import com.htnova.system.manage.entity.User;
@@ -26,7 +25,6 @@ import org.flowable.engine.IdentityService;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
-import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.history.HistoricProcessInstanceQuery;
 import org.flowable.engine.repository.ProcessDefinition;
@@ -39,6 +37,7 @@ import org.flowable.task.api.history.HistoricTaskInstanceQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class ActTaskService {
@@ -68,6 +67,10 @@ public class ActTaskService {
         if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionKey())) {
             todoTaskQuery.processDefinitionKey(actTaskDTO.getProcessDefinitionKey());
         }
+        if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionName())) {
+            todoTaskQuery.processDefinitionNameLike(
+                    "%" + actTaskDTO.getProcessDefinitionName() + "%");
+        }
         long start = (page.getPageNum() - 1) * page.getPageSize();
         long end = start + page.getPageSize();
         List<Task> result = todoTaskQuery.listPage((int) start, (int) end);
@@ -91,6 +94,10 @@ public class ActTaskService {
         // 设置查询条件
         if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionKey())) {
             histTaskQuery.processDefinitionKey(actTaskDTO.getProcessDefinitionKey());
+        }
+        if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionName())) {
+            histTaskQuery.processDefinitionNameLike(
+                    "%" + actTaskDTO.getProcessDefinitionName() + "%");
         }
         if (actTaskDTO.getBeginTime() != null) {
             histTaskQuery.taskCompletedAfter(actTaskDTO.getBeginTime());
@@ -131,7 +138,8 @@ public class ActTaskService {
                     actApplyDTO.getProcessDefinitionCategory());
         }
         if (StringUtils.isNotBlank(actApplyDTO.getProcessDefinitionName())) {
-            historicProcInsQuery.processDefinitionName(actApplyDTO.getProcessDefinitionName());
+            historicProcInsQuery.processDefinitionName(
+                    "%" + actApplyDTO.getProcessDefinitionName() + "%");
         }
         if (Objects.nonNull(actApplyDTO.getProcessDefinitionVersion())) {
             historicProcInsQuery.processDefinitionVersion(
@@ -214,82 +222,51 @@ public class ActTaskService {
      * 获取流转历史列表（不包含结束节点）
      *
      * @param procInsId 流程实例
-     * @param endActId 结束活动节点名称，即 taskDefinitionKey
+     * @param endTaskDefinitionKey 结束活动节点名称，即 taskDefinitionKey
      */
-    public List<ActTaskDTO> histoicFlowList(String procInsId, String endActId) {
-        return histoicFlowList(procInsId, null, endActId);
-    }
-
-    public List<ActTaskDTO> histoicFlowList(String procInsId, String startActId, String endActId) {
+    public List<ActTaskDTO> histoicFlowList(String procInsId, String endTaskDefinitionKey) {
         List<ActTaskDTO> actList = Lists.newArrayList();
-        List<HistoricActivityInstance> list =
+        // 设置流程发起人
+        HistoricProcessInstance historicProcessInstance =
                 historyService
-                        .createHistoricActivityInstanceQuery()
+                        .createHistoricProcessInstanceQuery()
                         .processInstanceId(procInsId)
-                        .orderByHistoricActivityInstanceStartTime()
-                        .asc()
-                        .orderByHistoricActivityInstanceEndTime()
+                        .singleResult();
+        if (Objects.nonNull(historicProcessInstance)
+                && StringUtils.isNotBlank(historicProcessInstance.getStartUserId())) {
+            ActTaskDTO e = new ActTaskDTO();
+            e.setActivityType("startEvent");
+            User user =
+                    userService.getUserById(
+                            Long.parseLong(historicProcessInstance.getStartUserId()));
+            if (user != null) {
+                e.setAssigneeId(historicProcessInstance.getStartUserId());
+                e.setAssigneeName(user.getName());
+            }
+            e.setProcessInstanceId(historicProcessInstance.getId());
+            e.setProcessDefinitionId(historicProcessInstance.getProcessDefinitionId());
+            e.setBeginTime(historicProcessInstance.getStartTime());
+            e.setEndTime(historicProcessInstance.getStartTime());
+            e.setDurationInMillis(historicProcessInstance.getDurationInMillis());
+            actList.add(e);
+        }
+        // 获取审批人列表
+        List<HistoricTaskInstance> list =
+                historyService
+                        .createHistoricTaskInstanceQuery()
+                        .processInstanceId(procInsId)
+                        .orderByHistoricTaskInstanceStartTime()
                         .asc()
                         .list();
-        boolean start = false;
-        Map<String, Integer> actMap = Maps.newHashMap();
         for (int i = 0; i < list.size(); i++) {
-            HistoricActivityInstance histIns = list.get(i);
-            // 过滤开始节点前的节点
-            if (StringUtils.isNotBlank(startActId) && startActId.equals(histIns.getActivityId())) {
-                start = true;
-            }
-            if (StringUtils.isNotBlank(startActId) && !start) {
-                continue;
-            }
-            // 显示开始节点和结束节点，或执行人不为空的任务
-            if (StringUtils.isBlank(histIns.getAssignee())
-                    && !StringUtils.equalsAny(
-                            histIns.getActivityType(), "startEvent", "endEvent")) {
-                continue;
-            }
-            // 给节点增加一个序号
-            Integer actNum = actMap.get(histIns.getActivityId());
-            if (actNum == null) {
-                actMap.put(histIns.getActivityId(), actMap.size());
-            }
-
+            HistoricTaskInstance histIns = list.get(i);
             // 过滤结束节点后的节点
-            if (StringUtils.isNotBlank(endActId) && endActId.equals(histIns.getActivityId())) {
-                boolean bl = false;
-                // 该活动节点，后续节点是否在结束节点之前，在后续节点中是否存在
-                for (int j = i + 1; j < list.size(); j++) {
-                    HistoricActivityInstance hi = list.get(j);
-                    Integer actNumA = actMap.get(hi.getActivityId());
-                    if ((actNumA != null && actNumA < actNum)
-                            || StringUtils.equals(hi.getActivityId(), histIns.getActivityId())) {
-                        bl = true;
-                    }
-                }
-                if (!bl) {
-                    break;
-                }
+            if (StringUtils.isNotBlank(endTaskDefinitionKey)
+                    && endTaskDefinitionKey.equals(histIns.getTaskDefinitionKey())) {
+                break;
             }
 
             ActTaskDTO e = new ActTaskDTO();
-            // 获取流程发起人名称
-            if ("startEvent".equals(histIns.getActivityType())) {
-                HistoricProcessInstance historicProcessInstance =
-                        historyService
-                                .createHistoricProcessInstanceQuery()
-                                .processInstanceId(procInsId)
-                                .singleResult();
-                if (Objects.nonNull(historicProcessInstance)
-                        && StringUtils.isNotBlank(historicProcessInstance.getStartUserId())) {
-                    User user =
-                            userService.getUserById(
-                                    Long.parseLong(historicProcessInstance.getStartUserId()));
-                    if (user != null) {
-                        e.setAssigneeId(historicProcessInstance.getStartUserId());
-                        e.setAssigneeName(user.getName());
-                    }
-                }
-            }
             // 获取任务执行人名称
             if (StringUtils.isNotEmpty(histIns.getAssignee())) {
                 User user = userService.getUserById(Long.parseLong(histIns.getAssignee()));
@@ -299,31 +276,18 @@ public class ActTaskService {
                 }
             }
             // 获取意见评论内容
-            if (StringUtils.isNotBlank(histIns.getTaskId())) {
-                List<Comment> commentList = taskService.getTaskComments(histIns.getTaskId());
-                if (commentList.size() > 0) {
-                    e.setComment(commentList.get(0).getFullMessage());
-                }
+            List<Comment> commentList = taskService.getTaskComments(histIns.getId());
+            if (!CollectionUtils.isEmpty(commentList)) {
+                e.setComment(commentList.get(0).getFullMessage());
             }
-            e.setActivityType(histIns.getActivityType());
-            e.setActivityId(histIns.getActivityId());
             e.setProcessInstanceId(histIns.getProcessInstanceId());
             e.setProcessDefinitionId(histIns.getProcessDefinitionId());
-            e.setBeginTime(histIns.getStartTime());
+            e.setBeginTime(histIns.getCreateTime());
             e.setEndTime(histIns.getEndTime());
             e.setDurationInMillis(histIns.getDurationInMillis());
             actList.add(e);
         }
         return actList;
-    }
-
-    /** 获取流程表单（首先获取任务节点表单KEY，如果没有则取流程开始节点表单KEY） */
-    public String getFormKey(String procDefId, String taskDefKey) {
-        if (StringUtils.isNotBlank(taskDefKey)) {
-            String taskFormKey = formService.getTaskFormKey(procDefId, taskDefKey);
-            if (StringUtils.isNotBlank(taskFormKey)) return taskFormKey;
-        }
-        return formService.getStartFormKey(procDefId);
     }
 
     @Transactional
@@ -355,7 +319,7 @@ public class ActTaskService {
                             .singleResult();
             processVariable.setProcessDefinitionId(processDefinition.getId());
             processVariable.setProcessDefinitionName(processDefinition.getName());
-            processVariable.setProcessDefinitionName(processDefinition.getKey());
+            processVariable.setProcessDefinitionKey(processDefinition.getKey());
         }
         // 设置流程发起人，act_hi_procinst 表中中的START_USER_ID_字段
         identityService.setAuthenticatedUserId(processVariable.getApplyUserId());

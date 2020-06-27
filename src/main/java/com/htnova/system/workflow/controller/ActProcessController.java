@@ -45,9 +45,11 @@ public class ActProcessController {
 
     /** 获取资源 */
     @PreAuthorize("hasAnyAuthority('actProcess.find')")
-    @GetMapping("/resource/{id}")
-    public String getProcessResource(@PathVariable String id, ActProcessDTO actProcessDTO) {
-        return actProcessService.getActProcessResource(id, actProcessDTO.getName());
+    @GetMapping("/resource/{processDefinitionId}")
+    public String getProcessResource(
+            @PathVariable String processDefinitionId, ActProcessDTO actProcessDTO) {
+        return actProcessService.getActProcessResource(
+                processDefinitionId, actProcessDTO.getName());
     }
 
     /** 激活/挂起 */

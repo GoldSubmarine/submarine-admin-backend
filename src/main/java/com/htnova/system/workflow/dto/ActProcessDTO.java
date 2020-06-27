@@ -14,7 +14,7 @@ import org.flowable.engine.repository.ProcessDefinition;
 public class ActProcessDTO {
 
     public static final String BPMN_SUFFIX = ".bpmn20.xml";
-    public static final String SVG_NAME = ".svg";
+    public static final String PNG_NAME = ".png";
 
     // 数据库id
     private String id;

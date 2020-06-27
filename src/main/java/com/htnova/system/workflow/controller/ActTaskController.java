@@ -51,17 +51,10 @@ public class ActTaskController {
         return Result.build(ResultStatus.REVOKE_SUCCESS);
     }
 
-    /** 获取流程表单key */
-    @GetMapping("/form-key")
-    public String getFormKey(ActTaskDTO actTaskDTO) {
-        return actTaskService.getFormKey(
-                actTaskDTO.getProcessDefinitionId(), actTaskDTO.getTaskDefinitionKey());
-    }
-
     /** 获取历史操作记录 */
     @GetMapping("/history/operate")
     public List<ActTaskDTO> getHistoryOperate(ActTaskDTO actTaskDTO) {
         return actTaskService.histoicFlowList(
-                actTaskDTO.getProcessInstanceId(), actTaskDTO.getActivityId());
+                actTaskDTO.getProcessInstanceId(), actTaskDTO.getTaskDefinitionKey());
     }
 }

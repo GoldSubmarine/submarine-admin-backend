@@ -50,8 +50,8 @@ public class ActModelDTO {
     /** xml 模型数据 */
     private String editorSourceValue;
 
-    /** svg 数据 */
-    private String editorSourceExtraValue;
+    /** 附带数据 */
+    private ActModelExtraValue editorSourceExtraValue;
 
     // 只展示最新版本
     private boolean lastVersion;

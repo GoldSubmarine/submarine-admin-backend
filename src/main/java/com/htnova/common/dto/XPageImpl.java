@@ -2,7 +2,7 @@ package com.htnova.common.dto;
 
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.google.common.collect.Lists;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,5 +27,5 @@ public class XPageImpl<T> implements XPage<T> {
     private List<OrderItem> orders = Lists.newArrayList(OrderItem.desc("create_time"));
 
     /** 查询数据列表 */
-    private List<T> data = Collections.emptyList();
+    private List<T> data = new ArrayList<>();
 }

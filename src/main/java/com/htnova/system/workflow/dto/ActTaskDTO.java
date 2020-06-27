@@ -31,7 +31,6 @@ public class ActTaskDTO {
     private String category;
     private Date dueDate;
     private String tenantId;
-    private String formKey;
     /** 挂起状态 */
     private boolean suspended;
 
@@ -42,6 +41,7 @@ public class ActTaskDTO {
     private String processInstanceId;
     private String processDefinitionId;
     private String processDefinitionKey;
+    private String processDefinitionName;
     private ProcessVariableDTO processVariables;
 
     private Date createTime;
@@ -50,11 +50,13 @@ public class ActTaskDTO {
     private Long durationInMillis;
     private String comment;
 
-    private String startActivityId;
     /** 当前审批节点id */
-    private String activityId;
-
     private String activityType;
+    /** 申请人id */
+    private String applyUserId;
+
+    /** 申请人姓名 */
+    private String applyUserName;
 
     public ActTaskDTO(Task task) {
         this.setId(task.getId());
@@ -66,7 +68,6 @@ public class ActTaskDTO {
         this.setCategory(task.getCategory());
         this.setDueDate(task.getDueDate());
         this.setTenantId(task.getTenantId());
-        this.setFormKey(task.getFormKey());
         this.setSuspended(task.isSuspended());
         this.setExecutionId(task.getExecutionId());
         this.setTaskDefinitionId(task.getTaskDefinitionId());
@@ -75,6 +76,10 @@ public class ActTaskDTO {
         this.setProcessDefinitionId(task.getProcessDefinitionId());
         this.setProcessVariables(
                 BeanUtil.mapToBean(task.getProcessVariables(), ProcessVariableDTO.class, true));
+        this.setProcessDefinitionKey(this.getProcessVariables().getProcessDefinitionKey());
+        this.setProcessDefinitionName(this.getProcessVariables().getProcessDefinitionName());
+        this.setApplyUserId(this.getProcessVariables().getApplyUserId());
+        this.setApplyUserName(this.getProcessVariables().getApplyUserName());
         this.setCreateTime(task.getCreateTime());
     }
 
@@ -90,5 +95,9 @@ public class ActTaskDTO {
         this.setProcessVariables(
                 BeanUtil.mapToBean(
                         historicTask.getProcessVariables(), ProcessVariableDTO.class, true));
+        this.setProcessDefinitionKey(this.getProcessVariables().getProcessDefinitionKey());
+        this.setProcessDefinitionName(this.getProcessVariables().getProcessDefinitionName());
+        this.setApplyUserId(this.getProcessVariables().getApplyUserId());
+        this.setApplyUserName(this.getProcessVariables().getApplyUserName());
     }
 }
