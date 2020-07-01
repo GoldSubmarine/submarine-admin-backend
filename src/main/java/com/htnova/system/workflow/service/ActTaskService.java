@@ -204,6 +204,25 @@ public class ActTaskService {
         }
     }
 
+    /** 委托任务 */
+    public void delegateTask(String taskId, Long formUserId, Long toUserId) {
+        Task task =
+                taskService
+                        .createTaskQuery()
+                        .taskId(taskId)
+                        .taskCandidateUser(formUserId.toString())
+                        .taskCandidateGroupIn(
+                                userService.getUserById(formUserId).getRoleList().stream()
+                                        .map(item -> item.getId().toString())
+                                        .collect(Collectors.toList()))
+                        .singleResult();
+        if (Objects.nonNull(task)) {
+            taskService.delegateTask(taskId, toUserId.toString());
+        } else {
+            throw new ServiceException(ResultStatus.NOT_CANDIDATE);
+        }
+    }
+
     /** 撤销申请,终止流程实例 */
     public void deleteProcessInstanceById(String processInstanceId, String deleteReason) {
         runtimeService.deleteProcessInstance(processInstanceId, deleteReason);

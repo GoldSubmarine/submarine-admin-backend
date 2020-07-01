@@ -52,9 +52,18 @@ public class ActTaskController {
     }
 
     /** 签收任务 */
-    @PostMapping("/apply/claim/{taskId}")
+    @PostMapping("/claim/{taskId}")
     public Result<Void> claimTask(@PathVariable String taskId) {
         actTaskService.claimTask(taskId, UserUtil.getAuthUser().getId());
+        return Result.build(ResultStatus.CLAIM_SUCCESS);
+    }
+
+    /** 委托任务 */
+    @PostMapping("/delegate/{taskId}")
+    public Result<Void> delegateTask(
+            @PathVariable String taskId, @RequestBody ActTaskDTO actTaskDTO) {
+        actTaskService.delegateTask(
+                taskId, UserUtil.getAuthUser().getId(), Long.parseLong(actTaskDTO.getAssigneeId()));
         return Result.build(ResultStatus.CLAIM_SUCCESS);
     }
 
