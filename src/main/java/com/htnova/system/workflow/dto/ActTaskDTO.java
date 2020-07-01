@@ -1,6 +1,7 @@
 package com.htnova.system.workflow.dto;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.htnova.system.workflow.dto.TaskVariableDTO.ApproveType;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,8 @@ public class ActTaskDTO {
 
     /** 委派状态 */
     private DelegationState delegationState;
+    /** 审核状态 */
+    private ApproveType approveStatus;
 
     private String category;
     private Date dueDate;
@@ -50,8 +53,6 @@ public class ActTaskDTO {
     private Long durationInMillis;
     private String comment;
 
-    /** 当前审批节点id */
-    private String activityType;
     /** 申请人id */
     private String applyUserId;
 

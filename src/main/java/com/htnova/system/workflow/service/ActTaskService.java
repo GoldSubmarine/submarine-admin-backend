@@ -2,7 +2,9 @@ package com.htnova.system.workflow.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.google.common.collect.Lists;
+import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.XPage;
+import com.htnova.common.exception.ServiceException;
 import com.htnova.common.util.UserUtil;
 import com.htnova.system.manage.entity.User;
 import com.htnova.system.manage.service.UserService;
@@ -16,6 +18,7 @@ import com.htnova.system.workflow.mapper.ActMapper;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +28,7 @@ import org.flowable.engine.IdentityService;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
+import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.history.HistoricProcessInstanceQuery;
 import org.flowable.engine.repository.ProcessDefinition;
@@ -34,6 +38,7 @@ import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.api.history.HistoricTaskInstanceQuery;
+import org.flowable.variable.api.history.HistoricVariableInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,12 +58,16 @@ public class ActTaskService {
 
     /** 获取待办列表 */
     public XPage<ActTaskDTO> getTodoList(
-            ActTaskDTO actTaskDTO, String userId, XPage<ActTaskDTO> page) {
+            ActTaskDTO actTaskDTO, Long userId, List<Long> roleIdList, XPage<ActTaskDTO> page) {
         // =============== 已经签收的任务  ===============
         TaskQuery todoTaskQuery =
                 taskService
                         .createTaskQuery()
-                        .taskAssignee(userId)
+                        .taskCandidateOrAssigned(userId.toString())
+                        .taskCandidateGroupIn(
+                                roleIdList.stream()
+                                        .map(Object::toString)
+                                        .collect(Collectors.toList()))
                         .active()
                         .includeProcessVariables()
                         .orderByTaskCreateTime()
@@ -122,8 +131,10 @@ public class ActTaskService {
     /** 获取自己的申请(流程实例查询) */
     public XPage<ActApplyDTO> getApplyPage(ActApplyDTO actApplyDTO, XPage<ActApplyDTO> page) {
         HistoricProcessInstanceQuery historicProcInsQuery =
-                historyService.createHistoricProcessInstanceQuery();
-
+                historyService
+                        .createHistoricProcessInstanceQuery()
+                        .orderByProcessInstanceStartTime()
+                        .desc();
         if (StringUtils.isNotBlank(actApplyDTO.getProcessInstanceId())) {
             historicProcInsQuery.processInstanceId(actApplyDTO.getProcessInstanceId());
         }
@@ -155,11 +166,14 @@ public class ActTaskService {
         if (StringUtils.isNotBlank(actApplyDTO.getProcessInstanceName())) {
             historicProcInsQuery.processInstanceNameLike(actApplyDTO.getProcessInstanceName());
         }
-        if (ApplyStatus.done.equals(actApplyDTO.getStatus())) {
-            historicProcInsQuery.finished();
+        if (ApplyStatus.finish.equals(actApplyDTO.getStatus())) {
+            historicProcInsQuery.finished().notDeleted();
         }
-        if (ApplyStatus.process.equals(actApplyDTO.getStatus())) {
+        if (ApplyStatus.unfinish.equals(actApplyDTO.getStatus())) {
             historicProcInsQuery.unfinished();
+        }
+        if (ApplyStatus.delete.equals(actApplyDTO.getStatus())) {
+            historicProcInsQuery.deleted();
         }
         List<HistoricProcessInstance> historicProcessInstances =
                 historicProcInsQuery.listPage((int) page.getStartIndex(), (int) page.getEndIndex());
@@ -169,6 +183,25 @@ public class ActTaskService {
                         .map(ActApplyDTO::new)
                         .collect(Collectors.toList()));
         return page;
+    }
+
+    /** 签收任务 */
+    public void claimTask(String taskId, Long userId) {
+        Task task =
+                taskService
+                        .createTaskQuery()
+                        .taskId(taskId)
+                        .taskCandidateUser(userId.toString())
+                        .taskCandidateGroupIn(
+                                userService.getUserById(userId).getRoleList().stream()
+                                        .map(item -> item.getId().toString())
+                                        .collect(Collectors.toList()))
+                        .singleResult();
+        if (Objects.nonNull(task)) {
+            taskService.claim(taskId, userId.toString());
+        } else {
+            throw new ServiceException(ResultStatus.NOT_CANDIDATE);
+        }
     }
 
     /** 撤销申请,终止流程实例 */
@@ -191,7 +224,7 @@ public class ActTaskService {
             taskService.addComment(taskId, procInsId, comment);
         }
         // 提交任务
-        taskService.complete(taskId, vars);
+        taskService.complete(taskId, vars, true);
     }
 
     /** 审批 */
@@ -232,24 +265,25 @@ public class ActTaskService {
                         .createHistoricProcessInstanceQuery()
                         .processInstanceId(procInsId)
                         .singleResult();
-        if (Objects.nonNull(historicProcessInstance)
-                && StringUtils.isNotBlank(historicProcessInstance.getStartUserId())) {
-            ActTaskDTO e = new ActTaskDTO();
-            e.setActivityType("startEvent");
-            User user =
-                    userService.getUserById(
-                            Long.parseLong(historicProcessInstance.getStartUserId()));
-            if (user != null) {
-                e.setAssigneeId(historicProcessInstance.getStartUserId());
-                e.setAssigneeName(user.getName());
-            }
-            e.setProcessInstanceId(historicProcessInstance.getId());
-            e.setProcessDefinitionId(historicProcessInstance.getProcessDefinitionId());
-            e.setBeginTime(historicProcessInstance.getStartTime());
-            e.setEndTime(historicProcessInstance.getStartTime());
-            e.setDurationInMillis(historicProcessInstance.getDurationInMillis());
-            actList.add(e);
-        }
+        HistoricActivityInstance startActivity =
+                historyService
+                        .createHistoricActivityInstanceQuery()
+                        .processInstanceId(procInsId)
+                        .activityId(historicProcessInstance.getStartActivityId())
+                        .singleResult();
+        User user =
+                userService.getUserById(Long.parseLong(historicProcessInstance.getStartUserId()));
+        actList.add(
+                ActTaskDTO.builder()
+                        .assigneeId(historicProcessInstance.getStartUserId())
+                        .assigneeName(Optional.ofNullable(user).map(User::getName).orElse(null))
+                        .name(startActivity.getActivityName())
+                        .processInstanceId(historicProcessInstance.getId())
+                        .processDefinitionId(historicProcessInstance.getProcessDefinitionId())
+                        .beginTime(historicProcessInstance.getStartTime())
+                        .endTime(historicProcessInstance.getStartTime())
+                        .durationInMillis(historicProcessInstance.getDurationInMillis())
+                        .build());
         // 获取审批人列表
         List<HistoricTaskInstance> list =
                 historyService
@@ -260,19 +294,13 @@ public class ActTaskService {
                         .list();
         for (int i = 0; i < list.size(); i++) {
             HistoricTaskInstance histIns = list.get(i);
-            // 过滤结束节点后的节点
-            if (StringUtils.isNotBlank(endTaskDefinitionKey)
-                    && endTaskDefinitionKey.equals(histIns.getTaskDefinitionKey())) {
-                break;
-            }
-
             ActTaskDTO e = new ActTaskDTO();
             // 获取任务执行人名称
             if (StringUtils.isNotEmpty(histIns.getAssignee())) {
-                User user = userService.getUserById(Long.parseLong(histIns.getAssignee()));
+                User assigneeUser = userService.getUserById(Long.parseLong(histIns.getAssignee()));
                 if (user != null) {
                     e.setAssigneeId(histIns.getAssignee());
-                    e.setAssigneeName(user.getName());
+                    e.setAssigneeName(assigneeUser.getName());
                 }
             }
             // 获取意见评论内容
@@ -280,12 +308,30 @@ public class ActTaskService {
             if (!CollectionUtils.isEmpty(commentList)) {
                 e.setComment(commentList.get(0).getFullMessage());
             }
+            // 获取状态
+            Map<String, Object> variableMap =
+                    historyService.createHistoricVariableInstanceQuery().taskId(histIns.getId())
+                            .list().stream()
+                            .collect(
+                                    Collectors.toMap(
+                                            HistoricVariableInstance::getVariableName,
+                                            HistoricVariableInstance::getValue));
+            TaskVariableDTO taskVariableDTO =
+                    BeanUtil.mapToBean(variableMap, TaskVariableDTO.class, true);
+            e.setApproveStatus(taskVariableDTO.getStatus());
+
+            e.setName(histIns.getName());
             e.setProcessInstanceId(histIns.getProcessInstanceId());
             e.setProcessDefinitionId(histIns.getProcessDefinitionId());
             e.setBeginTime(histIns.getCreateTime());
             e.setEndTime(histIns.getEndTime());
             e.setDurationInMillis(histIns.getDurationInMillis());
             actList.add(e);
+            // 过滤结束节点后的节点
+            if (StringUtils.isNotBlank(endTaskDefinitionKey)
+                    && endTaskDefinitionKey.equals(histIns.getTaskDefinitionKey())) {
+                break;
+            }
         }
         return actList;
     }

@@ -66,6 +66,9 @@ public class ActModelService {
         if (actModelDTO.isLastVersion()) {
             modelQuery.latestVersion();
         }
+        if (Objects.nonNull(actModelDTO.getVersion())) {
+            modelQuery.modelVersion(actModelDTO.getVersion());
+        }
         // 排序
         if (!CollectionUtils.isEmpty(page.orders())) {
             if (page.orders().get(0).isAsc()) {

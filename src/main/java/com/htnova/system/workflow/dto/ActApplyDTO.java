@@ -24,7 +24,6 @@ public class ActApplyDTO {
     private String processInstanceName;
 
     private String processInstanceId;
-    private String businessKey;
     private String startUserId;
     private String startActivityId;
     private String superProcessInstanceId;
@@ -53,6 +52,7 @@ public class ActApplyDTO {
         this.processInstanceId =
                 ((HistoricProcessInstanceEntityImpl) hisProcessIns).getProcessInstanceId();
         this.processDefinitionId = hisProcessIns.getProcessDefinitionId();
+        this.processInstanceBusinessKey = hisProcessIns.getBusinessKey();
         this.startUserId = hisProcessIns.getStartUserId();
         this.startActivityId = hisProcessIns.getStartActivityId();
         this.superProcessInstanceId = hisProcessIns.getSuperProcessInstanceId();
@@ -75,20 +75,20 @@ public class ActApplyDTO {
                         hisProcessIns.getProcessVariables(), ProcessVariableDTO.class, true);
 
         if (Objects.nonNull(hisProcessIns.getEndActivityId())) {
-            this.status = ApplyStatus.done;
+            this.status = ApplyStatus.finish;
         } else if (StringUtils.isNotBlank(hisProcessIns.getDeleteReason())) {
-            this.status = ApplyStatus.abandon;
+            this.status = ApplyStatus.delete;
         } else {
-            this.status = ApplyStatus.process;
+            this.status = ApplyStatus.unfinish;
         }
     }
 
     public enum ApplyStatus {
         /** 进行中 */
-        process,
+        unfinish,
         /** 已完成 */
-        done,
-        /** 已作废 */
-        abandon
+        finish,
+        /** 已撤销 */
+        delete
     }
 }

@@ -28,4 +28,7 @@ public class ProcessVariableDTO {
 
     /** 下一个节点审批人（流程图中的变量） */
     private String approver;
+
+    /** 审批是否通过（对应流程图中网关的判断变量，该变量属于流程实例） */
+    private String status;
 }
