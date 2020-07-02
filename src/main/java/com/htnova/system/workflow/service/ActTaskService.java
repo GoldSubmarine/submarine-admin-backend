@@ -34,6 +34,7 @@ import org.flowable.engine.history.HistoricProcessInstanceQuery;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.task.Comment;
+import org.flowable.task.api.DelegationState;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
 import org.flowable.task.api.history.HistoricTaskInstance;
@@ -210,11 +211,7 @@ public class ActTaskService {
                 taskService
                         .createTaskQuery()
                         .taskId(taskId)
-                        .taskCandidateUser(formUserId.toString())
-                        .taskCandidateGroupIn(
-                                userService.getUserById(formUserId).getRoleList().stream()
-                                        .map(item -> item.getId().toString())
-                                        .collect(Collectors.toList()))
+                        .taskAssignee(formUserId.toString())
                         .singleResult();
         if (Objects.nonNull(task)) {
             taskService.delegateTask(taskId, toUserId.toString());
@@ -242,8 +239,14 @@ public class ActTaskService {
         if (StringUtils.isNotBlank(procInsId) && StringUtils.isNotBlank(comment)) {
             taskService.addComment(taskId, procInsId, comment);
         }
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         // 提交任务
-        taskService.complete(taskId, vars, true);
+        if (DelegationState.PENDING.equals(task.getDelegationState())) {
+            // 如果是委派状态
+            taskService.resolveTask(taskId, vars);
+        } else {
+            taskService.complete(taskId, vars, true);
+        }
     }
 
     /** 审批 */

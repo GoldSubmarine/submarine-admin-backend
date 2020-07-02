@@ -64,7 +64,7 @@ public class ActTaskController {
             @PathVariable String taskId, @RequestBody ActTaskDTO actTaskDTO) {
         actTaskService.delegateTask(
                 taskId, UserUtil.getAuthUser().getId(), Long.parseLong(actTaskDTO.getAssigneeId()));
-        return Result.build(ResultStatus.CLAIM_SUCCESS);
+        return Result.build(ResultStatus.DELEGATE_SUCCESS);
     }
 
     /** 撤销申请 */
