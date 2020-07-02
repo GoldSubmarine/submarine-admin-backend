@@ -11,6 +11,7 @@ import com.htnova.system.workflow.service.ActTaskService;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ public class ActTaskController {
     @Resource private ActTaskService actTaskService;
 
     /** 获取待完成列表 */
+    @PreAuthorize("hasAnyAuthority('workflowTask.find')")
     @GetMapping("/todo/page")
     public XPage<ActTaskDTO> getTodoList(ActTaskDTO actTaskDTO, XPage<ActTaskDTO> xPage) {
         return actTaskService.getTodoList(
@@ -37,6 +39,7 @@ public class ActTaskController {
     }
 
     /** 获取已完成列表 */
+    @PreAuthorize("hasAnyAuthority('workflowTask.find')")
     @GetMapping("/done/page")
     public XPage<ActTaskDTO> getDonePage(
             ActTaskDTO actTaskDTO, String userId, XPage<ActTaskDTO> page) {
@@ -45,6 +48,7 @@ public class ActTaskController {
     }
 
     /** 获取我的申请 */
+    @PreAuthorize("hasAnyAuthority('workflowTask.find')")
     @GetMapping("/apply/page")
     public XPage<ActApplyDTO> getApplyPage(ActApplyDTO actApplyDTO, XPage<ActApplyDTO> page) {
         actApplyDTO.setStartedBy(UserUtil.getAuthUser().getId().toString());
@@ -52,6 +56,7 @@ public class ActTaskController {
     }
 
     /** 签收任务 */
+    @PreAuthorize("hasAnyAuthority('workflowTask.claim')")
     @PostMapping("/claim/{taskId}")
     public Result<Void> claimTask(@PathVariable String taskId) {
         actTaskService.claimTask(taskId, UserUtil.getAuthUser().getId());
@@ -59,6 +64,7 @@ public class ActTaskController {
     }
 
     /** 委托任务 */
+    @PreAuthorize("hasAnyAuthority('workflowTask.delegate')")
     @PostMapping("/delegate/{taskId}")
     public Result<Void> delegateTask(
             @PathVariable String taskId, @RequestBody ActTaskDTO actTaskDTO) {
@@ -68,6 +74,7 @@ public class ActTaskController {
     }
 
     /** 撤销申请 */
+    @PreAuthorize("hasAnyAuthority('workflowTask.delete')")
     @PostMapping("/apply/delete")
     public Result<Void> deleteProcessInstanceById(@RequestBody ActApplyDTO actApplyDTO) {
         actTaskService.deleteProcessInstanceById(
@@ -76,6 +83,7 @@ public class ActTaskController {
     }
 
     /** 获取历史操作记录 */
+    @PreAuthorize("hasAnyAuthority('workflowTask.find')")
     @GetMapping("/history/operate")
     public List<ActTaskDTO> getHistoryOperate(ActTaskDTO actTaskDTO) {
         return actTaskService.histoicFlowList(

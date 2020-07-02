@@ -20,7 +20,7 @@ public class ActProcessController {
     @Resource private RepositoryService repositoryService;
 
     /** 分页查询 */
-    @PreAuthorize("hasAnyAuthority('actProcess.find')")
+    @PreAuthorize("hasAnyAuthority('workflowProcess.find')")
     @GetMapping("/list/page")
     public XPage<ActProcessDTO> findListByPage(
             ActProcessDTO actProcessDTO, XPage<ActProcessDTO> xPage) {
@@ -28,7 +28,7 @@ public class ActProcessController {
     }
 
     /** 获取全部激活状态最新版流程定义 */
-    @PreAuthorize("hasAnyAuthority('actProcess.find')")
+    @PreAuthorize("hasAnyAuthority('workflowProcess.find')")
     @GetMapping("/list/all")
     public List<ActProcessDTO> findAllProcessList() {
         return actProcessService.findAllActProcessList().stream()
@@ -37,14 +37,14 @@ public class ActProcessController {
     }
 
     /** 详情 */
-    @PreAuthorize("hasAnyAuthority('actProcess.find')")
+    @PreAuthorize("hasAnyAuthority('workflowProcess.find')")
     @GetMapping("/detail/{id}")
     public ActProcessDTO getById(@PathVariable String id) {
         return actProcessService.getActProcessById(id);
     }
 
     /** 获取资源 */
-    @PreAuthorize("hasAnyAuthority('actProcess.find')")
+    @PreAuthorize("hasAnyAuthority('workflowProcess.find')")
     @GetMapping("/resource/{processDefinitionId}")
     public String getProcessResource(
             @PathVariable String processDefinitionId, ActProcessDTO actProcessDTO) {
@@ -53,7 +53,7 @@ public class ActProcessController {
     }
 
     /** 激活/挂起 */
-    @PreAuthorize("hasAnyAuthority('actProcess.edit')")
+    @PreAuthorize("hasAnyAuthority('workflowProcess.edit')")
     @PostMapping("/status/{id}")
     public Result<Void> changeProcessStatus(
             @PathVariable String id, @RequestBody ActProcessDTO actProcessDTO) {
@@ -62,7 +62,7 @@ public class ActProcessController {
     }
 
     /** 删除部署及实例 */
-    @PreAuthorize("hasAnyAuthority('actProcess.del')")
+    @PreAuthorize("hasAnyAuthority('workflowProcess.del')")
     @DeleteMapping("/del/{deploymentId}")
     public Result<Void> delete(@PathVariable String deploymentId) {
         actProcessService.deleteActDeployment(deploymentId);

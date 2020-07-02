@@ -20,7 +20,7 @@ public class ActModelController {
     @Resource private ActModelService actModelService;
 
     /** 分页查询 */
-    @PreAuthorize("hasAnyAuthority('actModel.find')")
+    @PreAuthorize("hasAnyAuthority('workflowModel.find')")
     @GetMapping("/list/page")
     public XPage<ActModelDTO> findListByPage(ActModelDTO actModelDTO, XPage<ActModelDTO> xPage) {
         IPage<Model> iPage = actModelService.findActModelList(actModelDTO, XPage.toIPage(xPage));
@@ -35,7 +35,7 @@ public class ActModelController {
     }
 
     /** 保存 */
-    @PreAuthorize("hasAnyAuthority('actModel.edit')")
+    @PreAuthorize("hasAnyAuthority('workflowModel.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody ActModelDTO actModelDTO) {
         actModelService.save(actModelDTO);
@@ -43,7 +43,7 @@ public class ActModelController {
     }
 
     /** 部署 */
-    @PreAuthorize("hasAnyAuthority('actModel.edit')")
+    @PreAuthorize("hasAnyAuthority('workflowModel.edit')")
     @PostMapping("/deploy/{id}")
     public Result<Void> deploy(@PathVariable String id) {
         actModelService.deploy(id);
@@ -51,14 +51,14 @@ public class ActModelController {
     }
 
     /** 详情 */
-    @PreAuthorize("hasAnyAuthority('actModel.find')")
+    @PreAuthorize("hasAnyAuthority('workflowModel.find')")
     @GetMapping("/detail/{id}")
     public ActModelDTO getById(@PathVariable String id) {
         return actModelService.getActModelById(id);
     }
 
     /** 删除 */
-    @PreAuthorize("hasAnyAuthority('actModel.del')")
+    @PreAuthorize("hasAnyAuthority('workflowModel.del')")
     @DeleteMapping("/del/{id}")
     public Result<Void> delete(@PathVariable String id) {
         actModelService.deleteActModel(id);
