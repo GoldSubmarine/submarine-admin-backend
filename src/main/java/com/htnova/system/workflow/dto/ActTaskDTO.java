@@ -45,6 +45,7 @@ public class ActTaskDTO {
     private String processDefinitionId;
     private String processDefinitionKey;
     private String processDefinitionName;
+    private String processDefinitionCategory;
     private ProcessVariableDTO processVariables;
 
     private Date createTime;

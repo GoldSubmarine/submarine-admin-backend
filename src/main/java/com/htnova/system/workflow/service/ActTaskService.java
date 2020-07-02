@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +37,7 @@ import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.task.Comment;
 import org.flowable.task.api.DelegationState;
 import org.flowable.task.api.Task;
+import org.flowable.task.api.TaskInfo;
 import org.flowable.task.api.TaskQuery;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.api.history.HistoricTaskInstanceQuery;
@@ -81,11 +83,27 @@ public class ActTaskService {
             todoTaskQuery.processDefinitionNameLike(
                     "%" + actTaskDTO.getProcessDefinitionName() + "%");
         }
+        if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionCategory())) {
+            todoTaskQuery.processCategoryIn(
+                    Lists.newArrayList(actTaskDTO.getProcessDefinitionCategory()));
+        }
         long start = (page.getPageNum() - 1) * page.getPageSize();
         long end = start + page.getPageSize();
         List<Task> result = todoTaskQuery.listPage((int) start, (int) end);
         page.setData(result.stream().map(ActTaskDTO::new).collect(Collectors.toList()));
         page.setTotal(todoTaskQuery.count());
+        Map<String, ProcessDefinition> processDefinitionMap =
+                queryProcessDefinitionByIds(
+                        result.stream()
+                                .map(TaskInfo::getProcessDefinitionId)
+                                .collect(Collectors.toSet()));
+        page.getData()
+                .forEach(
+                        item ->
+                                item.setProcessDefinitionCategory(
+                                        processDefinitionMap
+                                                .get(item.getProcessDefinitionId())
+                                                .getCategory()));
         return page;
     }
 
@@ -109,6 +127,10 @@ public class ActTaskService {
             histTaskQuery.processDefinitionNameLike(
                     "%" + actTaskDTO.getProcessDefinitionName() + "%");
         }
+        if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionCategory())) {
+            histTaskQuery.processCategoryIn(
+                    Lists.newArrayList(actTaskDTO.getProcessDefinitionCategory()));
+        }
         if (actTaskDTO.getBeginTime() != null) {
             histTaskQuery.taskCompletedAfter(actTaskDTO.getBeginTime());
         }
@@ -126,6 +148,18 @@ public class ActTaskService {
         for (HistoricTaskInstance histTask : histList) {
             page.getData().add(new ActTaskDTO(histTask));
         }
+        Map<String, ProcessDefinition> processDefinitionMap =
+                queryProcessDefinitionByIds(
+                        histList.stream()
+                                .map(TaskInfo::getProcessDefinitionId)
+                                .collect(Collectors.toSet()));
+        page.getData()
+                .forEach(
+                        item ->
+                                item.setProcessDefinitionCategory(
+                                        processDefinitionMap
+                                                .get(item.getProcessDefinitionId())
+                                                .getCategory()));
         return page;
     }
 
@@ -183,7 +217,27 @@ public class ActTaskService {
                 historicProcessInstances.stream()
                         .map(ActApplyDTO::new)
                         .collect(Collectors.toList()));
+        // 设置流程分类
+        Map<String, ProcessDefinition> processDefinitionMap =
+                queryProcessDefinitionByIds(
+                        historicProcessInstances.stream()
+                                .map(HistoricProcessInstance::getProcessDefinitionId)
+                                .collect(Collectors.toSet()));
+        page.getData()
+                .forEach(
+                        item ->
+                                item.setProcessDefinitionCategory(
+                                        processDefinitionMap
+                                                .get(item.getProcessDefinitionId())
+                                                .getCategory()));
         return page;
+    }
+
+    private Map<String, ProcessDefinition> queryProcessDefinitionByIds(
+            Set<String> processDefinitionIds) {
+        return repositoryService.createProcessDefinitionQuery()
+                .processDefinitionIds(processDefinitionIds).list().stream()
+                .collect(Collectors.toMap(ProcessDefinition::getId, item -> item));
     }
 
     /** 签收任务 */
@@ -314,8 +368,7 @@ public class ActTaskService {
                         .orderByHistoricTaskInstanceStartTime()
                         .asc()
                         .list();
-        for (int i = 0; i < list.size(); i++) {
-            HistoricTaskInstance histIns = list.get(i);
+        for (HistoricTaskInstance histIns : list) {
             ActTaskDTO e = new ActTaskDTO();
             // 获取任务执行人名称
             if (StringUtils.isNotEmpty(histIns.getAssignee())) {
