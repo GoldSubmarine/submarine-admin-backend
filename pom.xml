@@ -31,7 +31,6 @@
         <aliyun-oss.version>3.9.1</aliyun-oss.version>
         <spotless.version>1.31.1</spotless.version>
         <flowable.version>6.5.0</flowable.version>
-<!--        <camunda.spring-boot.version>7.13.0</camunda.spring-boot.version>-->
         <hutool.version>5.3.8</hutool.version>
         <exec-maven-plugin.version.version>3.0.0</exec-maven-plugin.version.version>
     </properties>
@@ -89,26 +88,6 @@
             <artifactId>flowable-spring-boot-starter</artifactId>
             <version>${flowable.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.flowable</groupId>-->
-<!--            <artifactId>flowable-ui-task-conf</artifactId>-->
-<!--            <version>${flowable.version}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.flowable</groupId>-->
-<!--            <artifactId>flowable-ui-admin-conf</artifactId>-->
-<!--            <version>${flowable.version}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.flowable</groupId>-->
-<!--            <artifactId>flowable-ui-idm-conf</artifactId>-->
-<!--            <version>${flowable.version}</version>-->
-<!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.flowable</groupId>-->
-        <!--            <artifactId>flowable-ldap-configurator</artifactId>-->
-        <!--            <version>${flowable.version}</version>-->
-        <!--        </dependency>-->
 
         <dependency>
             <groupId>com.alibaba</groupId>

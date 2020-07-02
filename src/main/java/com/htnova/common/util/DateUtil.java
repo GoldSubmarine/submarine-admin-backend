@@ -3,6 +3,7 @@ package com.htnova.common.util;
 import com.htnova.common.constant.GlobalConst;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 public class DateUtil {
@@ -11,5 +12,9 @@ public class DateUtil {
 
     public static LocalDateTime converter(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.of(GlobalConst.TIME_ZONE_ID));
+    }
+
+    public static Date converter(LocalDateTime date) {
+        return Date.from(date.toInstant(ZoneOffset.of(GlobalConst.TIME_ZONE_ID)));
     }
 }

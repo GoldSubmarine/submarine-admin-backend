@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.htnova.common.base.BaseEntity;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -57,7 +57,7 @@ public class User extends BaseEntity {
     @JsonIgnore private String token;
 
     /** APP上次访问时间 */
-    @JsonIgnore private Date lastAccessDate;
+    @JsonIgnore private LocalDateTime lastAccessDate;
 
     /** 角色 */
     @TableField(exist = false)

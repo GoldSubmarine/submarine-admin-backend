@@ -1,7 +1,8 @@
 package com.htnova.system.workflow.dto;
 
 import cn.hutool.core.bean.BeanUtil;
-import java.util.Date;
+import com.htnova.common.util.DateUtil;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,8 +40,8 @@ public class ActApplyDTO {
     private String callbackType;
     private String referenceId;
     private String referenceType;
-    private Date startTime;
-    private Date endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String deleteReason;
     private ProcessVariableDTO processVariables;
 
@@ -65,8 +66,8 @@ public class ActApplyDTO {
         this.callbackType = hisProcessIns.getCallbackType();
         this.referenceId = hisProcessIns.getReferenceId();
         this.referenceType = hisProcessIns.getReferenceType();
-        this.startTime = hisProcessIns.getStartTime();
-        this.endTime = hisProcessIns.getEndTime();
+        this.startTime = DateUtil.converter(hisProcessIns.getStartTime());
+        this.endTime = DateUtil.converter(hisProcessIns.getEndTime());
         this.deleteReason = hisProcessIns.getDeleteReason();
         this.processVariables =
                 BeanUtil.mapToBean(

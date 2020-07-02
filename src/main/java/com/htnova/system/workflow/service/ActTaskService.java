@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.XPage;
 import com.htnova.common.exception.ServiceException;
+import com.htnova.common.util.DateUtil;
 import com.htnova.common.util.UserUtil;
 import com.htnova.system.manage.entity.User;
 import com.htnova.system.manage.service.UserService;
@@ -132,10 +133,10 @@ public class ActTaskService {
                     Lists.newArrayList(actTaskDTO.getProcessDefinitionCategory()));
         }
         if (actTaskDTO.getBeginTime() != null) {
-            histTaskQuery.taskCompletedAfter(actTaskDTO.getBeginTime());
+            histTaskQuery.taskCompletedAfter(DateUtil.converter(actTaskDTO.getBeginTime()));
         }
         if (actTaskDTO.getEndTime() != null) {
-            histTaskQuery.taskCompletedBefore(actTaskDTO.getEndTime());
+            histTaskQuery.taskCompletedBefore(DateUtil.converter(actTaskDTO.getEndTime()));
         }
 
         // 查询总数
@@ -356,8 +357,8 @@ public class ActTaskService {
                         .name(startActivity.getActivityName())
                         .processInstanceId(historicProcessInstance.getId())
                         .processDefinitionId(historicProcessInstance.getProcessDefinitionId())
-                        .beginTime(historicProcessInstance.getStartTime())
-                        .endTime(historicProcessInstance.getStartTime())
+                        .beginTime(DateUtil.converter(historicProcessInstance.getStartTime()))
+                        .endTime(DateUtil.converter(historicProcessInstance.getStartTime()))
                         .durationInMillis(historicProcessInstance.getDurationInMillis())
                         .build());
         // 获取审批人列表
@@ -398,8 +399,8 @@ public class ActTaskService {
             e.setName(histIns.getName());
             e.setProcessInstanceId(histIns.getProcessInstanceId());
             e.setProcessDefinitionId(histIns.getProcessDefinitionId());
-            e.setBeginTime(histIns.getCreateTime());
-            e.setEndTime(histIns.getEndTime());
+            e.setBeginTime(DateUtil.converter(histIns.getCreateTime()));
+            e.setEndTime(DateUtil.converter(histIns.getEndTime()));
             e.setDurationInMillis(histIns.getDurationInMillis());
             actList.add(e);
             // 过滤结束节点后的节点

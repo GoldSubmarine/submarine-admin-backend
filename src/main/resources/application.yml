@@ -43,12 +43,6 @@ flowable:
   idm:
     enabled: false
   rest-api-enabled: false
-#  process:
-#    async:
-#      executor:
-#        auto-activate: true
-#        default-async-job-acquire-wait-time-in-millis: 999999999
-#        default-timer-job-acquire-wait-time-in-millis: 999999999
 
 mybatis-plus:
   mapper-locations: classpath:com/htnova/**/xml/*.xml

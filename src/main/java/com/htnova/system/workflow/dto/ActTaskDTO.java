@@ -1,8 +1,9 @@
 package com.htnova.system.workflow.dto;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.htnova.common.util.DateUtil;
 import com.htnova.system.workflow.dto.TaskVariableDTO.ApproveType;
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +33,7 @@ public class ActTaskDTO {
     private ApproveType approveStatus;
 
     private String category;
-    private Date dueDate;
+    private LocalDateTime dueDate;
     private String tenantId;
     /** 挂起状态 */
     private boolean suspended;
@@ -48,9 +49,9 @@ public class ActTaskDTO {
     private String processDefinitionCategory;
     private ProcessVariableDTO processVariables;
 
-    private Date createTime;
-    private Date beginTime;
-    private Date endTime;
+    private LocalDateTime createTime;
+    private LocalDateTime beginTime;
+    private LocalDateTime endTime;
     private Long durationInMillis;
     private String comment;
 
@@ -68,7 +69,7 @@ public class ActTaskDTO {
         this.setAssigneeId(task.getAssignee());
         this.setDelegationState(task.getDelegationState());
         this.setCategory(task.getCategory());
-        this.setDueDate(task.getDueDate());
+        this.setDueDate(DateUtil.converter(task.getDueDate()));
         this.setTenantId(task.getTenantId());
         this.setSuspended(task.isSuspended());
         this.setExecutionId(task.getExecutionId());
@@ -82,14 +83,14 @@ public class ActTaskDTO {
         this.setProcessDefinitionName(this.getProcessVariables().getProcessDefinitionName());
         this.setApplyUserId(this.getProcessVariables().getApplyUserId());
         this.setApplyUserName(this.getProcessVariables().getApplyUserName());
-        this.setCreateTime(task.getCreateTime());
+        this.setCreateTime(DateUtil.converter(task.getCreateTime()));
     }
 
     public ActTaskDTO(HistoricTaskInstance historicTask) {
         this.setAssigneeId(historicTask.getAssignee());
         this.setId(historicTask.getId());
         this.setName(historicTask.getName());
-        this.setEndTime(historicTask.getEndTime());
+        this.setEndTime(DateUtil.converter(historicTask.getEndTime()));
         this.setExecutionId(historicTask.getExecutionId());
         this.setProcessInstanceId(historicTask.getProcessInstanceId());
         this.setProcessDefinitionId(historicTask.getProcessDefinitionId());
