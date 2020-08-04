@@ -74,7 +74,9 @@
             t_sys_role_permission a
         LEFT JOIN t_sys_permission b ON a.permission_id = b.id
         WHERE
-          a.del_flag = 0 AND a.role_id IN
+            a.del_flag = 0
+            AND b.del_flag = 0
+            AND a.role_id IN
         <foreach item="item" index="index" collection="ids"  open="(" separator="," close=")">
             '${item}'
         </foreach>
