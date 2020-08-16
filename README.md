@@ -18,32 +18,24 @@
 
 ## 项目简介
 
-submarine 是一个前后端分离的后台管理系统，配后前端项目 [submarine-admin-frontend](https://github.com/GoldSubmarine/submarine-admin-frontend) 可快速开发后台项目。
+🔥 submarine 是一个前后端分离的后台管理系统，配后前端项目 [submarine-admin-frontend](https://github.com/GoldSubmarine/submarine-admin-frontend) 可快速开发后台项目。
 
 致力于使用最流行最主流的前后端技术，对于各种使用场景都有相应的解决方案，对需求的变化充满信心。
 
 ## 文档
 
-技术选型和使用[文档](https://goldsubmarine.github.io/submarine-admin-doc/)
+🗒️ 技术选型和使用[文档](https://goldsubmarine.github.io/submarine-admin-doc/)
 
 ## 技术选型
 
-1. 后端
-
-    - springboot 2.3.0
-    - mybatis
-    - mybatis-plus
-    - spring security
-    - mapstruct
-    - lombok
-
-2. 前端
-
-    - Vue
-    - Element UI
-    - axios
-    - vue-admin-template
-    - Webpack
+| ⚡ **后端**      | ⚡ **前端**        |
+| ---------------- | ------------------ |
+| springboot 2.3.0 | Vue                |
+| mybatis          | Element UI         |
+| mybatis-plus     | axios              |
+| spring security  | vue-admin-template |
+| mapstruct        | Webpack            |
+| lombok           |                    |
 
 ## 系统功能
 
