@@ -1,28 +1,15 @@
-<h1 align="center">
-Submarine 后台管理系统
-</h1>
-
 <p align="center">
+  <img width="180" src="https://cdn.jsdelivr.net/gh/goldsubmarine/cdn@master/blog/20200817032045.png">
+</p>
+
+# Submarine 后台管理系统
+
+<p>
   <a href="#">
-    <img src="https://img.shields.io/badge/SpringBoot-2.3.0-brightgreen.svg" alt="springboot">
+    <img src="https://img.shields.io/badge/SpringBoot-2.3.1-brightgreen.svg" alt="springboot">
   </a>
   <a href="https://mybatis.plus">
     <img src="https://img.shields.io/badge/mybatis--plus-3.3.2-brightgreen.svg" alt="mybatis-plus">
-  </a>
-  <a href="https://mapstruct.org">
-    <img src="https://img.shields.io/badge/mapstruct-1.3.1.Final-brightgreen.svg" alt="mapstruct">
-  </a>
-  <a href="https://github.com/vuejs/vue">
-    <img src="https://img.shields.io/badge/vue-2.6.11-brightgreen.svg" alt="vue">
-  </a>
-  <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.11.0-brightgreen.svg" alt="element-ui">
-  </a>
-  <a href="https://github.com/PanJiaChen/vue-admin-template" alt="vue-admin-template">
-    <img src="https://img.shields.io/badge/vue--admin--template-4.2.1-brightgreen.svg" alt="vue-admin-template">
-  </a>
-  <a href="https://github.com/GoldSubmarine/xcrud">
-    <img src="https://img.shields.io/badge/xcrud-0.3.8-brightgreen.svg" alt="xcrud">
   </a>
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/License-MIT-brightgreen.svg" alt="license">
@@ -73,23 +60,23 @@ submarine 是一个前后端分离的后台管理系统，配后前端项目 [su
 
 <table>
     <tr>
-        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/permission.png"/></td>
-        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/dept.png"/></td>
+        <td><img src="https://cdn.jsdelivr.net/gh/goldsubmarine/cdn@master/blog/permission.png"/></td>
+        <td><img src="https://cdn.jsdelivr.net/gh/goldsubmarine/cdn@master/blog/dept.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/role.png"/></td>
-        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/user.png"/></td>
+        <td><img src="https://cdn.jsdelivr.net/gh/goldsubmarine/cdn@master/blog/role.png"/></td>
+        <td><img src="https://cdn.jsdelivr.net/gh/goldsubmarine/cdn@master/blog/user.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/dictionary.png"/></td>
-        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/fileStore.png"/></td>
+        <td><img src="https://cdn.jsdelivr.net/gh/goldsubmarine/cdn@master/blog/dictionary.png"/></td>
+        <td><img src="https://cdn.jsdelivr.net/gh/goldsubmarine/cdn@master/blog/fileStore.png"/></td>
     </tr>
     <tr>   
-        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/schedule.png"/></td>
-        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/monitorSql.png"/></td>
+        <td><img src="https://cdn.jsdelivr.net/gh/goldsubmarine/cdn@master/blog/schedule.png"/></td>
+        <td><img src="https://cdn.jsdelivr.net/gh/goldsubmarine/cdn@master/blog/monitorSql.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://raw.githubusercontent.com/GoldSubmarine/submarine-admin-frontend/master/doc/images/personal.png"/></td>
+        <td><img src="https://cdn.jsdelivr.net/gh/goldsubmarine/cdn@master/blog/personal.png"/></td>
     </tr>
 </table>
 
