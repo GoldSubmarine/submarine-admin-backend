@@ -32,6 +32,9 @@ spring:
     lettuce:
       pool:
         max-active: 8
+dev:
+  validator:
+    enable: true
 
 upload:
   type: local

@@ -32,7 +32,8 @@
         <prettier-maven-plugin.version>0.10</prettier-maven-plugin.version>
         <flowable.version>6.5.0</flowable.version>
         <hutool.version>5.3.8</hutool.version>
-        <exec-maven-plugin.version.version>3.0.0</exec-maven-plugin.version.version>
+        <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
+        <io.github.classgraph.version>4.8.87</io.github.classgraph.version>
     </properties>
 
     <!-- nexus私服配置 -->
@@ -150,6 +151,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
             <version>${commons-pool2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>${io.github.classgraph.version}</version>
         </dependency>
 
         <!--mapStruct依赖-->
