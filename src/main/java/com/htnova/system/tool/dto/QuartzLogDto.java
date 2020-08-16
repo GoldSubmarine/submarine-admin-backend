@@ -1,5 +1,7 @@
 package com.htnova.system.tool.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.htnova.common.base.BaseEntity;
 import com.htnova.system.tool.entity.QuartzLog;
 import lombok.AllArgsConstructor;
@@ -31,6 +33,7 @@ public class QuartzLogDto extends BaseEntity {
     private QuartzLog.StatusType status;
 
     /** 耗时 */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long time;
 
     /** 错误详情 */

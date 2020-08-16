@@ -1,5 +1,7 @@
 package com.htnova.system.workflow.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.htnova.common.base.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +17,7 @@ public class FlowHistoryDto extends BaseDto {
     private String processInstanceId;
 
     /** 业务申请的id */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long busiId;
 
     /** 业务表code */
