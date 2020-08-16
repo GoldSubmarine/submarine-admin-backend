@@ -177,7 +177,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     public void deptSaveEventHandle(Dept.SaveEvent saveEvent) {
         Dept dept = saveEvent.getDept();
         super.lambdaUpdate().eq(User::getDeptId, dept.getId()).set(User::getDeptName, dept.getName()).update();
-        log.debug("User reply {}", saveEvent);
+        log.info("User reply {}", saveEvent);
     }
 
     @EventListener
@@ -190,6 +190,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
                 throw new ServiceException(ResultStatus.DEPT_HAS_USER, list);
             }
         }
-        log.debug("User reply {}", deleteEvent);
+        log.info("User reply {}", deleteEvent);
     }
 }

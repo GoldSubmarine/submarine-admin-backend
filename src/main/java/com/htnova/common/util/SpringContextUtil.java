@@ -43,7 +43,7 @@ public class SpringContextUtil implements ApplicationContextAware, DisposableBea
     }
 
     private static void clearHolder() {
-        log.debug("清除SpringContextHolder中的ApplicationContext:{}", applicationContext);
+        log.info("清除SpringContextHolder中的ApplicationContext:{}", applicationContext);
         applicationContext = null;
     }
 

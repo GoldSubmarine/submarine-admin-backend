@@ -49,7 +49,7 @@ public class OSSHandleFileImpl implements HandleFile {
         String url = namespace + "/" + fileHashPath + fileName;
         try {
             PutObjectResult putObjectResult = ossClient.putObject(bucketName, url, file.getInputStream());
-            log.debug("file upload success. requestId: {}, ", putObjectResult.getRequestId());
+            log.info("file upload success. requestId: {}, ", putObjectResult.getRequestId());
             return FileStore
                 .builder()
                 .size((double) file.getSize() / 1000)
@@ -67,7 +67,7 @@ public class OSSHandleFileImpl implements HandleFile {
             try {
                 ossClient.shutdown();
             } catch (Exception e) {
-                log.debug("cos client shutdown error", e);
+                log.info("cos client shutdown error", e);
             }
         }
     }
