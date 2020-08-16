@@ -9,7 +9,6 @@ import java.util.List;
 import org.mapstruct.factory.Mappers;
 
 public interface XPage<T> {
-
     long getPageSize();
 
     void setPageSize(long size);
@@ -38,8 +37,7 @@ public interface XPage<T> {
         return page;
     }
 
-    static <T, V> XPage<T> fromIPage(
-            IPage<V> iPage, Class<? extends BaseMapStruct<T, V>> mapStruct) {
+    static <T, V> XPage<T> fromIPage(IPage<V> iPage, Class<? extends BaseMapStruct<T, V>> mapStruct) {
         XPageImpl<T> xPage = new XPageImpl<>();
         xPage.setPageNum(iPage.getCurrent());
         xPage.setPageSize(iPage.getSize());

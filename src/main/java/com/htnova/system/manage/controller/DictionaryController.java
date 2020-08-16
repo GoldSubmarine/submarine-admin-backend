@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/dictionary")
 public class DictionaryController {
-    @Resource private DictionaryService dictionaryService;
+    @Resource
+    private DictionaryService dictionaryService;
 
     /** 分页查询 */
     @PreAuthorize("hasAnyAuthority('dictionary.find')")
     @GetMapping("/list/page")
     public XPage<DictionaryDto> findListByPage(DictionaryDto dictionaryDto, XPage<Void> xPage) {
-        IPage<Dictionary> dictionaryPage =
-                dictionaryService.findDictionaryList(dictionaryDto, XPage.toIPage(xPage));
+        IPage<Dictionary> dictionaryPage = dictionaryService.findDictionaryList(dictionaryDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(dictionaryPage, DictionaryMapStruct.class);
     }
 
@@ -49,8 +49,7 @@ public class DictionaryController {
     @PreAuthorize("hasAnyAuthority('dictionary.add', 'dictionary.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody DictionaryDto dictionaryDto) {
-        dictionaryService.saveDictionary(
-                DtoConverter.toEntity(dictionaryDto, DictionaryMapStruct.class));
+        dictionaryService.saveDictionary(DtoConverter.toEntity(dictionaryDto, DictionaryMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

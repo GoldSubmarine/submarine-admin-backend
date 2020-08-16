@@ -36,6 +36,6 @@ public class FileStore extends BaseEntity {
 
     public enum StoreType {
         local,
-        OSS
+        OSS,
     }
 }

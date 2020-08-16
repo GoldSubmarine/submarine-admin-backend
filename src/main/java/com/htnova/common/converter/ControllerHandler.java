@@ -17,13 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 @ControllerAdvice
 public class ControllerHandler {
-
-    @Resource private DateFormatConfig dateFormatConfig;
+    @Resource
+    private DateFormatConfig dateFormatConfig;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        GenericConversionService genericConversionService =
-                (GenericConversionService) binder.getConversionService();
+        GenericConversionService genericConversionService = (GenericConversionService) binder.getConversionService();
         if (genericConversionService != null) {
             genericConversionService.addConverter(dateFormatConfig);
         }
@@ -31,9 +30,10 @@ public class ControllerHandler {
 
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<Result<Void>> handleMultipartException(
-            MultipartException e, RedirectAttributes redirectAttributes) {
+        MultipartException e,
+        RedirectAttributes redirectAttributes
+    ) {
         log.error("文件上传错误：", e);
-        return new ResponseEntity<>(
-                Result.build(ResultStatus.UPLOAD_FAILED), HttpStatus.PAYLOAD_TOO_LARGE);
+        return new ResponseEntity<>(Result.build(ResultStatus.UPLOAD_FAILED), HttpStatus.PAYLOAD_TOO_LARGE);
     }
 }

@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    @Resource private UserService userService;
+    @Resource
+    private UserService userService;
 
-    @Resource private UserRoleService userRoleService;
+    @Resource
+    private UserRoleService userRoleService;
 
     /** 分页查询 */
     @PreAuthorize("hasAnyAuthority('user.find')")
@@ -52,8 +54,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/save")
     public Result<String> save(@RequestBody UserDto userDto) {
-        String randomPass =
-                userService.saveUser(DtoConverter.toEntity(userDto, UserMapStruct.class));
+        String randomPass = userService.saveUser(DtoConverter.toEntity(userDto, UserMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
     }
 

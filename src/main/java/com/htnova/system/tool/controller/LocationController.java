@@ -20,15 +20,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/location")
 public class LocationController {
-
-    @Resource private LocationService locationService;
+    @Resource
+    private LocationService locationService;
 
     /** 分页查询 */
     @PreAuthorize("hasAnyAuthority('location.find')")
     @GetMapping("/list/page")
     public XPage<LocationDto> findListByPage(LocationDto locationDto, XPage<Void> xPage) {
-        IPage<Location> locationPage =
-                locationService.findLocationList(locationDto, XPage.toIPage(xPage));
+        IPage<Location> locationPage = locationService.findLocationList(locationDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(locationPage, LocationMapStruct.class);
     }
 

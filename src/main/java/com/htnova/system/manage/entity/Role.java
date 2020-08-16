@@ -37,11 +37,11 @@ public class Role extends BaseEntity {
 
     public enum RoleCode {
         SuperAdmin,
-        Admin
+        Admin,
     }
 
     public enum DisplayType {
         visible,
-        hidden
+        hidden,
     }
 }

@@ -33,6 +33,6 @@ public class QuartzJob extends BaseEntity {
 
     public enum StatusType {
         enable,
-        disable
+        disable,
     }
 }

@@ -10,7 +10,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class ProcessVariableDTO {
-
     /** 申请人id */
     private String applyUserId;
 

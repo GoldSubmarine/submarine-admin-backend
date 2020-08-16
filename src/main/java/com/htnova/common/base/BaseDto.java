@@ -39,5 +39,6 @@ public abstract class BaseDto implements Serializable {
     protected LocalDateTime updateTime;
 
     /** 逻辑删除（0未删除，1已删除） */
-    @Builder.Default protected Integer delFlag = GlobalConst.UNDEL_FLAG;
+    @Builder.Default
+    protected Integer delFlag = GlobalConst.UNDEL_FLAG;
 }

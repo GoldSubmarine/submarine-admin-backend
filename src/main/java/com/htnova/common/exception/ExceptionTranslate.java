@@ -21,11 +21,10 @@ public class ExceptionTranslate {
         BindingResult bindingResult = extractBindingResult(error);
         if (bindingResult != null) {
             result =
-                    Result.build(
-                            HttpStatus.BAD_REQUEST,
-                            bindingResult.hasErrors()
-                                    ? ResultStatus.BIND_ERROR
-                                    : ResultStatus.NO_ERROR);
+                Result.build(
+                    HttpStatus.BAD_REQUEST,
+                    bindingResult.hasErrors() ? ResultStatus.BIND_ERROR : ResultStatus.NO_ERROR
+                );
         } else {
             if (error instanceof AuthenticationException) {
                 result = Result.build(HttpStatus.UNAUTHORIZED, ResultStatus.UNAUTHORIZED);
@@ -45,7 +44,7 @@ public class ExceptionTranslate {
             return (BindingResult) error;
         }
         return error instanceof MethodArgumentNotValidException
-                ? ((MethodArgumentNotValidException) error).getBindingResult()
-                : null;
+            ? ((MethodArgumentNotValidException) error).getBindingResult()
+            : null;
     }
 }

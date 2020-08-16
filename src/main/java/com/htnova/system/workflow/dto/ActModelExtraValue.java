@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Builder
 public class ActModelExtraValue {
-
     /** 图片数据 */
     private String img;
 

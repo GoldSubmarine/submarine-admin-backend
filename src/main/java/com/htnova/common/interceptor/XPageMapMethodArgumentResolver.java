@@ -10,19 +10,20 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class XPageMapMethodArgumentResolver implements HandlerMethodArgumentResolver {
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(XPage.class)
-                || parameter.getParameterType().equals(XPageImpl.class);
+        return parameter.getParameterType().equals(XPage.class) || parameter.getParameterType().equals(XPageImpl.class);
     }
 
     @Override
     public XPageImpl<Object> resolveArgument(
-            MethodParameter parameter,
-            ModelAndViewContainer mavContainer,
-            NativeWebRequest webRequest,
-            WebDataBinderFactory binderFactory)
-            throws Exception {
+        MethodParameter parameter,
+        ModelAndViewContainer mavContainer,
+        NativeWebRequest webRequest,
+        WebDataBinderFactory binderFactory
+    )
+        throws Exception {
         String pageSize = webRequest.getParameter("pageSize");
         String pageNum = webRequest.getParameter("pageNum");
         XPageImpl<Object> xPage = new XPageImpl<>();

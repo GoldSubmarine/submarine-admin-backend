@@ -48,18 +48,18 @@ public class OSSHandleFileImpl implements HandleFile {
         String fileHashPath = fileName.substring(0, 6).replaceAll("(\\w\\w)", "$1/");
         String url = namespace + "/" + fileHashPath + fileName;
         try {
-            PutObjectResult putObjectResult =
-                    ossClient.putObject(bucketName, url, file.getInputStream());
+            PutObjectResult putObjectResult = ossClient.putObject(bucketName, url, file.getInputStream());
             log.debug("file upload success. requestId: {}, ", putObjectResult.getRequestId());
-            return FileStore.builder()
-                    .size((double) file.getSize() / 1000)
-                    .url(getPrefix() + url)
-                    .realName(fileName)
-                    .type(file.getContentType())
-                    .name(file.getOriginalFilename())
-                    .md5(DigestUtils.md5DigestAsHex(file.getInputStream()))
-                    .storeType(FileStore.StoreType.OSS)
-                    .build();
+            return FileStore
+                .builder()
+                .size((double) file.getSize() / 1000)
+                .url(getPrefix() + url)
+                .realName(fileName)
+                .type(file.getContentType())
+                .name(file.getOriginalFilename())
+                .md5(DigestUtils.md5DigestAsHex(file.getInputStream()))
+                .storeType(FileStore.StoreType.OSS)
+                .build();
         } catch (Exception e) {
             log.error("file upload error", e);
             throw e;

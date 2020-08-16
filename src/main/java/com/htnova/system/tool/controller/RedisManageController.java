@@ -11,7 +11,8 @@ import org.springframework.stereotype.Controller;
 @Slf4j
 @Controller
 public class RedisManageController {
-    @Resource private SocketIOServer socketIOServer;
+    @Resource
+    private SocketIOServer socketIOServer;
 
     @OnEvent("/redis/list")
     public void onEvent(SocketIOClient client, AckRequest ackRequest, String msg) {

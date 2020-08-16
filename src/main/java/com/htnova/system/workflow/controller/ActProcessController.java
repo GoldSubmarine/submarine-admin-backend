@@ -15,15 +15,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/workflow/process")
 public class ActProcessController {
+    @Resource
+    private ActProcessService actProcessService;
 
-    @Resource private ActProcessService actProcessService;
-    @Resource private RepositoryService repositoryService;
+    @Resource
+    private RepositoryService repositoryService;
 
     /** 分页查询 */
     @PreAuthorize("hasAnyAuthority('workflowProcess.find')")
     @GetMapping("/list/page")
-    public XPage<ActProcessDTO> findListByPage(
-            ActProcessDTO actProcessDTO, XPage<ActProcessDTO> xPage) {
+    public XPage<ActProcessDTO> findListByPage(ActProcessDTO actProcessDTO, XPage<ActProcessDTO> xPage) {
         return actProcessService.findActProcessList(actProcessDTO, xPage);
     }
 
@@ -31,9 +32,7 @@ public class ActProcessController {
     @PreAuthorize("hasAnyAuthority('workflowProcess.find')")
     @GetMapping("/list/all")
     public List<ActProcessDTO> findAllProcessList() {
-        return actProcessService.findAllActProcessList().stream()
-                .map(ActProcessDTO::new)
-                .collect(Collectors.toList());
+        return actProcessService.findAllActProcessList().stream().map(ActProcessDTO::new).collect(Collectors.toList());
     }
 
     /** 详情 */
@@ -46,17 +45,14 @@ public class ActProcessController {
     /** 获取资源 */
     @PreAuthorize("hasAnyAuthority('workflowProcess.find')")
     @GetMapping("/resource/{processDefinitionId}")
-    public String getProcessResource(
-            @PathVariable String processDefinitionId, ActProcessDTO actProcessDTO) {
-        return actProcessService.getActProcessResource(
-                processDefinitionId, actProcessDTO.getName());
+    public String getProcessResource(@PathVariable String processDefinitionId, ActProcessDTO actProcessDTO) {
+        return actProcessService.getActProcessResource(processDefinitionId, actProcessDTO.getName());
     }
 
     /** 激活/挂起 */
     @PreAuthorize("hasAnyAuthority('workflowProcess.edit')")
     @PostMapping("/status/{id}")
-    public Result<Void> changeProcessStatus(
-            @PathVariable String id, @RequestBody ActProcessDTO actProcessDTO) {
+    public Result<Void> changeProcessStatus(@PathVariable String id, @RequestBody ActProcessDTO actProcessDTO) {
         actProcessService.changeProcessStatus(id, actProcessDTO.getSuspensionState());
         return Result.build(ResultStatus.STATUS_SET_SUCCESS);
     }

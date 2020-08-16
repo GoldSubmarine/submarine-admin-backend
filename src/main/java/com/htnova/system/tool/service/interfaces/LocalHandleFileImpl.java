@@ -23,11 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @ConditionalOnProperty(name = "upload.type", havingValue = "local", matchIfMissing = true)
 public class LocalHandleFileImpl implements HandleFile {
-
     @Value("${upload.local.path}")
     private String uploadPath;
 
-    @Resource private ServerProperties serverProperties;
+    @Resource
+    private ServerProperties serverProperties;
 
     private String getPrefixUrl() {
         return serverProperties.getServlet().getContextPath() + "/file/download/";
@@ -43,9 +43,11 @@ public class LocalHandleFileImpl implements HandleFile {
             fileDir.mkdirs();
         }
         InputStream inputStream = file.getInputStream();
-        try (FileOutputStream fileOutputStream =
-                new FileOutputStream(
-                        new File(fileDir.getAbsolutePath() + File.separator + fileName))) {
+        try (
+            FileOutputStream fileOutputStream = new FileOutputStream(
+                new File(fileDir.getAbsolutePath() + File.separator + fileName)
+            )
+        ) {
             byte[] buffer = new byte[1024];
             while (true) {
                 int len = inputStream.read(buffer);
@@ -59,15 +61,16 @@ public class LocalHandleFileImpl implements HandleFile {
             throw new ServiceException(ResultStatus.UPLOAD_FAILED);
         }
         double size = file.getSize();
-        return FileStore.builder()
-                .size(size / 1000)
-                .url(getPrefixUrl() + fileHashPath + fileName)
-                .realName(fileName)
-                .type(file.getContentType())
-                .name(file.getOriginalFilename())
-                .md5(DigestUtils.md5DigestAsHex(inputStream))
-                .storeType(FileStore.StoreType.local)
-                .build();
+        return FileStore
+            .builder()
+            .size(size / 1000)
+            .url(getPrefixUrl() + fileHashPath + fileName)
+            .realName(fileName)
+            .type(file.getContentType())
+            .name(file.getOriginalFilename())
+            .md5(DigestUtils.md5DigestAsHex(inputStream))
+            .storeType(FileStore.StoreType.local)
+            .build();
     }
 
     @Override

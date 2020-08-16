@@ -44,34 +44,33 @@ public class JsonMapper extends ObjectMapper {
         this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         // 空值处理为空串
         this.getSerializerProvider()
-                .setNullValueSerializer(
-                        new JsonSerializer<Object>() {
+            .setNullValueSerializer(
+                new JsonSerializer<Object>() {
 
-                            @Override
-                            public void serialize(
-                                    Object value, JsonGenerator jgen, SerializerProvider provider)
-                                    throws IOException, JsonProcessingException {
-                                jgen.writeString("");
-                            }
-                        });
+                    @Override
+                    public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider)
+                        throws IOException, JsonProcessingException {
+                        jgen.writeString("");
+                    }
+                }
+            );
         // 进行HTML解码。
         this.registerModule(
                 new SimpleModule()
-                        .addSerializer(
-                                String.class,
-                                new JsonSerializer<String>() {
+                .addSerializer(
+                        String.class,
+                        new JsonSerializer<String>() {
 
-                                    @Override
-                                    public void serialize(
-                                            String value,
-                                            JsonGenerator jgen,
-                                            SerializerProvider provider)
-                                            throws IOException, JsonProcessingException {
-                                        // jgen.writeString(StringEscapeUtils.unescapeHtml4(value));
-                                        // xss攻击避免
-                                        jgen.writeString(value);
-                                    }
-                                }));
+                            @Override
+                            public void serialize(String value, JsonGenerator jgen, SerializerProvider provider)
+                                throws IOException, JsonProcessingException {
+                                // jgen.writeString(StringEscapeUtils.unescapeHtml4(value));
+                                // xss攻击避免
+                                jgen.writeString(value);
+                            }
+                        }
+                    )
+            );
         // 设置时区
         this.setTimeZone(TimeZone.getTimeZone("GMT+8:00")); // getTimeZone("GMT+8:00")
     }

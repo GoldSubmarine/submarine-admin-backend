@@ -22,18 +22,17 @@ public class ScheduleUtil {
     public static void createScheduleJob(QuartzJob quartzJob) {
         Scheduler scheduler = SpringContextUtil.getBean(Scheduler.class);
         try {
-            JobDetail jobDetail =
-                    JobBuilder.newJob(ScheduleJob.class)
-                            .withIdentity(JOB_NAME + quartzJob.getId())
-                            .build();
+            JobDetail jobDetail = JobBuilder
+                .newJob(ScheduleJob.class)
+                .withIdentity(JOB_NAME + quartzJob.getId())
+                .build();
             jobDetail.getJobDataMap().put(ScheduleJob.QUARTZ_JOB_KEY, quartzJob);
-            CronScheduleBuilder scheduleBuilder =
-                    CronScheduleBuilder.cronSchedule(quartzJob.getCronExpression());
-            CronTrigger trigger =
-                    TriggerBuilder.newTrigger()
-                            .withIdentity(JOB_NAME + quartzJob.getId())
-                            .withSchedule(scheduleBuilder)
-                            .build();
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(quartzJob.getCronExpression());
+            CronTrigger trigger = TriggerBuilder
+                .newTrigger()
+                .withIdentity(JOB_NAME + quartzJob.getId())
+                .withSchedule(scheduleBuilder)
+                .build();
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
             throw new ServiceException(ResultStatus.QUARTZ_CREATE_FAIL);
@@ -76,16 +75,13 @@ public class ScheduleUtil {
     /** 根据任务 QuartzJob 立即运行一次定时任务 */
     public static void runOnce(QuartzJob quartzJob) {
         Scheduler scheduler = SpringContextUtil.getBean(Scheduler.class);
-        JobDetail jobDetail =
-                JobBuilder.newJob(ScheduleJob.class)
-                        .withIdentity(JOB_NAME + quartzJob.getId())
-                        .build();
+        JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(JOB_NAME + quartzJob.getId()).build();
         jobDetail.getJobDataMap().put(ScheduleJob.QUARTZ_JOB_KEY, quartzJob);
-        SimpleTrigger trigger =
-                TriggerBuilder.newTrigger()
-                        .withIdentity(JOB_NAME + quartzJob.getId())
-                        .withSchedule(SimpleScheduleBuilder.simpleSchedule())
-                        .build();
+        SimpleTrigger trigger = TriggerBuilder
+            .newTrigger()
+            .withIdentity(JOB_NAME + quartzJob.getId())
+            .withSchedule(SimpleScheduleBuilder.simpleSchedule())
+            .build();
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
@@ -98,14 +94,9 @@ public class ScheduleUtil {
         Scheduler scheduler = SpringContextUtil.getBean(Scheduler.class);
         try {
             TriggerKey triggerKey = TriggerKey.triggerKey(JOB_NAME + quartzJob.getId());
-            CronScheduleBuilder scheduleBuilder =
-                    CronScheduleBuilder.cronSchedule(quartzJob.getCronExpression());
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(quartzJob.getCronExpression());
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-            trigger =
-                    trigger.getTriggerBuilder()
-                            .withIdentity(triggerKey)
-                            .withSchedule(scheduleBuilder)
-                            .build();
+            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
             // 重置对应的job
             scheduler.rescheduleJob(triggerKey, trigger);
         } catch (SchedulerException e) {

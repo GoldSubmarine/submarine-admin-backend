@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/dept")
 public class DeptController {
-    @Resource private DeptService deptService;
+    @Resource
+    private DeptService deptService;
 
     /** 部门分页查询 */
     @PreAuthorize("hasAnyAuthority('dept.find')")

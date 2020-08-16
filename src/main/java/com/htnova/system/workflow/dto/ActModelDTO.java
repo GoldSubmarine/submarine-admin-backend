@@ -16,7 +16,6 @@ import org.flowable.engine.repository.Model;
 @Data
 @Builder
 public class ActModelDTO {
-
     /** id */
     private String id;
 
@@ -68,8 +67,7 @@ public class ActModelDTO {
         this.tenantId = model.getTenantId();
 
         try {
-            ActModelMeta actModelMeta =
-                    new ObjectMapper().readValue(model.getMetaInfo(), ActModelMeta.class);
+            ActModelMeta actModelMeta = new ObjectMapper().readValue(model.getMetaInfo(), ActModelMeta.class);
             this.metaInfo = actModelMeta;
         } catch (Exception e) {
             log.error("反序列化失败：", e);

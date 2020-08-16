@@ -12,8 +12,7 @@ import java.util.List;
 public class SocketEventInterceptor implements EventInterceptor {
 
     @Override
-    public void onEvent(
-            NamespaceClient client, String eventName, List<Object> args, AckRequest ackRequest) {
+    public void onEvent(NamespaceClient client, String eventName, List<Object> args, AckRequest ackRequest) {
         // 清一下上次可能遗留的 threadLocal
         UserUtil.clearAuthUser();
         String httpSessionId = SocketUtil.getHttpSessionId(client.getHandshakeData());

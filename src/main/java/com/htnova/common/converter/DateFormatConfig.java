@@ -22,36 +22,37 @@ import org.springframework.lang.Nullable;
 /** 全局 json 格式化 */
 @JsonComponent
 public class DateFormatConfig implements Converter<String, LocalDateTime> {
-
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String DATE_FORMAT_REGEXP = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}";
     private static final String TIME_STAMP_FORMAT_REGEXP = "^\\d+$";
-    private static final DateTimeFormatter dateTimeFormatter =
-            DateTimeFormatter.ofPattern(DATE_FORMAT);
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     // ===============================json格式化start（http body）=============================
 
     /** 日期格式化为字符串 */
     public static class DateJsonSerializer extends JsonSerializer<LocalDateTime> {
+
         @Override
         public void serialize(
-                LocalDateTime localDateTime,
-                JsonGenerator jsonGenerator,
-                SerializerProvider serializerProvider)
-                throws IOException {
+            LocalDateTime localDateTime,
+            JsonGenerator jsonGenerator,
+            SerializerProvider serializerProvider
+        )
+            throws IOException {
             jsonGenerator.writeString(dateTimeFormatter.format(localDateTime));
         }
     }
 
     /** 解析日期字符串 */
     public static class DateJsonDeserializer extends JsonDeserializer<LocalDateTime> {
+
         @Override
-        public LocalDateTime deserialize(
-                JsonParser jsonParser, DeserializationContext deserializationContext)
-                throws IOException {
+        public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+            throws IOException {
             return deserializer(jsonParser.getText());
         }
     }
+
     // ===============================json格式化end（http body）=============================
 
     // ===============================param格式化start（http url）=============================
@@ -59,6 +60,7 @@ public class DateFormatConfig implements Converter<String, LocalDateTime> {
     public LocalDateTime convert(@Nullable String value) {
         return deserializer(value);
     }
+
     // ===============================param格式化end（http url）=============================
 
     /** 反序列化 */
@@ -71,8 +73,9 @@ public class DateFormatConfig implements Converter<String, LocalDateTime> {
         }
         if (value.matches(TIME_STAMP_FORMAT_REGEXP)) {
             return LocalDateTime.ofInstant(
-                    Instant.ofEpochSecond(Long.parseLong(value)),
-                    ZoneId.of(GlobalConst.TIME_ZONE_ID));
+                Instant.ofEpochSecond(Long.parseLong(value)),
+                ZoneId.of(GlobalConst.TIME_ZONE_ID)
+            );
         }
         throw new ServiceException(ResultStatus.FORMAT_ERROR);
     }

@@ -11,14 +11,14 @@ import org.springframework.context.annotation.Configuration;
  * https://jeesite.gitee.io/front/flowable/6.5.0/bpmn/index.html
  */
 @Configuration
-public class ActIdGenerator
-        implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
-
-    @Resource private IdentifierGenerator identifierGenerator;
+public class ActIdGenerator implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
+    @Resource
+    private IdentifierGenerator identifierGenerator;
 
     @Override
     public void configure(SpringProcessEngineConfiguration springProcessEngineConfiguration) {
         springProcessEngineConfiguration.setIdGenerator(
-                () -> String.valueOf(identifierGenerator.nextId(new Object()).longValue()));
+            () -> String.valueOf(identifierGenerator.nextId(new Object()).longValue())
+        );
     }
 }

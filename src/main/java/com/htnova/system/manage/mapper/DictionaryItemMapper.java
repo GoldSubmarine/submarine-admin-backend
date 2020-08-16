@@ -8,8 +8,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DictionaryItemMapper extends BaseMapper<DictionaryItem> {
-    IPage<DictionaryItem> findPage(
-            IPage<Void> xPage, @Param("dictionaryItemDto") DictionaryItemDto dictionaryItemDto);
+    IPage<DictionaryItem> findPage(IPage<Void> xPage, @Param("dictionaryItemDto") DictionaryItemDto dictionaryItemDto);
 
     List<DictionaryItem> findList(@Param("dictionaryItemDto") DictionaryItemDto dictionaryItemDto);
 }

@@ -23,15 +23,15 @@ public class SocketConfig {
     @Value("${socket.port}")
     private int port;
 
-    @Resource private ServerProperties serverProperties;
+    @Resource
+    private ServerProperties serverProperties;
 
     @Bean
     public SocketIOServer socketIOServer() {
         /*
          * 创建Socket，并设置监听端口
          */
-        com.corundumstudio.socketio.Configuration config =
-                new com.corundumstudio.socketio.Configuration();
+        com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
 
         config.getSocketConfig().setReuseAddress(true);
         // 设置主机名，默认是0.0.0.0
@@ -50,12 +50,13 @@ public class SocketConfig {
         config.setExceptionListener(new SocketExceptionListener());
 
         config.setAuthorizationListener(
-                data -> {
-                    // https://github.com/mrniko/netty-socketio/issues/110
-                    // 如果采用cookie机制
-                    String sessionId = SocketUtil.getHttpSessionId(data);
-                    return SpringContextUtil.getAuthUser(sessionId) != null;
-                });
+            data -> {
+                // https://github.com/mrniko/netty-socketio/issues/110
+                // 如果采用cookie机制
+                String sessionId = SocketUtil.getHttpSessionId(data);
+                return SpringContextUtil.getAuthUser(sessionId) != null;
+            }
+        );
         SocketIOServer socketIOServer = new SocketIOServer(config);
         socketIOServer.addEventInterceptor(new SocketEventInterceptor());
         return socketIOServer;

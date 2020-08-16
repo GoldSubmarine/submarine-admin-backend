@@ -11,14 +11,15 @@ import org.springframework.stereotype.Component;
 /** spring启动时初始化定时任务 */
 @Component
 public class ScheduleJobRunner implements ApplicationRunner {
-    @Resource private QuartzJobService quartzJobService;
+    @Resource
+    private QuartzJobService quartzJobService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         quartzJobService
-                .lambdaQuery()
-                .eq(QuartzJob::getStatus, QuartzJob.StatusType.enable)
-                .list()
-                .forEach(ScheduleUtil::createScheduleJob);
+            .lambdaQuery()
+            .eq(QuartzJob::getStatus, QuartzJob.StatusType.enable)
+            .list()
+            .forEach(ScheduleUtil::createScheduleJob);
     }
 }

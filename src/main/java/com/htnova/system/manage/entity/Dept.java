@@ -24,6 +24,7 @@ public class Dept extends BaseTreeEntity<Dept> {
     }
 
     public class SaveEvent {
+
         public Dept getDept() {
             return Dept.this;
         }
@@ -34,6 +35,7 @@ public class Dept extends BaseTreeEntity<Dept> {
     }
 
     public class DeleteEvent {
+
         public Dept getDept() {
             return Dept.this;
         }

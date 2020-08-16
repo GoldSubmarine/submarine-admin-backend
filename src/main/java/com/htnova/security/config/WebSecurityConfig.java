@@ -54,13 +54,17 @@ import org.springframework.util.CollectionUtils;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true) //  启用方法级别的权限认证
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Resource private SecurityConfig securityConfig;
+    @Resource
+    private SecurityConfig securityConfig;
 
-    @Resource private ServerProperties serverProperties;
+    @Resource
+    private ServerProperties serverProperties;
 
-    @Resource private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Resource
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Resource private UserDetailsService userDetailsService;
+    @Resource
+    private UserDetailsService userDetailsService;
 
     @Override
     // 认证和授权的逻辑自定义，需要注意的是：不能在httpSecurity里直接配置 authenticationProvider
@@ -73,55 +77,53 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-                .antMatchers(
-                        serverProperties.getError().getPath(), AppConst.APP_URL_PREFIX + "/**");
+        web.ignoring().antMatchers(serverProperties.getError().getPath(), AppConst.APP_URL_PREFIX + "/**");
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf()
-                .disable() // 禁用 CSRF
-                .requestCache()
-                .requestCache(new HttpSessionRequestCache())
-                .and()
-                // ExceptionTranslationFilter 异常处理使用
-                .exceptionHandling()
-                // 未登录的请求，请求失败处理
-                .authenticationEntryPoint(getAuthenticationEntryPoint())
-                // 未授权的请求，请求失败处理
-                .accessDeniedHandler(getAccessDeniedHandler())
-                .and()
-                .formLogin()
-                .loginProcessingUrl(securityConfig.getLoginProcessingUrl())
-                // 登录成功后的处理
-                .successHandler(getAuthenticationSuccessHandler())
-                // 登录失败后的处理
-                .failureHandler(getAuthenticationFailureHandler())
-                .and()
-                // 退出处理
-                .logout()
-                .permitAll()
-                .logoutUrl(securityConfig.getLogoutUrl())
-                // 退出默认302到登录页
-                .logoutSuccessUrl(securityConfig.getLoginPage())
-                // ajax请求退出后，返回 LOGOUT_SUCCESS
-                .defaultLogoutSuccessHandlerFor(
-                        (request, response, authentication) ->
-                                ResponseHandler.create(Result.build(ResultStatus.LOGOUT_SUCCESS))
-                                        .handle(request, response),
-                        getAjaxHttpRequestMatcher())
-                .and()
-                .authorizeRequests()
-                .antMatchers(securityConfig.getLoginPage(), "/druid/**", "/file/download/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated() // 其他地址的访问均需验证权限
-                .and()
-                .headers()
-                .frameOptions()
-                .disable(); // sql监控页面 iframe 配置
+            .csrf()
+            .disable() // 禁用 CSRF
+            .requestCache()
+            .requestCache(new HttpSessionRequestCache())
+            .and()
+            // ExceptionTranslationFilter 异常处理使用
+            .exceptionHandling()
+            // 未登录的请求，请求失败处理
+            .authenticationEntryPoint(getAuthenticationEntryPoint())
+            // 未授权的请求，请求失败处理
+            .accessDeniedHandler(getAccessDeniedHandler())
+            .and()
+            .formLogin()
+            .loginProcessingUrl(securityConfig.getLoginProcessingUrl())
+            // 登录成功后的处理
+            .successHandler(getAuthenticationSuccessHandler())
+            // 登录失败后的处理
+            .failureHandler(getAuthenticationFailureHandler())
+            .and()
+            // 退出处理
+            .logout()
+            .permitAll()
+            .logoutUrl(securityConfig.getLogoutUrl())
+            // 退出默认302到登录页
+            .logoutSuccessUrl(securityConfig.getLoginPage())
+            // ajax请求退出后，返回 LOGOUT_SUCCESS
+            .defaultLogoutSuccessHandlerFor(
+                (request, response, authentication) ->
+                    ResponseHandler.create(Result.build(ResultStatus.LOGOUT_SUCCESS)).handle(request, response),
+                getAjaxHttpRequestMatcher()
+            )
+            .and()
+            .authorizeRequests()
+            .antMatchers(securityConfig.getLoginPage(), "/druid/**", "/file/download/**")
+            .permitAll()
+            .anyRequest()
+            .authenticated() // 其他地址的访问均需验证权限
+            .and()
+            .headers()
+            .frameOptions()
+            .disable(); // sql监控页面 iframe 配置
     }
 
     private RequestMatcher getAjaxHttpRequestMatcher() {
@@ -130,18 +132,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationProvider getAuthenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider =
-                new DaoAuthenticationProvider() {
-                    @Override
-                    protected Authentication createSuccessAuthentication(
-                            Object principal, Authentication authentication, UserDetails user) {
-                        UserDetail userDetail = (UserDetail) user;
-                        if (CollectionUtils.isEmpty(userDetail.getUser().getPermissionList())) {
-                            throw new EmptyPermissionException("未分配权限，不能登录");
-                        }
-                        return super.createSuccessAuthentication(principal, authentication, user);
-                    }
-                };
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider() {
+
+            @Override
+            protected Authentication createSuccessAuthentication(
+                Object principal,
+                Authentication authentication,
+                UserDetails user
+            ) {
+                UserDetail userDetail = (UserDetail) user;
+                if (CollectionUtils.isEmpty(userDetail.getUser().getPermissionList())) {
+                    throw new EmptyPermissionException("未分配权限，不能登录");
+                }
+                return super.createSuccessAuthentication(principal, authentication, user);
+            }
+        };
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
         return daoAuthenticationProvider;
@@ -154,40 +159,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             @Override
             public void onAuthenticationSuccess(
-                    HttpServletRequest request,
-                    HttpServletResponse response,
-                    Authentication authentication)
-                    throws IOException, ServletException {
+                HttpServletRequest request,
+                HttpServletResponse response,
+                Authentication authentication
+            )
+                throws IOException, ServletException {
                 SavedRequest savedRequest = this.requestCache.getRequest(request, response);
                 // 登录成功后跳转的URL，由后端决定。优先级如下：
                 // 1. 上次失败的 ajax 请求的 Referer
                 // 2. 上次失败的 请求的 URL
                 // 3. 登录成功URL
-                String redirectUrl =
-                        Optional.ofNullable(savedRequest)
-                                .flatMap(
-                                        sq ->
-                                                sq.getHeaderNames().contains("X-Requested-With")
-                                                        ? sq.getHeaderValues("Referer").stream()
-                                                                .findFirst()
-                                                        : Optional.ofNullable(sq.getRedirectUrl()))
-                                .orElse(securityConfig.getLoginSuccessPage());
+                String redirectUrl = Optional
+                    .ofNullable(savedRequest)
+                    .flatMap(
+                        sq ->
+                            sq.getHeaderNames().contains("X-Requested-With")
+                                ? sq.getHeaderValues("Referer").stream().findFirst()
+                                : Optional.ofNullable(sq.getRedirectUrl())
+                    )
+                    .orElse(securityConfig.getLoginSuccessPage());
                 Map<String, String> result = new HashMap<>();
                 result.put("redirectUrl", redirectUrl);
                 result.put("userName", ((UserDetail) authentication.getPrincipal()).getUsername());
-                ResponseHandler responseHandler =
-                        ResponseHandler.builder()
-                                // ajax请求 返回 LOGIN_SUCCESS，并返回 redirectUrl
-                                .handlerFor(
-                                        ResponseHandler.create(
-                                                Result.build(ResultStatus.LOGIN_SUCCESS, result)),
-                                        getAjaxHttpRequestMatcher())
-                                // 默认 直接302 到 redirectUrl
-                                .defaultHandler(
-                                        (request1, response1) ->
-                                                redirectStrategy.sendRedirect(
-                                                        request1, response1, redirectUrl))
-                                .build();
+                ResponseHandler responseHandler = ResponseHandler
+                    .builder()
+                    // ajax请求 返回 LOGIN_SUCCESS，并返回 redirectUrl
+                    .handlerFor(
+                        ResponseHandler.create(Result.build(ResultStatus.LOGIN_SUCCESS, result)),
+                        getAjaxHttpRequestMatcher()
+                    )
+                    // 默认 直接302 到 redirectUrl
+                    .defaultHandler(
+                        (request1, response1) -> redirectStrategy.sendRedirect(request1, response1, redirectUrl)
+                    )
+                    .build();
                 responseHandler.handle(request, response);
             }
         };
@@ -199,26 +204,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             @Override
             public void onAuthenticationFailure(
-                    HttpServletRequest request,
-                    HttpServletResponse response,
-                    AuthenticationException e)
-                    throws IOException, ServletException {
+                HttpServletRequest request,
+                HttpServletResponse response,
+                AuthenticationException e
+            )
+                throws IOException, ServletException {
                 Result<?> result = translateAuthenticationException(e);
-                ResponseHandler responseHandler =
-                        ResponseHandler.builder()
-                                // ajax请求 返回 LOGIN_SUCCESS，并返回 redirectUrl
-                                .handlerFor(
-                                        ResponseHandler.create(result), getAjaxHttpRequestMatcher())
-                                // 默认 直接302 到 登录页
-                                .defaultHandler(
-                                        (request1, response1) ->
-                                                redirectStrategy.sendRedirect(
-                                                        request1,
-                                                        response1,
-                                                        securityConfig.getLoginPage()
-                                                                + "?error="
-                                                                + result.getCode()))
-                                .build();
+                ResponseHandler responseHandler = ResponseHandler
+                    .builder()
+                    // ajax请求 返回 LOGIN_SUCCESS，并返回 redirectUrl
+                    .handlerFor(ResponseHandler.create(result), getAjaxHttpRequestMatcher())
+                    // 默认 直接302 到 登录页
+                    .defaultHandler(
+                        (request1, response1) ->
+                            redirectStrategy.sendRedirect(
+                                request1,
+                                response1,
+                                securityConfig.getLoginPage() + "?error=" + result.getCode()
+                            )
+                    )
+                    .build();
                 responseHandler.handle(request, response);
             }
         };
@@ -241,31 +246,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
             @Override
-            public void commence(
-                    HttpServletRequest request,
-                    HttpServletResponse response,
-                    AuthenticationException e)
-                    throws IOException, ServletException {
-                ResponseHandler responseHandler =
-                        ResponseHandler.builder()
-                                // ajax请求 返回 FORBIDDEN
-                                .handlerFor(
-                                        ResponseHandler.create(
-                                                Result.build(
-                                                        HttpStatus.UNAUTHORIZED,
-                                                        ResultStatus.UNAUTHORIZED)),
-                                        getAjaxHttpRequestMatcher())
-                                // 默认 直接302 到 登录页面
-                                .defaultHandler(
-                                        (request1, response1) ->
-                                                redirectStrategy.sendRedirect(
-                                                        request1,
-                                                        response1,
-                                                        securityConfig.getLoginPage()
-                                                                + "?error="
-                                                                + ResultStatus.UNAUTHORIZED
-                                                                        .getCode()))
-                                .build();
+            public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
+                throws IOException, ServletException {
+                ResponseHandler responseHandler = ResponseHandler
+                    .builder()
+                    // ajax请求 返回 FORBIDDEN
+                    .handlerFor(
+                        ResponseHandler.create(Result.build(HttpStatus.UNAUTHORIZED, ResultStatus.UNAUTHORIZED)),
+                        getAjaxHttpRequestMatcher()
+                    )
+                    // 默认 直接302 到 登录页面
+                    .defaultHandler(
+                        (request1, response1) ->
+                            redirectStrategy.sendRedirect(
+                                request1,
+                                response1,
+                                securityConfig.getLoginPage() + "?error=" + ResultStatus.UNAUTHORIZED.getCode()
+                            )
+                    )
+                    .build();
                 responseHandler.handle(request, response);
             }
         };
@@ -276,30 +275,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
             @Override
-            public void handle(
-                    HttpServletRequest request,
-                    HttpServletResponse response,
-                    AccessDeniedException e)
-                    throws IOException, ServletException {
-                ResponseHandler responseHandler =
-                        ResponseHandler.builder()
-                                // ajax请求 返回 FORBIDDEN
-                                .handlerFor(
-                                        ResponseHandler.create(
-                                                Result.build(
-                                                        HttpStatus.FORBIDDEN,
-                                                        ResultStatus.FORBIDDEN)),
-                                        getAjaxHttpRequestMatcher())
-                                // 默认 直接302 到 错误页面
-                                .defaultHandler(
-                                        (request1, response1) ->
-                                                redirectStrategy.sendRedirect(
-                                                        request1,
-                                                        response1,
-                                                        securityConfig.getErrorPage()
-                                                                + "?error="
-                                                                + ResultStatus.FORBIDDEN.getCode()))
-                                .build();
+            public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e)
+                throws IOException, ServletException {
+                ResponseHandler responseHandler = ResponseHandler
+                    .builder()
+                    // ajax请求 返回 FORBIDDEN
+                    .handlerFor(
+                        ResponseHandler.create(Result.build(HttpStatus.FORBIDDEN, ResultStatus.FORBIDDEN)),
+                        getAjaxHttpRequestMatcher()
+                    )
+                    // 默认 直接302 到 错误页面
+                    .defaultHandler(
+                        (request1, response1) ->
+                            redirectStrategy.sendRedirect(
+                                request1,
+                                response1,
+                                securityConfig.getErrorPage() + "?error=" + ResultStatus.FORBIDDEN.getCode()
+                            )
+                    )
+                    .build();
                 responseHandler.handle(request, response);
             }
         };

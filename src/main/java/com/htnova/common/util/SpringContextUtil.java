@@ -48,11 +48,10 @@ public class SpringContextUtil implements ApplicationContextAware, DisposableBea
     }
 
     public static AuthUser getAuthUser() {
-        UserDetail userDetail =
-                (UserDetail)
-                        Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                                .map(Authentication::getPrincipal)
-                                .orElse(null);
+        UserDetail userDetail = (UserDetail) Optional
+            .ofNullable(SecurityContextHolder.getContext().getAuthentication())
+            .map(Authentication::getPrincipal)
+            .orElse(null);
         if (Objects.isNull(userDetail)) {
             return null;
         }
@@ -67,14 +66,13 @@ public class SpringContextUtil implements ApplicationContextAware, DisposableBea
         if (Objects.isNull(session)) {
             return null;
         }
-        SecurityContext securityContext =
-                session.getAttribute(
-                        HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
-        UserDetail userDetail =
-                (UserDetail)
-                        Optional.ofNullable(securityContext.getAuthentication())
-                                .map(Authentication::getPrincipal)
-                                .orElse(null);
+        SecurityContext securityContext = session.getAttribute(
+            HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY
+        );
+        UserDetail userDetail = (UserDetail) Optional
+            .ofNullable(securityContext.getAuthentication())
+            .map(Authentication::getPrincipal)
+            .orElse(null);
         if (Objects.isNull(userDetail)) {
             return null;
         }
@@ -83,17 +81,18 @@ public class SpringContextUtil implements ApplicationContextAware, DisposableBea
     }
 
     public static HttpServletRequest getRequest() {
-        return Optional.ofNullable(
-                        (ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                .map(ServletRequestAttributes::getRequest)
-                .orElse(null);
+        return Optional
+            .ofNullable((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+            .map(ServletRequestAttributes::getRequest)
+            .orElse(null);
     }
 
     /** 检查ApplicationContext不为空. */
     private static void assertContextInjected() {
         if (applicationContext == null) {
             throw new IllegalStateException(
-                    "applicaitonContext属性未注入, 请在applicationContext.xml中定义SpringContextHolder或在SpringBoot启动类中注册SpringContextHolder.");
+                "applicaitonContext属性未注入, 请在applicationContext.xml中定义SpringContextHolder或在SpringBoot启动类中注册SpringContextHolder."
+            );
         }
     }
 
@@ -106,8 +105,9 @@ public class SpringContextUtil implements ApplicationContextAware, DisposableBea
     public void setApplicationContext(ApplicationContext applicationContext) {
         if (SpringContextUtil.applicationContext != null) {
             log.warn(
-                    "SpringContextHolder中的ApplicationContext被覆盖, 原有ApplicationContext为:{}",
-                    SpringContextUtil.applicationContext);
+                "SpringContextHolder中的ApplicationContext被覆盖, 原有ApplicationContext为:{}",
+                SpringContextUtil.applicationContext
+            );
         }
         SpringContextUtil.applicationContext = applicationContext;
     }

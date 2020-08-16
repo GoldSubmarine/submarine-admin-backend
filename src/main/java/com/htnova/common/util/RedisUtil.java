@@ -8,17 +8,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RedisUtil {
-    @Resource private RedisTemplate<String, Object> redisTemplate;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
-    @Resource private ValueOperations<String, String> valueOperations;
+    @Resource
+    private ValueOperations<String, String> valueOperations;
 
-    @Resource private HashOperations<String, String, Object> hashOperations;
+    @Resource
+    private HashOperations<String, String, Object> hashOperations;
 
-    @Resource private ListOperations<String, Object> listOperations;
+    @Resource
+    private ListOperations<String, Object> listOperations;
 
-    @Resource private SetOperations<String, Object> setOperations;
+    @Resource
+    private SetOperations<String, Object> setOperations;
 
-    @Resource private ZSetOperations<String, Object> zSetOperations;
+    @Resource
+    private ZSetOperations<String, Object> zSetOperations;
 
     /** 默认过期时长，单位：秒 */
     public static final long DEFAULT_EXPIRE = 60 * 60 * 24;
@@ -63,12 +69,14 @@ public class RedisUtil {
 
     /** Object转成JSON数据 */
     private String toJson(Object object) {
-        if (object instanceof Integer
-                || object instanceof Long
-                || object instanceof Float
-                || object instanceof Double
-                || object instanceof Boolean
-                || object instanceof String) {
+        if (
+            object instanceof Integer ||
+            object instanceof Long ||
+            object instanceof Float ||
+            object instanceof Double ||
+            object instanceof Boolean ||
+            object instanceof String
+        ) {
             return String.valueOf(object);
         }
         return JSON.toJSONString(object);

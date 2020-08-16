@@ -14,7 +14,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class FlowLeaveDto extends BaseDto implements ActTask {
-
     /** 开始时间 */
     private LocalDateTime beginTime;
 

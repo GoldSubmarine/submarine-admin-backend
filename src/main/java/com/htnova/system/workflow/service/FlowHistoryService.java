@@ -12,12 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class FlowHistoryService extends ServiceImpl<FlowHistoryMapper, FlowHistory> {
-
-    @Resource private FlowHistoryMapper flowHistoryMapper;
+    @Resource
+    private FlowHistoryMapper flowHistoryMapper;
 
     @Transactional(readOnly = true)
-    public IPage<FlowHistory> findFlowHistoryList(
-            FlowHistoryDto flowHistoryDto, IPage<Void> xPage) {
+    public IPage<FlowHistory> findFlowHistoryList(FlowHistoryDto flowHistoryDto, IPage<Void> xPage) {
         return flowHistoryMapper.findPage(xPage, flowHistoryDto);
     }
 

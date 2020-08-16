@@ -16,10 +16,11 @@ public class RestErrorAttributes implements ErrorAttributes, HandlerExceptionRes
 
     @Override
     public ModelAndView resolveException(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Object handler,
-            Exception ex) {
+        HttpServletRequest request,
+        HttpServletResponse response,
+        Object handler,
+        Exception ex
+    ) {
         this.storeErrorAttributes(request, ex);
         return null;
     }

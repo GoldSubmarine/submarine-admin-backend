@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Result<E> {
-
     private static final HttpStatus DEFAULT_STATUS = HttpStatus.OK;
 
     private Integer status;
@@ -26,59 +25,64 @@ public class Result<E> {
     private E data;
 
     public static Result<Void> build(ResultStatus resultStatus) {
-        return Result.<Void>builder()
-                .status(DEFAULT_STATUS.value())
-                .code(resultStatus.getCode())
-                .msg(resultStatus.getMsg())
-                .build();
+        return Result
+            .<Void>builder()
+            .status(DEFAULT_STATUS.value())
+            .code(resultStatus.getCode())
+            .msg(resultStatus.getMsg())
+            .build();
     }
 
     public static Result<Void> build(HttpStatus httpStatus, ResultStatus resultStatus) {
-        return Result.<Void>builder()
-                .status(httpStatus.value())
-                .code(resultStatus.getCode())
-                .msg(resultStatus.getMsg())
-                .build();
+        return Result
+            .<Void>builder()
+            .status(httpStatus.value())
+            .code(resultStatus.getCode())
+            .msg(resultStatus.getMsg())
+            .build();
     }
 
     public static Result<Object> build(ServiceException exception) {
-        return Result.<Object>builder()
-                .status(HttpStatus.BAD_REQUEST.value())
-                .code(exception.getCode())
-                .msg(exception.getMessage())
-                .data(exception.getData())
-                .build();
+        return Result
+            .<Object>builder()
+            .status(HttpStatus.BAD_REQUEST.value())
+            .code(exception.getCode())
+            .msg(exception.getMessage())
+            .data(exception.getData())
+            .build();
     }
 
     /** 用于接收前端拼接的 msg 数组 */
-    public static Result<Object> build(
-            HttpStatus httpStatus, ResultStatus resultStatus, Object... data) {
-        return Result.<Object>builder()
-                .status(httpStatus.value())
-                .code(resultStatus.getCode())
-                .msg(resultStatus.getMsg())
-                .data(data)
-                .build();
+    public static Result<Object> build(HttpStatus httpStatus, ResultStatus resultStatus, Object... data) {
+        return Result
+            .<Object>builder()
+            .status(httpStatus.value())
+            .code(resultStatus.getCode())
+            .msg(resultStatus.getMsg())
+            .data(data)
+            .build();
     }
 
     /** 用于接收前端拼接的 msg 数组 */
     public static Result<Object> build(ResultStatus resultStatus, Object... data) {
-        return Result.<Object>builder()
-                .status(DEFAULT_STATUS.value())
-                .code(resultStatus.getCode())
-                .msg(resultStatus.getMsg())
-                .data(data)
-                .build();
+        return Result
+            .<Object>builder()
+            .status(DEFAULT_STATUS.value())
+            .code(resultStatus.getCode())
+            .msg(resultStatus.getMsg())
+            .data(data)
+            .build();
     }
 
     /** 用于接收成功的业务数据 */
     public static <E> Result<E> build(ResultStatus resultStatus, E data) {
-        return Result.<E>builder()
-                .status(DEFAULT_STATUS.value())
-                .code(resultStatus.getCode())
-                .msg(resultStatus.getMsg())
-                .data(data)
-                .build();
+        return Result
+            .<E>builder()
+            .status(DEFAULT_STATUS.value())
+            .code(resultStatus.getCode())
+            .msg(resultStatus.getMsg())
+            .data(data)
+            .build();
     }
 
     public static <E> Result<E> build(HttpStatus status, int code, String msg, E data) {

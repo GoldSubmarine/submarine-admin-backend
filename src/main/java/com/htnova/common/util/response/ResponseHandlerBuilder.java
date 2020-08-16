@@ -10,8 +10,7 @@ public class ResponseHandlerBuilder {
 
     private ResponseHandler defaultHandler;
 
-    public ResponseHandlerBuilder handlerFor(
-            ResponseHandler handler, RequestMatcher preferredMatcher) {
+    public ResponseHandlerBuilder handlerFor(ResponseHandler handler, RequestMatcher preferredMatcher) {
         Assert.notNull(handler, "handler cannot be null");
         Assert.notNull(preferredMatcher, "preferredMatcher cannot be null");
         this.handlers.put(preferredMatcher, handler);

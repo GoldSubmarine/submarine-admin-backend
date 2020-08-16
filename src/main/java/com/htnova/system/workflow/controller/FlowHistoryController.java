@@ -19,15 +19,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/flow-history")
 public class FlowHistoryController {
-
-    @Resource private FlowHistoryService flowHistoryService;
+    @Resource
+    private FlowHistoryService flowHistoryService;
 
     /** 分页查询 */
     @PreAuthorize("hasAnyAuthority('flowHistory.find')")
     @GetMapping("/list/page")
     public XPage<FlowHistoryDto> findListByPage(FlowHistoryDto flowHistoryDto, XPage<Void> xPage) {
-        IPage<FlowHistory> flowHistoryPage =
-                flowHistoryService.findFlowHistoryList(flowHistoryDto, XPage.toIPage(xPage));
+        IPage<FlowHistory> flowHistoryPage = flowHistoryService.findFlowHistoryList(
+            flowHistoryDto,
+            XPage.toIPage(xPage)
+        );
         return DtoConverter.toDto(flowHistoryPage, FlowHistoryMapStruct.class);
     }
 
@@ -51,8 +53,7 @@ public class FlowHistoryController {
     @PreAuthorize("hasAnyAuthority('flowHistory.add', 'flowHistory.edit')")
     @PostMapping("/save")
     public Result<Void> save(@Valid @RequestBody FlowHistoryDto flowHistoryDto) {
-        flowHistoryService.saveFlowHistory(
-                DtoConverter.toEntity(flowHistoryDto, FlowHistoryMapStruct.class));
+        flowHistoryService.saveFlowHistory(DtoConverter.toEntity(flowHistoryDto, FlowHistoryMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @FunctionalInterface
 public interface ResponseHandler {
-    void handle(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException;
+    void handle(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
 
     static ResponseHandlerBuilder builder() {
         return new ResponseHandlerBuilder();

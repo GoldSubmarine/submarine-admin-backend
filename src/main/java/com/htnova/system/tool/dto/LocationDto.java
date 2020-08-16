@@ -11,7 +11,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class LocationDto extends BaseTreeDto<LocationDto> {
-
     /** 当前层次 */
     private Integer deep;
 

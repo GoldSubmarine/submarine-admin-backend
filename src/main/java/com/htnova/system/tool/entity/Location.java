@@ -13,7 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @TableName("t_sys_location")
 public class Location extends BaseTreeEntity<Location> {
-
     /** 当前层次 */
     private Integer deep;
 

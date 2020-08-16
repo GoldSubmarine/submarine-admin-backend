@@ -46,7 +46,9 @@ public abstract class BaseEntity implements Serializable {
     protected LocalDateTime updateTime;
 
     /** 逻辑删除（0未删除，1已删除） */
-    @Builder.Default @TableLogic protected Integer delFlag = GlobalConst.UNDEL_FLAG;
+    @Builder.Default
+    @TableLogic
+    protected Integer delFlag = GlobalConst.UNDEL_FLAG;
 
     @JsonIgnore
     public String getTableName() {

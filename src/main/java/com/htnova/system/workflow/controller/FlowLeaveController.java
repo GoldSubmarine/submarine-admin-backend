@@ -18,14 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/flow-leave")
 public class FlowLeaveController {
-
-    @Resource private FlowLeaveService flowLeaveService;
+    @Resource
+    private FlowLeaveService flowLeaveService;
 
     /** 分页查询 */
     @GetMapping("/list/page")
     public XPage<FlowLeaveDto> findListByPage(FlowLeaveDto flowLeaveDto, XPage<Void> xPage) {
-        IPage<FlowLeave> flowLeavePage =
-                flowLeaveService.findFlowLeaveList(flowLeaveDto, XPage.toIPage(xPage));
+        IPage<FlowLeave> flowLeavePage = flowLeaveService.findFlowLeaveList(flowLeaveDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(flowLeavePage, FlowLeaveMapStruct.class);
     }
 

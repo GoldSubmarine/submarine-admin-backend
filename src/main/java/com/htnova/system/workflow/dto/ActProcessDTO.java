@@ -12,7 +12,6 @@ import org.flowable.engine.repository.ProcessDefinition;
 @Data
 @Builder
 public class ActProcessDTO {
-
     public static final String BPMN_SUFFIX = ".bpmn20.xml";
     public static final String PNG_NAME = ".png";
 
@@ -81,10 +80,7 @@ public class ActProcessDTO {
         this.setDgrmResourceName(processDefinition.getDiagramResourceName());
         this.setHasStartFormKey(processDefinition.hasStartFormKey());
         this.setHasGraphicalNotation(processDefinition.hasGraphicalNotation());
-        this.setSuspensionState(
-                processDefinition.isSuspended()
-                        ? SuspensionState.suspended
-                        : SuspensionState.active);
+        this.setSuspensionState(processDefinition.isSuspended() ? SuspensionState.suspended : SuspensionState.active);
         this.setTenantId(processDefinition.getTenantId());
         this.setDerivedFrom(processDefinition.getDerivedFrom());
         this.setDerivedFromRoot(processDefinition.getDerivedFromRoot());

@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user-center")
 public class UserCenterController {
-
-    @Resource private UserService userService;
+    @Resource
+    private UserService userService;
 
     /** 详情 */
     @PreAuthorize("isAuthenticated()")
@@ -37,8 +37,7 @@ public class UserCenterController {
     @PostMapping("/save")
     public Result<String> save(@RequestBody UserDto userDto) {
         userDto.setId(UserUtil.getAuthUser().getId());
-        String randomPass =
-                userService.saveUser(DtoConverter.toEntity(userDto, UserMapStruct.class));
+        String randomPass = userService.saveUser(DtoConverter.toEntity(userDto, UserMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
     }
 

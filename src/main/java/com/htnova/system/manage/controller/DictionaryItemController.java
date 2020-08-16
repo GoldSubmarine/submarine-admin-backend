@@ -18,16 +18,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/dictionary-item")
 public class DictionaryItemController {
-    @Resource private DictionaryItemService dictionaryItemService;
+    @Resource
+    private DictionaryItemService dictionaryItemService;
 
     /** 分页查询 */
     @PreAuthorize("hasAnyAuthority('dictionary.find')")
     @GetMapping("/list/page")
-    public XPage<DictionaryItemDto> findListByPage(
-            DictionaryItemDto dictionaryItemDto, XPage<Void> xPage) {
-        IPage<DictionaryItem> dictionaryItemPage =
-                dictionaryItemService.findDictionaryItemList(
-                        dictionaryItemDto, XPage.toIPage(xPage));
+    public XPage<DictionaryItemDto> findListByPage(DictionaryItemDto dictionaryItemDto, XPage<Void> xPage) {
+        IPage<DictionaryItem> dictionaryItemPage = dictionaryItemService.findDictionaryItemList(
+            dictionaryItemDto,
+            XPage.toIPage(xPage)
+        );
         return DtoConverter.toDto(dictionaryItemPage, DictionaryItemMapStruct.class);
     }
 
@@ -35,8 +36,7 @@ public class DictionaryItemController {
     @PreAuthorize("hasAnyAuthority('dictionary.find')")
     @GetMapping("/list/all")
     public List<DictionaryItemDto> findList(DictionaryItemDto dictionaryItemDto) {
-        List<DictionaryItem> dictionaryItemList =
-                dictionaryItemService.findDictionaryItemList(dictionaryItemDto);
+        List<DictionaryItem> dictionaryItemList = dictionaryItemService.findDictionaryItemList(dictionaryItemDto);
         return DtoConverter.toDto(dictionaryItemList, DictionaryItemMapStruct.class);
     }
 
@@ -53,7 +53,8 @@ public class DictionaryItemController {
     @PostMapping("/save")
     public Result<Void> save(@RequestBody DictionaryItemDto dictionaryItemDto) {
         dictionaryItemService.saveDictionaryItem(
-                DtoConverter.toEntity(dictionaryItemDto, DictionaryItemMapStruct.class));
+            DtoConverter.toEntity(dictionaryItemDto, DictionaryItemMapStruct.class)
+        );
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

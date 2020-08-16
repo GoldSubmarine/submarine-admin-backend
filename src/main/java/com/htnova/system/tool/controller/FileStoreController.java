@@ -22,14 +22,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/file")
 public class FileStoreController {
-    @Resource private FileStoreService fileStoreService;
+    @Resource
+    private FileStoreService fileStoreService;
 
     /** 分页查询 */
     @PreAuthorize("hasAnyAuthority('fileStore.find')")
     @GetMapping("/list/page")
     public XPage<FileStoreDto> findListByPage(FileStoreDto fileStoreDto, XPage<Void> xPage) {
-        IPage<FileStore> fileStorePage =
-                fileStoreService.findFileStoreList(fileStoreDto, XPage.toIPage(xPage));
+        IPage<FileStore> fileStorePage = fileStoreService.findFileStoreList(fileStoreDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(fileStorePage, FileStoreMapStruct.class);
     }
 
@@ -61,8 +61,7 @@ public class FileStoreController {
     @PreAuthorize("hasAnyAuthority('fileStore.add', 'fileStore.edit')")
     @PostMapping("/save")
     public Result<Void> save(@Valid @RequestBody FileStoreDto fileStoreDto) {
-        fileStoreService.saveFileStore(
-                DtoConverter.toEntity(fileStoreDto, FileStoreMapStruct.class));
+        fileStoreService.saveFileStore(DtoConverter.toEntity(fileStoreDto, FileStoreMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
@@ -78,14 +77,12 @@ public class FileStoreController {
     @PostMapping("/upload")
     public Result<FileStoreDto> upload(@RequestParam MultipartFile file) throws IOException {
         FileStore fileStore = fileStoreService.upload(file);
-        return Result.build(
-                ResultStatus.SAVE_SUCCESS, DtoConverter.toDto(fileStore, FileStoreMapStruct.class));
+        return Result.build(ResultStatus.SAVE_SUCCESS, DtoConverter.toDto(fileStore, FileStoreMapStruct.class));
     }
 
     /** 下载附件 */
     @GetMapping("/download/**/{realName}")
-    public void download(@PathVariable String realName, HttpServletResponse httpServletResponse)
-            throws IOException {
+    public void download(@PathVariable String realName, HttpServletResponse httpServletResponse) throws IOException {
         fileStoreService.download(realName, httpServletResponse);
     }
 }

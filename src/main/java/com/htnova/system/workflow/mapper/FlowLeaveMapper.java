@@ -8,7 +8,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface FlowLeaveMapper extends BaseMapper<FlowLeave> {
-
     IPage<FlowLeave> findPage(IPage<Void> xPage, @Param("flowLeaveDto") FlowLeaveDto flowLeaveDto);
 
     List<FlowLeave> findList(@Param("flowLeaveDto") FlowLeaveDto flowLeaveDto);

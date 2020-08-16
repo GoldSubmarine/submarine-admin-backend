@@ -11,7 +11,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class FlowHistoryDto extends BaseDto {
-
     /** 流程实例id */
     private String processInstanceId;
 

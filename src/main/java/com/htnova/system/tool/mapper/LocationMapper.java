@@ -8,7 +8,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface LocationMapper extends BaseMapper<Location> {
-
     IPage<Location> findPage(IPage<Void> xPage, @Param("locationDto") LocationDto locationDto);
 
     List<Location> findList(@Param("locationDto") LocationDto locationDto);

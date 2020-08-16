@@ -39,6 +39,6 @@ public class QuartzLog extends BaseEntity {
 
     public enum StatusType {
         success,
-        fail
+        fail,
     }
 }

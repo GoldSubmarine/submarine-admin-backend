@@ -14,7 +14,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @TableName("t_flow_leave")
 public class FlowLeave extends BaseEntity {
-
     public static final String CODE = "FLOW_LEAVE";
 
     /** 开始时间 */

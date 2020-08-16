@@ -14,8 +14,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
-public abstract class BaseTreeEntity<T extends Serializable> extends BaseEntity
-        implements BaseTree<T> {
+public abstract class BaseTreeEntity<T extends Serializable> extends BaseEntity implements BaseTree<T> {
     /** 父级id */
     @JsonSerialize(using = ToStringSerializer.class)
     private Long pid;

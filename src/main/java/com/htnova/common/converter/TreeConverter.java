@@ -16,19 +16,21 @@ public class TreeConverter {
     public static <T extends BaseTree<T>> List<T> listToTree(List<T> list) {
         if (CollectionUtils.isEmpty(list)) return Lists.newArrayList();
         Map<Long, T> idMap = list.stream().collect(Collectors.toMap(BaseTree::getId, item -> item));
-        return list.stream()
-                .filter(
-                        item -> {
-                            T treeEntity = idMap.get(item.getPid());
-                            if (Objects.nonNull(treeEntity)) {
-                                if (Objects.isNull(treeEntity.getChildren())) {
-                                    treeEntity.setChildren(Lists.newArrayList());
-                                }
-                                treeEntity.getChildren().add(item);
-                                return false;
-                            }
-                            return true;
-                        })
-                .collect(Collectors.toList());
+        return list
+            .stream()
+            .filter(
+                item -> {
+                    T treeEntity = idMap.get(item.getPid());
+                    if (Objects.nonNull(treeEntity)) {
+                        if (Objects.isNull(treeEntity.getChildren())) {
+                            treeEntity.setChildren(Lists.newArrayList());
+                        }
+                        treeEntity.getChildren().add(item);
+                        return false;
+                    }
+                    return true;
+                }
+            )
+            .collect(Collectors.toList());
     }
 }

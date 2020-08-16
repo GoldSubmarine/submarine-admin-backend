@@ -13,7 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @TableName("t_flow_history")
 public class FlowHistory extends BaseEntity {
-
     /** 流程实例id */
     private String processInstanceId;
 

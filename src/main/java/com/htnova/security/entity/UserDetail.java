@@ -21,10 +21,13 @@ public class UserDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Optional.ofNullable(user.getPermissionList()).orElseGet(ArrayList::new).stream()
-                .filter(item -> Permission.PermissionType.button == item.getType())
-                .map(permission -> new SimpleGrantedAuthority(permission.getValue()))
-                .collect(Collectors.toList());
+        return Optional
+            .ofNullable(user.getPermissionList())
+            .orElseGet(ArrayList::new)
+            .stream()
+            .filter(item -> Permission.PermissionType.button == item.getType())
+            .map(permission -> new SimpleGrantedAuthority(permission.getValue()))
+            .collect(Collectors.toList());
     }
 
     @Override

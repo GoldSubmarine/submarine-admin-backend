@@ -18,10 +18,11 @@ public interface UserMapStruct extends BaseMapStruct<UserDto, User> {
     @AfterMapping // or @BeforeMapping
     default void toEntityRoleIdList(User user, @MappingTarget UserDto userDto) {
         if (!CollectionUtils.isEmpty(user.getRoleList())) {
-            String roleIdList =
-                    user.getRoleList().stream()
-                            .map(item -> String.valueOf(item.getId()))
-                            .collect(Collectors.joining(","));
+            String roleIdList = user
+                .getRoleList()
+                .stream()
+                .map(item -> String.valueOf(item.getId()))
+                .collect(Collectors.joining(","));
             userDto.setRoleIds(roleIdList);
         }
     }
@@ -29,17 +30,18 @@ public interface UserMapStruct extends BaseMapStruct<UserDto, User> {
     @AfterMapping // or @BeforeMapping
     default void toDtoRoleIdList(UserDto userDto, @MappingTarget User user) {
         if (StringUtils.isNotEmpty(userDto.getRoleIds())) {
-            List<Role> roleList =
-                    Stream.of(userDto.getRoleIds().split(","))
-                            .map(
-                                    item ->
-                                            new Role() {
+            List<Role> roleList = Stream
+                .of(userDto.getRoleIds().split(","))
+                .map(
+                    item ->
+                        new Role() {
 
-                                                {
-                                                    setId(Long.valueOf(item));
-                                                }
-                                            })
-                            .collect(Collectors.toList());
+                            {
+                                setId(Long.valueOf(item));
+                            }
+                        }
+                )
+                .collect(Collectors.toList());
             user.setRoleList(roleList);
         }
     }

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class ActModelMeta {
-
     /** 自定义属性 */
     private String description;
 }

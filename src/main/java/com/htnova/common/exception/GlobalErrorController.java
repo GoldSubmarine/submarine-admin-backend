@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletWebRequest;
 
-@RequestMapping({"${server.error.path:${error.path:/error}}"})
+@RequestMapping({ "${server.error.path:${error.path:/error}}" })
 public class GlobalErrorController implements ErrorController {
     private final ErrorAttributes errorAttributes;
 
@@ -46,9 +46,7 @@ public class GlobalErrorController implements ErrorController {
         if (HttpStatus.NOT_FOUND == httpStatus) {
             result = Result.build(httpStatus, ResultStatus.NOT_FOUND);
         } else {
-            result =
-                    Result.build(
-                            httpStatus, httpStatus.value(), httpStatus.getReasonPhrase(), null);
+            result = Result.build(httpStatus, httpStatus.value(), httpStatus.getReasonPhrase(), null);
         }
         return result;
     }

@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class SocketServerInit {
-    @Resource private SocketIOServer socketIOServer;
+    @Resource
+    private SocketIOServer socketIOServer;
 
     @PostConstruct
     public void start() {

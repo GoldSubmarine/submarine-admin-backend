@@ -10,7 +10,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class TaskVariableDTO {
-
     /** 审批是否通过（对应流程图中网关的判断变量） */
     private ApproveType status;
 
@@ -18,6 +17,6 @@ public class TaskVariableDTO {
         /** 通过 */
         approve,
         /** 驳回 */
-        reject
+        reject,
     }
 }

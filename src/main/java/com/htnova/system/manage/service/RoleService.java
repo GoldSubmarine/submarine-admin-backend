@@ -19,9 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RoleService extends ServiceImpl<RoleMapper, Role> {
-    @Resource private RoleMapper roleMapper;
+    @Resource
+    private RoleMapper roleMapper;
 
-    @Resource private RolePermissionService rolePermissionService;
+    @Resource
+    private RolePermissionService rolePermissionService;
 
     @Transactional(readOnly = true)
     public IPage<Role> findRoleList(RoleDto roleDto, IPage<Void> xPage) {
@@ -30,9 +32,7 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
 
     private List<Role> filterRoleByCode(List<Role> roleList, String... roleCodeList) {
         List<String> list = Arrays.asList(roleCodeList);
-        return roleList.stream()
-                .filter(item -> !list.contains(item.getCode()))
-                .collect(Collectors.toList());
+        return roleList.stream().filter(item -> !list.contains(item.getCode())).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -44,12 +44,10 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
         if (UserUtil.getAuthUser().getRoles().contains(Role.ORG_ADMIN_CODE)) {
             roleList = filterRoleByCode(roleList, Role.ADMIN_CODE, Role.ORG_ADMIN_CODE);
             roleList =
-                    roleList.stream()
-                            .filter(
-                                    item ->
-                                            Role.DisplayType.visible.equals(
-                                                    item.getOrgAdminDisplay()))
-                            .collect(Collectors.toList());
+                roleList
+                    .stream()
+                    .filter(item -> Role.DisplayType.visible.equals(item.getOrgAdminDisplay()))
+                    .collect(Collectors.toList());
         }
         return roleList;
     }
@@ -61,8 +59,7 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
 
     @Transactional
     public Role getRoleById(long id) {
-        List<Permission> permissionList =
-                rolePermissionService.findPermissionList(Collections.singletonList(id));
+        List<Permission> permissionList = rolePermissionService.findPermissionList(Collections.singletonList(id));
         Role role = roleMapper.selectById(id);
         role.setPermissionList(permissionList);
         return role;
@@ -70,8 +67,7 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
 
     @Transactional
     public void deleteRole(Long id) {
-        rolePermissionService.remove(
-                new LambdaQueryWrapper<>(new RolePermission()).eq(RolePermission::getRoleId, id));
+        rolePermissionService.remove(new LambdaQueryWrapper<>(new RolePermission()).eq(RolePermission::getRoleId, id));
         super.removeById(id);
     }
 }

@@ -17,7 +17,6 @@ import org.flowable.task.api.history.HistoricTaskInstance;
 @Data
 @Builder
 public class ActTaskDTO {
-
     private String id;
     private String name;
     private String description;
@@ -77,8 +76,7 @@ public class ActTaskDTO {
         this.setTaskDefinitionKey(task.getTaskDefinitionKey());
         this.setProcessInstanceId(task.getProcessInstanceId());
         this.setProcessDefinitionId(task.getProcessDefinitionId());
-        this.setProcessVariables(
-                BeanUtil.mapToBean(task.getProcessVariables(), ProcessVariableDTO.class, true));
+        this.setProcessVariables(BeanUtil.mapToBean(task.getProcessVariables(), ProcessVariableDTO.class, true));
         this.setProcessDefinitionKey(this.getProcessVariables().getProcessDefinitionKey());
         this.setProcessDefinitionName(this.getProcessVariables().getProcessDefinitionName());
         this.setApplyUserId(this.getProcessVariables().getApplyUserId());
@@ -96,8 +94,8 @@ public class ActTaskDTO {
         this.setProcessDefinitionId(historicTask.getProcessDefinitionId());
         this.setTaskDefinitionKey(historicTask.getTaskDefinitionKey());
         this.setProcessVariables(
-                BeanUtil.mapToBean(
-                        historicTask.getProcessVariables(), ProcessVariableDTO.class, true));
+                BeanUtil.mapToBean(historicTask.getProcessVariables(), ProcessVariableDTO.class, true)
+            );
         this.setProcessDefinitionKey(this.getProcessVariables().getProcessDefinitionKey());
         this.setProcessDefinitionName(this.getProcessVariables().getProcessDefinitionName());
         this.setApplyUserId(this.getProcessVariables().getApplyUserId());

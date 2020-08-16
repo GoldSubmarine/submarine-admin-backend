@@ -22,38 +22,31 @@ import org.springframework.util.CollectionUtils;
 @Slf4j
 @Service
 public class ActModelService {
-
-    @Resource private RepositoryService repositoryService;
+    @Resource
+    private RepositoryService repositoryService;
 
     @Transactional
     public void deploy(String id) {
         ActModelDTO actModel = getActModelById(id);
-        Deployment deployment =
-                repositoryService
-                        .createDeployment()
-                        .name(actModel.getName())
-                        .addString(
-                                actModel.getName() + ActProcessDTO.BPMN_SUFFIX,
-                                actModel.getEditorSourceValue())
-                        .addString(
-                                actModel.getName() + ActProcessDTO.PNG_NAME,
-                                actModel.getEditorSourceExtraValue().getImg())
-                        .category(actModel.getCategory())
-                        .key(actModel.getKey())
-                        .deploy();
+        Deployment deployment = repositoryService
+            .createDeployment()
+            .name(actModel.getName())
+            .addString(actModel.getName() + ActProcessDTO.BPMN_SUFFIX, actModel.getEditorSourceValue())
+            .addString(actModel.getName() + ActProcessDTO.PNG_NAME, actModel.getEditorSourceExtraValue().getImg())
+            .category(actModel.getCategory())
+            .key(actModel.getKey())
+            .deploy();
         Model model = repositoryService.getModel(id);
         model.setDeploymentId(deployment.getId());
         repositoryService.saveModel(model);
 
         // 设置流程分类
-        List<ProcessDefinition> list =
-                repositoryService
-                        .createProcessDefinitionQuery()
-                        .deploymentId(deployment.getId())
-                        .list();
+        List<ProcessDefinition> list = repositoryService
+            .createProcessDefinitionQuery()
+            .deploymentId(deployment.getId())
+            .list();
         for (ProcessDefinition processDefinition : list) {
-            repositoryService.setProcessDefinitionCategory(
-                    processDefinition.getId(), actModel.getCategory());
+            repositoryService.setProcessDefinitionCategory(processDefinition.getId(), actModel.getCategory());
         }
         if (CollectionUtils.isEmpty(list)) {
             throw new ServiceException(ResultStatus.DEFINITION_NOT_FOUND);
@@ -98,12 +91,11 @@ public class ActModelService {
     @Transactional
     public void save(ActModelDTO actModelDTO) {
         // 检测key是否重复
-        Model lastModel =
-                repositoryService
-                        .createModelQuery()
-                        .modelKey(actModelDTO.getKey())
-                        .latestVersion()
-                        .singleResult();
+        Model lastModel = repositoryService
+            .createModelQuery()
+            .modelKey(actModelDTO.getKey())
+            .latestVersion()
+            .singleResult();
         if (StringUtils.isBlank(actModelDTO.getId()) && Objects.nonNull(lastModel)) {
             throw new ServiceException(ResultStatus.MODEL_KEY_DUPLICATE);
         }
@@ -124,11 +116,11 @@ public class ActModelService {
         repositoryService.saveModel(model);
 
         // 保存EditorSource数据
-        repositoryService.addModelEditorSource(
-                model.getId(), actModelDTO.getEditorSourceValue().getBytes());
+        repositoryService.addModelEditorSource(model.getId(), actModelDTO.getEditorSourceValue().getBytes());
         repositoryService.addModelEditorSourceExtra(
-                model.getId(),
-                JSONUtil.toJsonStr(actModelDTO.getEditorSourceExtraValue()).getBytes());
+            model.getId(),
+            JSONUtil.toJsonStr(actModelDTO.getEditorSourceExtraValue()).getBytes()
+        );
     }
 
     public ActModelDTO getActModelById(String id) {
@@ -141,7 +133,8 @@ public class ActModelService {
         }
         if (Objects.nonNull(modelEditorSourceExtra)) {
             actModelDTO.setEditorSourceExtraValue(
-                    JSONUtil.toBean(new String(modelEditorSourceExtra), ActModelExtraValue.class));
+                JSONUtil.toBean(new String(modelEditorSourceExtra), ActModelExtraValue.class)
+            );
         }
         return actModelDTO;
     }

@@ -18,9 +18,11 @@ import org.springframework.util.CollectionUtils;
 
 @Service
 public class DeptService extends ServiceImpl<DeptMapper, Dept> {
-    @Resource private DeptMapper deptMapper;
+    @Resource
+    private DeptMapper deptMapper;
 
-    @Resource private ApplicationContext applicationContext;
+    @Resource
+    private ApplicationContext applicationContext;
 
     @Transactional(readOnly = true)
     public IPage<Dept> findDeptList(DeptDto deptDto, IPage<Void> xPage) {
@@ -37,9 +39,7 @@ public class DeptService extends ServiceImpl<DeptMapper, Dept> {
         Dept parent = super.getById(dept.getPid());
         checkCodeDuplicate(dept);
         if (parent != null) {
-            dept.setPids(
-                    String.format(
-                            "%s%s,", StringUtils.trimToEmpty(parent.getPids()), parent.getId()));
+            dept.setPids(String.format("%s%s,", StringUtils.trimToEmpty(parent.getPids()), parent.getId()));
         }
         super.saveOrUpdate(dept);
         applicationContext.publishEvent(dept.saveEvent());

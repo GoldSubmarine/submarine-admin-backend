@@ -32,21 +32,29 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Slf4j
 @Service
 public class UserService extends ServiceImpl<UserMapper, User> {
-    @Resource private UserMapper userMapper;
+    @Resource
+    private UserMapper userMapper;
 
-    @Resource private UserRoleMapper userRoleMapper;
+    @Resource
+    private UserRoleMapper userRoleMapper;
 
-    @Resource private RolePermissionService rolePermissionService;
+    @Resource
+    private RolePermissionService rolePermissionService;
 
-    @Resource private DeptService deptService;
+    @Resource
+    private DeptService deptService;
 
-    @Resource private UserRoleService userRoleService;
+    @Resource
+    private UserRoleService userRoleService;
 
-    @Resource private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Resource
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Resource private ApplicationContext applicationContext;
+    @Resource
+    private ApplicationContext applicationContext;
 
-    @Resource private PermissionService permissionService;
+    @Resource
+    private PermissionService permissionService;
 
     @Transactional(readOnly = true)
     public IPage<User> findUserList(UserDto userDto, IPage<Void> xPage) {
@@ -127,11 +135,11 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     @Transactional
     public User getByUsername(String username) {
-        User user =
-                super.lambdaQuery()
-                        .eq(User::getUsername, username)
-                        .eq(User::getStatus, User.UserStatus.enable)
-                        .one();
+        User user = super
+            .lambdaQuery()
+            .eq(User::getUsername, username)
+            .eq(User::getStatus, User.UserStatus.enable)
+            .one();
         fillRolePermission(user);
         return user;
     }
@@ -146,9 +154,9 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     private void fillRolePermission(User user) {
         if (Objects.nonNull(user)) {
             List<Role> roleList = userRoleMapper.getRoleByUserId(user.getId());
-            List<Permission> permissionList =
-                    rolePermissionService.findPermissionList(
-                            roleList.stream().map(BaseEntity::getId).collect(Collectors.toList()));
+            List<Permission> permissionList = rolePermissionService.findPermissionList(
+                roleList.stream().map(BaseEntity::getId).collect(Collectors.toList())
+            );
             user.setRoleList(roleList);
             user.setPermissionList(permissionList);
         }
@@ -158,8 +166,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     public void deleteUser(Long id) {
         // 删除用户角色关联表
         User user = super.getById(id);
-        userRoleService.remove(
-                new LambdaQueryWrapper<>(new UserRole()).eq(UserRole::getUserId, id));
+        userRoleService.remove(new LambdaQueryWrapper<>(new UserRole()).eq(UserRole::getUserId, id));
         super.removeById(id);
         applicationContext.publishEvent(user.deleteEvent());
     }
@@ -169,10 +176,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     @Transactional
     public void deptSaveEventHandle(Dept.SaveEvent saveEvent) {
         Dept dept = saveEvent.getDept();
-        super.lambdaUpdate()
-                .eq(User::getDeptId, dept.getId())
-                .set(User::getDeptName, dept.getName())
-                .update();
+        super.lambdaUpdate().eq(User::getDeptId, dept.getId()).set(User::getDeptName, dept.getName()).update();
         log.debug("User reply {}", saveEvent);
     }
 

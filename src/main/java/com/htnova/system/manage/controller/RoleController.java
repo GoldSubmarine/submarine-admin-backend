@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/role")
 public class RoleController {
-    @Resource private RoleService roleService;
+    @Resource
+    private RoleService roleService;
 
-    @Resource private RolePermissionService rolePermissionService;
+    @Resource
+    private RolePermissionService rolePermissionService;
 
     /** 角色分页查询 */
     @PreAuthorize("hasAnyAuthority('role.find')")
@@ -61,9 +63,10 @@ public class RoleController {
     @PostMapping("/permission/save")
     public Result<Void> saveRolePermission(@RequestBody RolePermissionDto rolePermissionDto) {
         rolePermissionService.saveRolePermission(
-                rolePermissionDto.getRoleId(),
-                rolePermissionDto.getType(),
-                rolePermissionDto.getPermissionList());
+            rolePermissionDto.getRoleId(),
+            rolePermissionDto.getType(),
+            rolePermissionDto.getPermissionList()
+        );
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

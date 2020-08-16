@@ -37,32 +37,31 @@ public class SignatureFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse,
-            FilterChain filterChain)
-            throws ServletException, IOException {
-        CachedBodyHttpServletRequest cachedBodyHttpServletRequest =
-                new CachedBodyHttpServletRequest(httpServletRequest);
+        HttpServletRequest httpServletRequest,
+        HttpServletResponse httpServletResponse,
+        FilterChain filterChain
+    )
+        throws ServletException, IOException {
+        CachedBodyHttpServletRequest cachedBodyHttpServletRequest = new CachedBodyHttpServletRequest(
+            httpServletRequest
+        );
         String deviceId = cachedBodyHttpServletRequest.getParameter(DEVICE_PARAM);
         String timestamp = cachedBodyHttpServletRequest.getParameter(TIMESTAMP_PARAM);
         String signature = cachedBodyHttpServletRequest.getParameter(SIGN_PARAM);
 
-        if (StringUtils.isEmpty(deviceId)
-                || StringUtils.isEmpty(timestamp)
-                || StringUtils.isEmpty(signature)) {
+        if (StringUtils.isEmpty(deviceId) || StringUtils.isEmpty(timestamp) || StringUtils.isEmpty(signature)) {
             // TODO: 1/9/20 全局异常处理
             throw new IllegalArgumentException("参数不全");
         }
-        if (Math.abs(Long.parseLong(timestamp) - System.currentTimeMillis())
-                > TIME_THRESHOLD_IN_SECONDS * 1000) {
+        if (Math.abs(Long.parseLong(timestamp) - System.currentTimeMillis()) > TIME_THRESHOLD_IN_SECONDS * 1000) {
             // TODO: 1/9/20 全局异常处理
             throw new IllegalArgumentException("时间戳不正确");
         }
         // TODO: 1/8/20 get secretKey by deviceId
         String secretKey = "112233";
-        boolean result =
-                SignatureUtil.getInstance(secretKey, Collections.singleton(SIGN_PARAM))
-                        .verifySignature(cachedBodyHttpServletRequest, signature);
+        boolean result = SignatureUtil
+            .getInstance(secretKey, Collections.singleton(SIGN_PARAM))
+            .verifySignature(cachedBodyHttpServletRequest, signature);
         if (!result) {
             // TODO: 1/9/20 全局异常处理
             throw new SecurityException("签名错误");

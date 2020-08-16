@@ -13,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class QuartzLogService extends ServiceImpl<QuartzLogMapper, QuartzLog> {
-    @Resource private QuartzLogMapper quartzLogMapper;
+    @Resource
+    private QuartzLogMapper quartzLogMapper;
 
     @Transactional(readOnly = true)
     public IPage<QuartzLog> findQuartzLogList(QuartzLogDto quartzLogDto, IPage<Void> xPage) {
@@ -31,19 +32,20 @@ public class QuartzLogService extends ServiceImpl<QuartzLogMapper, QuartzLog> {
     }
 
     @Transactional
-    public void saveQuartzLog(
-            QuartzJob quartzJob, QuartzLog.StatusType status, long time, String detail) {
+    public void saveQuartzLog(QuartzJob quartzJob, QuartzLog.StatusType status, long time, String detail) {
         this.save(
-                QuartzLog.builder()
-                        .jobName(quartzJob.getJobName())
-                        .beanName(quartzJob.getBeanName())
-                        .methodName(quartzJob.getMethodName())
-                        .params(quartzJob.getParams())
-                        .cronExpression(quartzJob.getCronExpression())
-                        .status(status)
-                        .time(time)
-                        .detail(detail)
-                        .build());
+                QuartzLog
+                    .builder()
+                    .jobName(quartzJob.getJobName())
+                    .beanName(quartzJob.getBeanName())
+                    .methodName(quartzJob.getMethodName())
+                    .params(quartzJob.getParams())
+                    .cronExpression(quartzJob.getCronExpression())
+                    .status(status)
+                    .time(time)
+                    .detail(detail)
+                    .build()
+            );
     }
 
     @Transactional

@@ -30,11 +30,11 @@ public class Permission extends BaseTreeEntity<Permission> {
         menu,
 
         /** 按钮 */
-        button
+        button,
     }
 
     public enum FrontType {
         WEB,
-        APP
+        APP,
     }
 }

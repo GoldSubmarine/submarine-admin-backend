@@ -17,9 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DictionaryService extends ServiceImpl<DictionaryMapper, Dictionary> {
-    @Resource private DictionaryMapper dictionaryMapper;
+    @Resource
+    private DictionaryMapper dictionaryMapper;
 
-    @Resource private DictionaryItemService dictionaryItemService;
+    @Resource
+    private DictionaryItemService dictionaryItemService;
 
     @Transactional(readOnly = true)
     public IPage<Dictionary> findDictionaryList(DictionaryDto dictionaryDto, IPage<Void> xPage) {
@@ -29,9 +31,10 @@ public class DictionaryService extends ServiceImpl<DictionaryMapper, Dictionary>
     @Transactional(readOnly = true)
     public List<Dictionary> findDictionaryList(DictionaryDto dictionaryDto) {
         List<Dictionary> list = dictionaryMapper.findList(dictionaryDto);
-        Map<Long, List<DictionaryItem>> dictionaryItemMap =
-                dictionaryItemService.findDictionaryItemList(new DictionaryItemDto()).stream()
-                        .collect(Collectors.groupingBy(DictionaryItem::getDictionaryId));
+        Map<Long, List<DictionaryItem>> dictionaryItemMap = dictionaryItemService
+            .findDictionaryItemList(new DictionaryItemDto())
+            .stream()
+            .collect(Collectors.groupingBy(DictionaryItem::getDictionaryId));
         list.forEach(item -> item.setDictionaryItemList(dictionaryItemMap.get(item.getId())));
         return list;
     }
@@ -50,6 +53,7 @@ public class DictionaryService extends ServiceImpl<DictionaryMapper, Dictionary>
     public void deleteDictionary(Long id) {
         super.removeById(id);
         dictionaryItemService.remove(
-                Wrappers.lambdaQuery(new DictionaryItem()).eq(DictionaryItem::getDictionaryId, id));
+            Wrappers.lambdaQuery(new DictionaryItem()).eq(DictionaryItem::getDictionaryId, id)
+        );
     }
 }

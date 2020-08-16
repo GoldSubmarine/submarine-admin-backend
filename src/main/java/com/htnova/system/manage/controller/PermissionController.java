@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/permission")
 public class PermissionController {
-    @Resource private PermissionService permissionService;
+    @Resource
+    private PermissionService permissionService;
 
     /** 权限分页查询 */
     @PreAuthorize("hasAnyAuthority('permission.find')")
     @GetMapping("/list/page")
     public XPage<PermissionDto> findListByPage(PermissionDto permissionDto, XPage<Void> xPage) {
-        IPage<Permission> permissionPage =
-                permissionService.findPermissionList(permissionDto, XPage.toIPage(xPage));
+        IPage<Permission> permissionPage = permissionService.findPermissionList(permissionDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(permissionPage, PermissionMapStruct.class);
     }
 
@@ -65,8 +65,7 @@ public class PermissionController {
     @PreAuthorize("hasAnyAuthority('permission.add', 'permission.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody PermissionDto permissionDto) {
-        permissionService.savePermission(
-                DtoConverter.toEntity(permissionDto, PermissionMapStruct.class));
+        permissionService.savePermission(DtoConverter.toEntity(permissionDto, PermissionMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
@@ -82,15 +81,18 @@ public class PermissionController {
         map.put("编辑", ".edit");
         map.put("删除", ".del");
         map.forEach(
-                (name, value) -> {
-                    permissionService.savePermission(
-                            Permission.builder()
-                                    .type(Permission.PermissionType.button)
-                                    .name(name)
-                                    .value(permission.getValue() + value)
-                                    .pid(permission.getId())
-                                    .build());
-                });
+            (name, value) -> {
+                permissionService.savePermission(
+                    Permission
+                        .builder()
+                        .type(Permission.PermissionType.button)
+                        .name(name)
+                        .value(permission.getValue() + value)
+                        .pid(permission.getId())
+                        .build()
+                );
+            }
+        );
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

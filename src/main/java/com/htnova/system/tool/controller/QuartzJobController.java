@@ -23,16 +23,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/quartz-job")
 public class QuartzJobController {
-    @Resource private QuartzJobService quartzJobService;
+    @Resource
+    private QuartzJobService quartzJobService;
 
-    @Resource private QuartzLogService quartzLogService;
+    @Resource
+    private QuartzLogService quartzLogService;
 
     /** 分页查询 */
     @PreAuthorize("hasAnyAuthority('quartzJob.find')")
     @GetMapping("/list/page")
     public XPage<QuartzJobDto> findListByPage(QuartzJobDto quartzJobDto, XPage<Void> xPage) {
-        IPage<QuartzJob> quartzJobPage =
-                quartzJobService.findQuartzJobList(quartzJobDto, XPage.toIPage(xPage));
+        IPage<QuartzJob> quartzJobPage = quartzJobService.findQuartzJobList(quartzJobDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(quartzJobPage, QuartzJobMapStruct.class);
     }
 
@@ -56,8 +57,7 @@ public class QuartzJobController {
     @PreAuthorize("hasAnyAuthority('quartzJob.add', 'quartzJob.edit')")
     @PostMapping("/save")
     public Result<Void> save(@Valid @RequestBody QuartzJobDto quartzJobDto) {
-        quartzJobService.saveQuartzJob(
-                DtoConverter.toEntity(quartzJobDto, QuartzJobMapStruct.class));
+        quartzJobService.saveQuartzJob(DtoConverter.toEntity(quartzJobDto, QuartzJobMapStruct.class));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
@@ -89,8 +89,7 @@ public class QuartzJobController {
     @PreAuthorize("hasAnyAuthority('quartzJob.find')")
     @GetMapping("/log/page")
     public XPage<QuartzLogDto> findLogByPage(QuartzLogDto quartzLogDto, XPage<Void> xPage) {
-        IPage<QuartzLog> quartzLogPage =
-                quartzLogService.findQuartzLogList(quartzLogDto, XPage.toIPage(xPage));
+        IPage<QuartzLog> quartzLogPage = quartzLogService.findQuartzLogList(quartzLogDto, XPage.toIPage(xPage));
         return DtoConverter.toDto(quartzLogPage, QuartzLogMapStruct.class);
     }
 }

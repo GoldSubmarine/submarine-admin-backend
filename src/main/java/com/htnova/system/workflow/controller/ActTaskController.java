@@ -22,29 +22,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/workflow/task")
 public class ActTaskController {
-
-    @Resource private ActTaskService actTaskService;
+    @Resource
+    private ActTaskService actTaskService;
 
     /** 获取待完成列表 */
     @PreAuthorize("hasAnyAuthority('workflowTask.find')")
     @GetMapping("/todo/page")
     public XPage<ActTaskDTO> getTodoList(ActTaskDTO actTaskDTO, XPage<ActTaskDTO> xPage) {
         return actTaskService.getTodoList(
-                actTaskDTO,
-                UserUtil.getAuthUser().getId(),
-                UserUtil.getAuthUser().getRoleList().stream()
-                        .map(BaseEntity::getId)
-                        .collect(Collectors.toList()),
-                xPage);
+            actTaskDTO,
+            UserUtil.getAuthUser().getId(),
+            UserUtil.getAuthUser().getRoleList().stream().map(BaseEntity::getId).collect(Collectors.toList()),
+            xPage
+        );
     }
 
     /** 获取已完成列表 */
     @PreAuthorize("hasAnyAuthority('workflowTask.find')")
     @GetMapping("/done/page")
-    public XPage<ActTaskDTO> getDonePage(
-            ActTaskDTO actTaskDTO, String userId, XPage<ActTaskDTO> page) {
-        return actTaskService.getDonePage(
-                actTaskDTO, UserUtil.getAuthUser().getId().toString(), page);
+    public XPage<ActTaskDTO> getDonePage(ActTaskDTO actTaskDTO, String userId, XPage<ActTaskDTO> page) {
+        return actTaskService.getDonePage(actTaskDTO, UserUtil.getAuthUser().getId().toString(), page);
     }
 
     /** 获取我的申请 */
@@ -66,10 +63,8 @@ public class ActTaskController {
     /** 委托任务 */
     @PreAuthorize("hasAnyAuthority('workflowTask.delegate')")
     @PostMapping("/delegate/{taskId}")
-    public Result<Void> delegateTask(
-            @PathVariable String taskId, @RequestBody ActTaskDTO actTaskDTO) {
-        actTaskService.delegateTask(
-                taskId, UserUtil.getAuthUser().getId(), Long.parseLong(actTaskDTO.getAssigneeId()));
+    public Result<Void> delegateTask(@PathVariable String taskId, @RequestBody ActTaskDTO actTaskDTO) {
+        actTaskService.delegateTask(taskId, UserUtil.getAuthUser().getId(), Long.parseLong(actTaskDTO.getAssigneeId()));
         return Result.build(ResultStatus.DELEGATE_SUCCESS);
     }
 
@@ -77,8 +72,7 @@ public class ActTaskController {
     @PreAuthorize("hasAnyAuthority('workflowTask.delete')")
     @PostMapping("/apply/delete")
     public Result<Void> deleteProcessInstanceById(@RequestBody ActApplyDTO actApplyDTO) {
-        actTaskService.deleteProcessInstanceById(
-                actApplyDTO.getProcessInstanceId(), actApplyDTO.getDeleteReason());
+        actTaskService.deleteProcessInstanceById(actApplyDTO.getProcessInstanceId(), actApplyDTO.getDeleteReason());
         return Result.build(ResultStatus.REVOKE_SUCCESS);
     }
 
@@ -86,7 +80,6 @@ public class ActTaskController {
     @PreAuthorize("hasAnyAuthority('workflowTask.find')")
     @GetMapping("/history/operate")
     public List<ActTaskDTO> getHistoryOperate(ActTaskDTO actTaskDTO) {
-        return actTaskService.histoicFlowList(
-                actTaskDTO.getProcessInstanceId(), actTaskDTO.getTaskDefinitionKey());
+        return actTaskService.histoicFlowList(actTaskDTO.getProcessInstanceId(), actTaskDTO.getTaskDefinitionKey());
     }
 }

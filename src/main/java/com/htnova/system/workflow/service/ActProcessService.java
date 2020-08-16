@@ -27,15 +27,17 @@ import org.springframework.util.CollectionUtils;
 
 @Service
 public class ActProcessService {
+    @Resource
+    private RepositoryService repositoryService;
 
-    @Resource private RepositoryService repositoryService;
-    @Resource private RuntimeService runtimeService;
+    @Resource
+    private RuntimeService runtimeService;
 
-    public XPage<ActProcessDTO> findActProcessList(
-            ActProcessDTO actProcessDTO, XPage<ActProcessDTO> page) {
+    public XPage<ActProcessDTO> findActProcessList(ActProcessDTO actProcessDTO, XPage<ActProcessDTO> page) {
         // 获取查询流程定义对对象
-        ProcessDefinitionQuery processDefinitionQuery =
-                repositoryService.createProcessDefinitionQuery().orderByProcessDefinitionKey();
+        ProcessDefinitionQuery processDefinitionQuery = repositoryService
+            .createProcessDefinitionQuery()
+            .orderByProcessDefinitionKey();
         if (actProcessDTO.isLastVersion()) {
             processDefinitionQuery.latestVersion();
         }
@@ -49,8 +51,7 @@ public class ActProcessService {
         }
         // 动态查询
         if (StringUtils.isNotBlank(actProcessDTO.getCategory())) {
-            processDefinitionQuery.processDefinitionCategoryLike(
-                    "%" + actProcessDTO.getCategory() + "%");
+            processDefinitionQuery.processDefinitionCategoryLike("%" + actProcessDTO.getCategory() + "%");
         }
         if (StringUtils.isNotBlank(actProcessDTO.getName())) {
             processDefinitionQuery.processDefinitionNameLike("%" + actProcessDTO.getName() + "%");
@@ -58,64 +59,62 @@ public class ActProcessService {
         if (StringUtils.isNotBlank(actProcessDTO.getKey())) {
             processDefinitionQuery.processDefinitionKeyLike("%" + actProcessDTO.getKey() + "%");
         }
-        List<ProcessDefinition> result =
-                processDefinitionQuery.listPage(
-                        (int) page.getStartIndex(), (int) page.getEndIndex());
+        List<ProcessDefinition> result = processDefinitionQuery.listPage(
+            (int) page.getStartIndex(),
+            (int) page.getEndIndex()
+        );
         page.setTotal(processDefinitionQuery.count());
 
         // 部署时间查询
-        Map<String, LocalDateTime> deployTimeMap =
-                repositoryService.createDeploymentQuery()
-                        .deploymentIds(
-                                result.stream()
-                                        .map(ProcessDefinition::getDeploymentId)
-                                        .collect(Collectors.toList()))
-                        .list().stream()
-                        .collect(
-                                Collectors.toMap(
-                                        EngineDeployment::getId,
-                                        item -> DateUtil.converter(item.getDeploymentTime()),
-                                        (a, b) -> a));
+        Map<String, LocalDateTime> deployTimeMap = repositoryService
+            .createDeploymentQuery()
+            .deploymentIds(result.stream().map(ProcessDefinition::getDeploymentId).collect(Collectors.toList()))
+            .list()
+            .stream()
+            .collect(
+                Collectors.toMap(
+                    EngineDeployment::getId,
+                    item -> DateUtil.converter(item.getDeploymentTime()),
+                    (a, b) -> a
+                )
+            );
         page.setData(
-                result.stream()
-                        .map(
-                                item ->
-                                        new ActProcessDTO(
-                                                item, deployTimeMap.get(item.getDeploymentId())))
-                        .collect(Collectors.toList()));
+            result
+                .stream()
+                .map(item -> new ActProcessDTO(item, deployTimeMap.get(item.getDeploymentId())))
+                .collect(Collectors.toList())
+        );
         return page;
     }
 
     public List<ProcessDefinition> findAllActProcessList() {
         return repositoryService
-                .createProcessDefinitionQuery()
-                .orderByProcessDefinitionKey()
-                .asc()
-                .latestVersion()
-                .active()
-                .list();
+            .createProcessDefinitionQuery()
+            .orderByProcessDefinitionKey()
+            .asc()
+            .latestVersion()
+            .active()
+            .list();
     }
 
     public ActProcessDTO getActProcessById(String id) {
         ProcessDefinition processDefinition = repositoryService.getProcessDefinition(id);
-        Deployment deployment =
-                repositoryService
-                        .createDeploymentQuery()
-                        .deploymentId(processDefinition.getDeploymentId())
-                        .singleResult();
-        return new ActProcessDTO(
-                processDefinition, DateUtil.converter(deployment.getDeploymentTime()));
+        Deployment deployment = repositoryService
+            .createDeploymentQuery()
+            .deploymentId(processDefinition.getDeploymentId())
+            .singleResult();
+        return new ActProcessDTO(processDefinition, DateUtil.converter(deployment.getDeploymentTime()));
     }
 
     public String getActProcessResource(String processDefinitionId, String resourceName) {
-        ProcessDefinition processDefinition =
-                repositoryService
-                        .createProcessDefinitionQuery()
-                        .processDefinitionId(processDefinitionId)
-                        .singleResult();
-        InputStream resourceStream =
-                repositoryService.getResourceAsStream(
-                        processDefinition.getDeploymentId(), resourceName);
+        ProcessDefinition processDefinition = repositoryService
+            .createProcessDefinitionQuery()
+            .processDefinitionId(processDefinitionId)
+            .singleResult();
+        InputStream resourceStream = repositoryService.getResourceAsStream(
+            processDefinition.getDeploymentId(),
+            resourceName
+        );
         try {
             return IOUtils.toString(resourceStream, Charset.defaultCharset());
         } catch (IOException e) {

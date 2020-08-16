@@ -28,20 +28,19 @@ import org.springframework.util.ReflectionUtils;
 public class ScheduleJob extends QuartzJobBean {
     public static final String QUARTZ_JOB_KEY = "QUARTZ_JOB";
 
-    @Resource private QuartzLogService quartzLogService;
+    @Resource
+    private QuartzLogService quartzLogService;
 
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         long startTime = System.currentTimeMillis();
         QuartzLog.StatusType isSuccess = QuartzLog.StatusType.success;
         String failDetail = "";
-        QuartzJob quartzJob =
-                (QuartzJob) context.getJobDetail().getJobDataMap().get(QUARTZ_JOB_KEY);
+        QuartzJob quartzJob = (QuartzJob) context.getJobDetail().getJobDataMap().get(QUARTZ_JOB_KEY);
         try {
             Object bean = SpringContextUtil.getBean(quartzJob.getBeanName());
             if (StringUtils.isNotBlank(quartzJob.getParams())) {
-                Method method =
-                        bean.getClass().getDeclaredMethod(quartzJob.getMethodName(), String.class);
+                Method method = bean.getClass().getDeclaredMethod(quartzJob.getMethodName(), String.class);
                 ReflectionUtils.makeAccessible(method);
                 method.invoke(bean, quartzJob.getParams());
             } else {

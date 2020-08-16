@@ -18,20 +18,17 @@ public class DtoConverter {
         return Mappers.getMapper(c).toDto(e);
     }
 
-    public static <D, E> XPage<D> toDto(
-            IPage<E> iPage, Class<? extends BaseMapStruct<D, E>> mapStruct) {
+    public static <D, E> XPage<D> toDto(IPage<E> iPage, Class<? extends BaseMapStruct<D, E>> mapStruct) {
         return XPage.fromIPage(iPage, mapStruct);
     }
 
     /** 调用 list 的 toDto 方法 */
-    public static <D, E> List<D> toDto(
-            List<E> source, Class<? extends BaseMapStruct<D, E>> mapStruct) {
+    public static <D, E> List<D> toDto(List<E> source, Class<? extends BaseMapStruct<D, E>> mapStruct) {
         return Mappers.getMapper(mapStruct).toDto(source);
     }
 
     /** 调用 list 的 toDto 方法 */
-    public static <D, E> List<E> toEntity(
-            List<D> source, Class<? extends BaseMapStruct<D, E>> mapStruct) {
+    public static <D, E> List<E> toEntity(List<D> source, Class<? extends BaseMapStruct<D, E>> mapStruct) {
         return Mappers.getMapper(mapStruct).toEntity(source);
     }
 }

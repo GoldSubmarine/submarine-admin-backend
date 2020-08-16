@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DictionaryItemService extends ServiceImpl<DictionaryItemMapper, DictionaryItem> {
-    @Resource private DictionaryItemMapper dictionaryItemMapper;
+    @Resource
+    private DictionaryItemMapper dictionaryItemMapper;
 
     @Transactional(readOnly = true)
-    public IPage<DictionaryItem> findDictionaryItemList(
-            DictionaryItemDto dictionaryItemDto, IPage<Void> xPage) {
+    public IPage<DictionaryItem> findDictionaryItemList(DictionaryItemDto dictionaryItemDto, IPage<Void> xPage) {
         return dictionaryItemMapper.findPage(xPage, dictionaryItemDto);
     }
 

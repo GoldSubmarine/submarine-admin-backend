@@ -50,87 +50,94 @@ import org.springframework.util.CollectionUtils;
 
 @Service
 public class ActTaskService {
+    @Resource
+    private RepositoryService repositoryService;
 
-    @Resource private RepositoryService repositoryService;
-    @Resource private TaskService taskService;
-    @Resource private HistoryService historyService;
-    @Resource private IdentityService identityService;
-    @Resource private RuntimeService runtimeService;
-    @Autowired private FormService formService;
-    @Resource private UserService userService;
-    @Resource private ActMapper actMapper;
+    @Resource
+    private TaskService taskService;
+
+    @Resource
+    private HistoryService historyService;
+
+    @Resource
+    private IdentityService identityService;
+
+    @Resource
+    private RuntimeService runtimeService;
+
+    @Autowired
+    private FormService formService;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private ActMapper actMapper;
 
     /** 获取待办列表 */
     public XPage<ActTaskDTO> getTodoList(
-            ActTaskDTO actTaskDTO, Long userId, List<Long> roleIdList, XPage<ActTaskDTO> page) {
+        ActTaskDTO actTaskDTO,
+        Long userId,
+        List<Long> roleIdList,
+        XPage<ActTaskDTO> page
+    ) {
         // =============== 已经签收的任务  ===============
-        TaskQuery todoTaskQuery =
-                taskService
-                        .createTaskQuery()
-                        .taskCandidateOrAssigned(userId.toString())
-                        .taskCandidateGroupIn(
-                                roleIdList.stream()
-                                        .map(Object::toString)
-                                        .collect(Collectors.toList()))
-                        .active()
-                        .includeProcessVariables()
-                        .orderByTaskCreateTime()
-                        .desc();
+        TaskQuery todoTaskQuery = taskService
+            .createTaskQuery()
+            .taskCandidateOrAssigned(userId.toString())
+            .taskCandidateGroupIn(roleIdList.stream().map(Object::toString).collect(Collectors.toList()))
+            .active()
+            .includeProcessVariables()
+            .orderByTaskCreateTime()
+            .desc();
         // 设置查询条件
         if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionKey())) {
             todoTaskQuery.processDefinitionKey(actTaskDTO.getProcessDefinitionKey());
         }
         if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionName())) {
-            todoTaskQuery.processDefinitionNameLike(
-                    "%" + actTaskDTO.getProcessDefinitionName() + "%");
+            todoTaskQuery.processDefinitionNameLike("%" + actTaskDTO.getProcessDefinitionName() + "%");
         }
         if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionCategory())) {
-            todoTaskQuery.processCategoryIn(
-                    Lists.newArrayList(actTaskDTO.getProcessDefinitionCategory()));
+            todoTaskQuery.processCategoryIn(Lists.newArrayList(actTaskDTO.getProcessDefinitionCategory()));
         }
         long start = (page.getPageNum() - 1) * page.getPageSize();
         long end = start + page.getPageSize();
         List<Task> result = todoTaskQuery.listPage((int) start, (int) end);
         page.setData(result.stream().map(ActTaskDTO::new).collect(Collectors.toList()));
         page.setTotal(todoTaskQuery.count());
-        Map<String, ProcessDefinition> processDefinitionMap =
-                queryProcessDefinitionByIds(
-                        result.stream()
-                                .map(TaskInfo::getProcessDefinitionId)
-                                .collect(Collectors.toSet()));
-        page.getData()
-                .forEach(
-                        item ->
-                                item.setProcessDefinitionCategory(
-                                        processDefinitionMap
-                                                .get(item.getProcessDefinitionId())
-                                                .getCategory()));
+        Map<String, ProcessDefinition> processDefinitionMap = queryProcessDefinitionByIds(
+            result.stream().map(TaskInfo::getProcessDefinitionId).collect(Collectors.toSet())
+        );
+        page
+            .getData()
+            .forEach(
+                item ->
+                    item.setProcessDefinitionCategory(
+                        processDefinitionMap.get(item.getProcessDefinitionId()).getCategory()
+                    )
+            );
         return page;
     }
 
     /** 获取已办任务 */
-    public XPage<ActTaskDTO> getDonePage(
-            ActTaskDTO actTaskDTO, String userId, XPage<ActTaskDTO> page) {
-        HistoricTaskInstanceQuery histTaskQuery =
-                historyService
-                        .createHistoricTaskInstanceQuery()
-                        .taskAssignee(userId)
-                        .finished()
-                        .includeProcessVariables()
-                        .orderByHistoricTaskInstanceEndTime()
-                        .desc();
+    public XPage<ActTaskDTO> getDonePage(ActTaskDTO actTaskDTO, String userId, XPage<ActTaskDTO> page) {
+        HistoricTaskInstanceQuery histTaskQuery = historyService
+            .createHistoricTaskInstanceQuery()
+            .taskAssignee(userId)
+            .finished()
+            .includeProcessVariables()
+            .orderByHistoricTaskInstanceEndTime()
+            .desc();
 
         // 设置查询条件
         if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionKey())) {
             histTaskQuery.processDefinitionKey(actTaskDTO.getProcessDefinitionKey());
         }
         if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionName())) {
-            histTaskQuery.processDefinitionNameLike(
-                    "%" + actTaskDTO.getProcessDefinitionName() + "%");
+            histTaskQuery.processDefinitionNameLike("%" + actTaskDTO.getProcessDefinitionName() + "%");
         }
         if (StringUtils.isNotBlank(actTaskDTO.getProcessDefinitionCategory())) {
-            histTaskQuery.processCategoryIn(
-                    Lists.newArrayList(actTaskDTO.getProcessDefinitionCategory()));
+            histTaskQuery.processCategoryIn(Lists.newArrayList(actTaskDTO.getProcessDefinitionCategory()));
         }
         if (actTaskDTO.getBeginTime() != null) {
             histTaskQuery.taskCompletedAfter(DateUtil.converter(actTaskDTO.getBeginTime()));
@@ -149,28 +156,26 @@ public class ActTaskService {
         for (HistoricTaskInstance histTask : histList) {
             page.getData().add(new ActTaskDTO(histTask));
         }
-        Map<String, ProcessDefinition> processDefinitionMap =
-                queryProcessDefinitionByIds(
-                        histList.stream()
-                                .map(TaskInfo::getProcessDefinitionId)
-                                .collect(Collectors.toSet()));
-        page.getData()
-                .forEach(
-                        item ->
-                                item.setProcessDefinitionCategory(
-                                        processDefinitionMap
-                                                .get(item.getProcessDefinitionId())
-                                                .getCategory()));
+        Map<String, ProcessDefinition> processDefinitionMap = queryProcessDefinitionByIds(
+            histList.stream().map(TaskInfo::getProcessDefinitionId).collect(Collectors.toSet())
+        );
+        page
+            .getData()
+            .forEach(
+                item ->
+                    item.setProcessDefinitionCategory(
+                        processDefinitionMap.get(item.getProcessDefinitionId()).getCategory()
+                    )
+            );
         return page;
     }
 
     /** 获取自己的申请(流程实例查询) */
     public XPage<ActApplyDTO> getApplyPage(ActApplyDTO actApplyDTO, XPage<ActApplyDTO> page) {
-        HistoricProcessInstanceQuery historicProcInsQuery =
-                historyService
-                        .createHistoricProcessInstanceQuery()
-                        .orderByProcessInstanceStartTime()
-                        .desc();
+        HistoricProcessInstanceQuery historicProcInsQuery = historyService
+            .createHistoricProcessInstanceQuery()
+            .orderByProcessInstanceStartTime()
+            .desc();
         if (StringUtils.isNotBlank(actApplyDTO.getProcessInstanceId())) {
             historicProcInsQuery.processInstanceId(actApplyDTO.getProcessInstanceId());
         }
@@ -181,20 +186,16 @@ public class ActTaskService {
             historicProcInsQuery.processDefinitionKey(actApplyDTO.getProcessDefinitionKey());
         }
         if (StringUtils.isNotBlank(actApplyDTO.getProcessDefinitionCategory())) {
-            historicProcInsQuery.processDefinitionCategory(
-                    actApplyDTO.getProcessDefinitionCategory());
+            historicProcInsQuery.processDefinitionCategory(actApplyDTO.getProcessDefinitionCategory());
         }
         if (StringUtils.isNotBlank(actApplyDTO.getProcessDefinitionName())) {
-            historicProcInsQuery.processDefinitionName(
-                    "%" + actApplyDTO.getProcessDefinitionName() + "%");
+            historicProcInsQuery.processDefinitionName("%" + actApplyDTO.getProcessDefinitionName() + "%");
         }
         if (Objects.nonNull(actApplyDTO.getProcessDefinitionVersion())) {
-            historicProcInsQuery.processDefinitionVersion(
-                    actApplyDTO.getProcessDefinitionVersion());
+            historicProcInsQuery.processDefinitionVersion(actApplyDTO.getProcessDefinitionVersion());
         }
         if (StringUtils.isNotBlank(actApplyDTO.getProcessInstanceBusinessKey())) {
-            historicProcInsQuery.processInstanceBusinessKey(
-                    actApplyDTO.getProcessInstanceBusinessKey());
+            historicProcInsQuery.processInstanceBusinessKey(actApplyDTO.getProcessInstanceBusinessKey());
         }
         if (StringUtils.isNotBlank(actApplyDTO.getStartedBy())) {
             historicProcInsQuery.startedBy(actApplyDTO.getStartedBy());
@@ -211,48 +212,54 @@ public class ActTaskService {
         if (ApplyStatus.delete.equals(actApplyDTO.getStatus())) {
             historicProcInsQuery.deleted();
         }
-        List<HistoricProcessInstance> historicProcessInstances =
-                historicProcInsQuery.listPage((int) page.getStartIndex(), (int) page.getEndIndex());
+        List<HistoricProcessInstance> historicProcessInstances = historicProcInsQuery.listPage(
+            (int) page.getStartIndex(),
+            (int) page.getEndIndex()
+        );
         page.setTotal(historicProcInsQuery.count());
-        page.setData(
-                historicProcessInstances.stream()
-                        .map(ActApplyDTO::new)
-                        .collect(Collectors.toList()));
+        page.setData(historicProcessInstances.stream().map(ActApplyDTO::new).collect(Collectors.toList()));
         // 设置流程分类
-        Map<String, ProcessDefinition> processDefinitionMap =
-                queryProcessDefinitionByIds(
-                        historicProcessInstances.stream()
-                                .map(HistoricProcessInstance::getProcessDefinitionId)
-                                .collect(Collectors.toSet()));
-        page.getData()
-                .forEach(
-                        item ->
-                                item.setProcessDefinitionCategory(
-                                        processDefinitionMap
-                                                .get(item.getProcessDefinitionId())
-                                                .getCategory()));
+        Map<String, ProcessDefinition> processDefinitionMap = queryProcessDefinitionByIds(
+            historicProcessInstances
+                .stream()
+                .map(HistoricProcessInstance::getProcessDefinitionId)
+                .collect(Collectors.toSet())
+        );
+        page
+            .getData()
+            .forEach(
+                item ->
+                    item.setProcessDefinitionCategory(
+                        processDefinitionMap.get(item.getProcessDefinitionId()).getCategory()
+                    )
+            );
         return page;
     }
 
-    private Map<String, ProcessDefinition> queryProcessDefinitionByIds(
-            Set<String> processDefinitionIds) {
-        return repositoryService.createProcessDefinitionQuery()
-                .processDefinitionIds(processDefinitionIds).list().stream()
-                .collect(Collectors.toMap(ProcessDefinition::getId, item -> item));
+    private Map<String, ProcessDefinition> queryProcessDefinitionByIds(Set<String> processDefinitionIds) {
+        return repositoryService
+            .createProcessDefinitionQuery()
+            .processDefinitionIds(processDefinitionIds)
+            .list()
+            .stream()
+            .collect(Collectors.toMap(ProcessDefinition::getId, item -> item));
     }
 
     /** 签收任务 */
     public void claimTask(String taskId, Long userId) {
-        Task task =
-                taskService
-                        .createTaskQuery()
-                        .taskId(taskId)
-                        .taskCandidateUser(userId.toString())
-                        .taskCandidateGroupIn(
-                                userService.getUserById(userId).getRoleList().stream()
-                                        .map(item -> item.getId().toString())
-                                        .collect(Collectors.toList()))
-                        .singleResult();
+        Task task = taskService
+            .createTaskQuery()
+            .taskId(taskId)
+            .taskCandidateUser(userId.toString())
+            .taskCandidateGroupIn(
+                userService
+                    .getUserById(userId)
+                    .getRoleList()
+                    .stream()
+                    .map(item -> item.getId().toString())
+                    .collect(Collectors.toList())
+            )
+            .singleResult();
         if (Objects.nonNull(task)) {
             taskService.claim(taskId, userId.toString());
         } else {
@@ -262,12 +269,7 @@ public class ActTaskService {
 
     /** 委托任务 */
     public void delegateTask(String taskId, Long formUserId, Long toUserId) {
-        Task task =
-                taskService
-                        .createTaskQuery()
-                        .taskId(taskId)
-                        .taskAssignee(formUserId.toString())
-                        .singleResult();
+        Task task = taskService.createTaskQuery().taskId(taskId).taskAssignee(formUserId.toString()).singleResult();
         if (Objects.nonNull(task)) {
             taskService.delegateTask(taskId, toUserId.toString());
         } else {
@@ -288,8 +290,7 @@ public class ActTaskService {
      * @param comment 任务提交意见的内容
      * @param vars: task parameters
      */
-    private void complete(
-            String taskId, String procInsId, String comment, Map<String, Object> vars) {
+    private void complete(String taskId, String procInsId, String comment, Map<String, Object> vars) {
         // 添加意见
         if (StringUtils.isNotBlank(procInsId) && StringUtils.isNotBlank(comment)) {
             taskService.addComment(taskId, procInsId, comment);
@@ -307,11 +308,12 @@ public class ActTaskService {
     /** 审批 */
     @Transactional
     public void complete(
-            String taskId,
-            String procInsId,
-            String comment,
-            ApproveType approveType,
-            TaskVariableDTO vars) {
+        String taskId,
+        String procInsId,
+        String comment,
+        ApproveType approveType,
+        TaskVariableDTO vars
+    ) {
         if (Objects.isNull(vars)) {
             vars = new TaskVariableDTO();
         }
@@ -322,10 +324,10 @@ public class ActTaskService {
     /** 跳转申请实例到某一节点 */
     public void changeActState(String processInstanceId, String currentActId, String toActId) {
         runtimeService
-                .createChangeActivityStateBuilder()
-                .processInstanceId(processInstanceId)
-                .moveActivityIdTo(currentActId, toActId)
-                .changeState();
+            .createChangeActivityStateBuilder()
+            .processInstanceId(processInstanceId)
+            .moveActivityIdTo(currentActId, toActId)
+            .changeState();
     }
 
     /**
@@ -337,38 +339,36 @@ public class ActTaskService {
     public List<ActTaskDTO> histoicFlowList(String procInsId, String endTaskDefinitionKey) {
         List<ActTaskDTO> actList = Lists.newArrayList();
         // 设置流程发起人
-        HistoricProcessInstance historicProcessInstance =
-                historyService
-                        .createHistoricProcessInstanceQuery()
-                        .processInstanceId(procInsId)
-                        .singleResult();
-        HistoricActivityInstance startActivity =
-                historyService
-                        .createHistoricActivityInstanceQuery()
-                        .processInstanceId(procInsId)
-                        .activityId(historicProcessInstance.getStartActivityId())
-                        .singleResult();
-        User user =
-                userService.getUserById(Long.parseLong(historicProcessInstance.getStartUserId()));
+        HistoricProcessInstance historicProcessInstance = historyService
+            .createHistoricProcessInstanceQuery()
+            .processInstanceId(procInsId)
+            .singleResult();
+        HistoricActivityInstance startActivity = historyService
+            .createHistoricActivityInstanceQuery()
+            .processInstanceId(procInsId)
+            .activityId(historicProcessInstance.getStartActivityId())
+            .singleResult();
+        User user = userService.getUserById(Long.parseLong(historicProcessInstance.getStartUserId()));
         actList.add(
-                ActTaskDTO.builder()
-                        .assigneeId(historicProcessInstance.getStartUserId())
-                        .assigneeName(Optional.ofNullable(user).map(User::getName).orElse(null))
-                        .name(startActivity.getActivityName())
-                        .processInstanceId(historicProcessInstance.getId())
-                        .processDefinitionId(historicProcessInstance.getProcessDefinitionId())
-                        .beginTime(DateUtil.converter(historicProcessInstance.getStartTime()))
-                        .endTime(DateUtil.converter(historicProcessInstance.getStartTime()))
-                        .durationInMillis(historicProcessInstance.getDurationInMillis())
-                        .build());
+            ActTaskDTO
+                .builder()
+                .assigneeId(historicProcessInstance.getStartUserId())
+                .assigneeName(Optional.ofNullable(user).map(User::getName).orElse(null))
+                .name(startActivity.getActivityName())
+                .processInstanceId(historicProcessInstance.getId())
+                .processDefinitionId(historicProcessInstance.getProcessDefinitionId())
+                .beginTime(DateUtil.converter(historicProcessInstance.getStartTime()))
+                .endTime(DateUtil.converter(historicProcessInstance.getStartTime()))
+                .durationInMillis(historicProcessInstance.getDurationInMillis())
+                .build()
+        );
         // 获取审批人列表
-        List<HistoricTaskInstance> list =
-                historyService
-                        .createHistoricTaskInstanceQuery()
-                        .processInstanceId(procInsId)
-                        .orderByHistoricTaskInstanceStartTime()
-                        .asc()
-                        .list();
+        List<HistoricTaskInstance> list = historyService
+            .createHistoricTaskInstanceQuery()
+            .processInstanceId(procInsId)
+            .orderByHistoricTaskInstanceStartTime()
+            .asc()
+            .list();
         for (HistoricTaskInstance histIns : list) {
             ActTaskDTO e = new ActTaskDTO();
             // 获取任务执行人名称
@@ -385,15 +385,15 @@ public class ActTaskService {
                 e.setComment(commentList.get(0).getFullMessage());
             }
             // 获取状态
-            Map<String, Object> variableMap =
-                    historyService.createHistoricVariableInstanceQuery().taskId(histIns.getId())
-                            .list().stream()
-                            .collect(
-                                    Collectors.toMap(
-                                            HistoricVariableInstance::getVariableName,
-                                            HistoricVariableInstance::getValue));
-            TaskVariableDTO taskVariableDTO =
-                    BeanUtil.mapToBean(variableMap, TaskVariableDTO.class, true);
+            Map<String, Object> variableMap = historyService
+                .createHistoricVariableInstanceQuery()
+                .taskId(histIns.getId())
+                .list()
+                .stream()
+                .collect(
+                    Collectors.toMap(HistoricVariableInstance::getVariableName, HistoricVariableInstance::getValue)
+                );
+            TaskVariableDTO taskVariableDTO = BeanUtil.mapToBean(variableMap, TaskVariableDTO.class, true);
             e.setApproveStatus(taskVariableDTO.getStatus());
 
             e.setName(histIns.getName());
@@ -404,8 +404,10 @@ public class ActTaskService {
             e.setDurationInMillis(histIns.getDurationInMillis());
             actList.add(e);
             // 过滤结束节点后的节点
-            if (StringUtils.isNotBlank(endTaskDefinitionKey)
-                    && endTaskDefinitionKey.equals(histIns.getTaskDefinitionKey())) {
+            if (
+                StringUtils.isNotBlank(endTaskDefinitionKey) &&
+                endTaskDefinitionKey.equals(histIns.getTaskDefinitionKey())
+            ) {
                 break;
             }
         }
@@ -419,26 +421,25 @@ public class ActTaskService {
 
     @Transactional
     public ProcessInstance startProcess(
-            String procDefId,
-            String businessTable,
-            String businessId,
-            ProcessVariableDTO processVariable) {
+        String procDefId,
+        String businessTable,
+        String businessId,
+        ProcessVariableDTO processVariable
+    ) {
         if (Objects.isNull(processVariable)) {
             processVariable = new ProcessVariableDTO();
         }
-        if (StringUtils.isAnyBlank(
-                processVariable.getApplyUserId(), processVariable.getApplyUserName())) {
+        if (StringUtils.isAnyBlank(processVariable.getApplyUserId(), processVariable.getApplyUserName())) {
             processVariable.setApplyUserId(UserUtil.getAuthUser().getId().toString());
             processVariable.setApplyUserName(UserUtil.getAuthUser().getName());
         }
-        if (StringUtils.isAnyBlank(
-                processVariable.getProcessDefinitionId(),
-                processVariable.getProcessDefinitionName())) {
-            ProcessDefinition processDefinition =
-                    repositoryService
-                            .createProcessDefinitionQuery()
-                            .processDefinitionId(procDefId)
-                            .singleResult();
+        if (
+            StringUtils.isAnyBlank(processVariable.getProcessDefinitionId(), processVariable.getProcessDefinitionName())
+        ) {
+            ProcessDefinition processDefinition = repositoryService
+                .createProcessDefinitionQuery()
+                .processDefinitionId(procDefId)
+                .singleResult();
             processVariable.setProcessDefinitionId(processDefinition.getId());
             processVariable.setProcessDefinitionName(processDefinition.getName());
             processVariable.setProcessDefinitionKey(processDefinition.getKey());
@@ -446,11 +447,11 @@ public class ActTaskService {
         // 设置流程发起人，act_hi_procinst 表中中的START_USER_ID_字段
         identityService.setAuthenticatedUserId(processVariable.getApplyUserId());
         // 启动流程
-        ProcessInstance procIns =
-                runtimeService.startProcessInstanceById(
-                        procDefId,
-                        businessTable + ":" + businessId,
-                        BeanUtil.beanToMap(processVariable));
+        ProcessInstance procIns = runtimeService.startProcessInstanceById(
+            procDefId,
+            businessTable + ":" + businessId,
+            BeanUtil.beanToMap(processVariable)
+        );
 
         // 更新业务表流程实例ID
         actMapper.updateProcInsIdByBusinessId(businessTable, procIns.getId(), businessId);

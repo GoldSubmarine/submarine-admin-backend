@@ -20,9 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileStoreService extends ServiceImpl<FileStoreMapper, FileStore> {
-    @Resource private FileStoreMapper fileStoreMapper;
+    @Resource
+    private FileStoreMapper fileStoreMapper;
 
-    @Resource private HandleFile handleFile;
+    @Resource
+    private HandleFile handleFile;
 
     @Transactional(readOnly = true)
     public IPage<FileStore> findFileStoreList(FileStoreDto fileStoreDto, IPage<Void> xPage) {
@@ -39,9 +41,7 @@ public class FileStoreService extends ServiceImpl<FileStoreMapper, FileStore> {
         if (StringUtils.isBlank(ids)) {
             return Collections.emptyList();
         }
-        return super.lambdaQuery()
-                .in(BaseEntity::getId, Arrays.asList(StringUtils.split(ids, ",")))
-                .list();
+        return super.lambdaQuery().in(BaseEntity::getId, Arrays.asList(StringUtils.split(ids, ","))).list();
     }
 
     @Transactional

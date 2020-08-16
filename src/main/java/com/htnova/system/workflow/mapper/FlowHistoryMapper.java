@@ -8,9 +8,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface FlowHistoryMapper extends BaseMapper<FlowHistory> {
-
-    IPage<FlowHistory> findPage(
-            IPage<Void> xPage, @Param("flowHistoryDto") FlowHistoryDto flowHistoryDto);
+    IPage<FlowHistory> findPage(IPage<Void> xPage, @Param("flowHistoryDto") FlowHistoryDto flowHistoryDto);
 
     List<FlowHistory> findList(@Param("flowHistoryDto") FlowHistoryDto flowHistoryDto);
 }

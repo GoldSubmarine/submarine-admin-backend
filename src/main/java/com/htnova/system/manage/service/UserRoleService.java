@@ -13,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRole> {
-    @Resource private UserRoleMapper userRoleMapper;
+    @Resource
+    private UserRoleMapper userRoleMapper;
 
     @Transactional(readOnly = true)
     public IPage<UserRole> findUserRoleList(UserRole userRole, IPage<Void> xPage) {
@@ -30,10 +31,10 @@ public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRole> {
         // 删除旧的
         super.remove(new LambdaQueryWrapper<>(new UserRole()).eq(UserRole::getUserId, userId));
         // 保存新的
-        List<UserRole> userRoleList =
-                roleIdList.stream()
-                        .map(item -> UserRole.builder().roleId(item).userId(userId).build())
-                        .collect(Collectors.toList());
+        List<UserRole> userRoleList = roleIdList
+            .stream()
+            .map(item -> UserRole.builder().roleId(item).userId(userId).build())
+            .collect(Collectors.toList());
         super.saveBatch(userRoleList);
     }
 

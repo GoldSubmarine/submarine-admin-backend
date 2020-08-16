@@ -39,8 +39,7 @@ public class SocketUtil {
 
     public static void deleteClient(SocketIOClient client) {
         AuthUser authUser = client.get(SOCKET_USER_KEY);
-        clients.get(authUser.getId())
-                .removeIf(item -> item.getSessionId().equals(client.getSessionId()));
+        clients.get(authUser.getId()).removeIf(item -> item.getSessionId().equals(client.getSessionId()));
     }
 
     /** 获取spring的session */
@@ -66,10 +65,7 @@ public class SocketUtil {
         String[] cookies = cookieStr.split(";");
         for (String cookie : cookies) {
             if (StringUtils.startsWith(cookie, SESSION_NAME)) {
-                String sessionId =
-                        new String(
-                                Base64.getDecoder()
-                                        .decode(cookie.substring(SESSION_NAME.length() + 1)));
+                String sessionId = new String(Base64.getDecoder().decode(cookie.substring(SESSION_NAME.length() + 1)));
                 if (StringUtils.isBlank(sessionId)) {
                     continue;
                 }

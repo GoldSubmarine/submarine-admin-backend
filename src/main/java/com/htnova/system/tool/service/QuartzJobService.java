@@ -23,7 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 public class QuartzJobService extends ServiceImpl<QuartzJobMapper, QuartzJob> {
-    @Resource private QuartzJobMapper quartzJobMapper;
+    @Resource
+    private QuartzJobMapper quartzJobMapper;
 
     @Transactional(readOnly = true)
     public IPage<QuartzJob> findQuartzJobList(QuartzJobDto quartzJobDto, IPage<Void> xPage) {

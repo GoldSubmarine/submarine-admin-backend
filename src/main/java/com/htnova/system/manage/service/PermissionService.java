@@ -17,9 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PermissionService extends ServiceImpl<PermissionMapper, Permission> {
-    @Resource private PermissionMapper permissionMapper;
+    @Resource
+    private PermissionMapper permissionMapper;
 
-    @Resource private RolePermissionService rolePermissionService;
+    @Resource
+    private RolePermissionService rolePermissionService;
 
     @Transactional(readOnly = true)
     public IPage<Permission> findPermissionList(PermissionDto permissionDto, IPage<Void> xPage) {
@@ -36,9 +38,8 @@ public class PermissionService extends ServiceImpl<PermissionMapper, Permission>
         Permission parent = super.getById(permission.getPid());
         if (parent != null) {
             permission.setPids(
-                    String.format(
-                            "%s%s,",
-                            Optional.ofNullable(parent.getPids()).orElse(""), parent.getId()));
+                String.format("%s%s,", Optional.ofNullable(parent.getPids()).orElse(""), parent.getId())
+            );
         }
         super.saveOrUpdate(permission);
     }
@@ -52,13 +53,12 @@ public class PermissionService extends ServiceImpl<PermissionMapper, Permission>
     public void deletePermission(long id) {
         // 删除子级和自身
         List<Permission> permissionList = super.lambdaQuery().like(Permission::getPids, id).list();
-        List<Long> ids =
-                permissionList.stream().map(BaseEntity::getId).collect(Collectors.toList());
+        List<Long> ids = permissionList.stream().map(BaseEntity::getId).collect(Collectors.toList());
         ids.add(id);
         super.removeByIds(ids);
         // 删除角色的关联表
         rolePermissionService.remove(
-                Wrappers.lambdaQuery(new RolePermission())
-                        .in(RolePermission::getPermissionId, ids));
+            Wrappers.lambdaQuery(new RolePermission()).in(RolePermission::getPermissionId, ids)
+        );
     }
 }

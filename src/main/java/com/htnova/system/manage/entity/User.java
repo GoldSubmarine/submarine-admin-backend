@@ -21,7 +21,8 @@ public class User extends BaseEntity {
     private String username;
 
     /** 密码 */
-    @JsonIgnore private String password;
+    @JsonIgnore
+    private String password;
 
     /** 姓名 */
     private String name;
@@ -54,10 +55,12 @@ public class User extends BaseEntity {
     private String deptName;
 
     /** APP登录密钥 */
-    @JsonIgnore private String token;
+    @JsonIgnore
+    private String token;
 
     /** APP上次访问时间 */
-    @JsonIgnore private LocalDateTime lastAccessDate;
+    @JsonIgnore
+    private LocalDateTime lastAccessDate;
 
     /** 角色 */
     @TableField(exist = false)
@@ -69,7 +72,7 @@ public class User extends BaseEntity {
 
     public enum UserStatus {
         enable,
-        disable
+        disable,
     }
 
     public SaveEvent saveEvent() {
@@ -77,6 +80,7 @@ public class User extends BaseEntity {
     }
 
     public class SaveEvent {
+
         public User getUser() {
             return User.this;
         }
@@ -87,6 +91,7 @@ public class User extends BaseEntity {
     }
 
     public class DeleteEvent {
+
         public User getUser() {
             return User.this;
         }

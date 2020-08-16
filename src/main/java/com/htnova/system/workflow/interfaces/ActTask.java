@@ -3,7 +3,6 @@ package com.htnova.system.workflow.interfaces;
 import com.htnova.system.workflow.dto.TaskVariableDTO.ApproveType;
 
 public interface ActTask {
-
     /** 启动流程时使用 */
     String getProcessDefinitionId();
 

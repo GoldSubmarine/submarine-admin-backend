@@ -9,8 +9,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface RolePermissionMapper extends BaseMapper<RolePermission> {
-    IPage<RolePermission> findPage(
-            IPage<Void> xPage, @Param("rolePermissionDto") RolePermissionDto rolePermissionDto);
+    IPage<RolePermission> findPage(IPage<Void> xPage, @Param("rolePermissionDto") RolePermissionDto rolePermissionDto);
 
     List<RolePermission> findList(@Param("rolePermissionDto") RolePermissionDto rolePermissionDto);
 

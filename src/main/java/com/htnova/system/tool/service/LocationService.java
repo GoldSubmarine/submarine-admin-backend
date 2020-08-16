@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LocationService extends ServiceImpl<LocationMapper, Location> {
-
-    @Resource private LocationMapper locationMapper;
+    @Resource
+    private LocationMapper locationMapper;
 
     @Transactional(readOnly = true)
     public IPage<Location> findLocationList(LocationDto locationDto, IPage<Void> xPage) {
@@ -44,8 +44,7 @@ public class LocationService extends ServiceImpl<LocationMapper, Location> {
 
     /** 传入区域code，返回拼接好的中文 */
     public String getLocationString(Integer... locationId) {
-        List<Location> list =
-                super.lambdaQuery().in(Location::getId, Arrays.asList(locationId)).list();
+        List<Location> list = super.lambdaQuery().in(Location::getId, Arrays.asList(locationId)).list();
         return list.stream().map(Location::getName).collect(Collectors.joining());
     }
 }

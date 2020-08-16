@@ -12,15 +12,13 @@ public class DelegatingResponseHandler implements ResponseHandler {
 
     private final ResponseHandler defaultHandler;
 
-    DelegatingResponseHandler(
-            Map<RequestMatcher, ResponseHandler> handlers, ResponseHandler defaultHandler) {
+    DelegatingResponseHandler(Map<RequestMatcher, ResponseHandler> handlers, ResponseHandler defaultHandler) {
         this.handlers = handlers;
         this.defaultHandler = defaultHandler;
     }
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         for (Map.Entry<RequestMatcher, ResponseHandler> entry : handlers.entrySet()) {
             RequestMatcher requestMatcher = entry.getKey();
             ResponseHandler handler = entry.getValue();

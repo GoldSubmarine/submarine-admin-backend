@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/workflow/model")
 public class ActModelController {
-
-    @Resource private ActModelService actModelService;
+    @Resource
+    private ActModelService actModelService;
 
     /** 分页查询 */
     @PreAuthorize("hasAnyAuthority('workflowModel.find')")
@@ -29,8 +29,7 @@ public class ActModelController {
         result.setPageSize(iPage.getSize());
         result.setPageNum(iPage.getCurrent());
         result.setOrders(iPage.orders());
-        result.setData(
-                iPage.getRecords().stream().map(ActModelDTO::new).collect(Collectors.toList()));
+        result.setData(iPage.getRecords().stream().map(ActModelDTO::new).collect(Collectors.toList()));
         return result;
     }
 

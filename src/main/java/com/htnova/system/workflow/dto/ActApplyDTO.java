@@ -48,8 +48,7 @@ public class ActApplyDTO {
     private ApplyStatus status;
 
     public ActApplyDTO(HistoricProcessInstance hisProcessIns) {
-        this.processInstanceId =
-                ((HistoricProcessInstanceEntityImpl) hisProcessIns).getProcessInstanceId();
+        this.processInstanceId = ((HistoricProcessInstanceEntityImpl) hisProcessIns).getProcessInstanceId();
         this.processDefinitionId = hisProcessIns.getProcessDefinitionId();
         this.processInstanceBusinessKey = hisProcessIns.getBusinessKey();
         this.startUserId = hisProcessIns.getStartUserId();
@@ -69,9 +68,7 @@ public class ActApplyDTO {
         this.startTime = DateUtil.converter(hisProcessIns.getStartTime());
         this.endTime = DateUtil.converter(hisProcessIns.getEndTime());
         this.deleteReason = hisProcessIns.getDeleteReason();
-        this.processVariables =
-                BeanUtil.mapToBean(
-                        hisProcessIns.getProcessVariables(), ProcessVariableDTO.class, true);
+        this.processVariables = BeanUtil.mapToBean(hisProcessIns.getProcessVariables(), ProcessVariableDTO.class, true);
 
         if (Objects.nonNull(hisProcessIns.getEndActivityId())) {
             this.status = ApplyStatus.finish;
@@ -88,6 +85,6 @@ public class ActApplyDTO {
         /** 已完成 */
         finish,
         /** 已撤销 */
-        delete
+        delete,
     }
 }
