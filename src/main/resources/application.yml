@@ -53,5 +53,13 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 
+logging:
+  file:
+    max-history: 30
+    name: ${catalina.base:.}/logs/${spring.application.name}.log
+    max-size: 100MB
+    clean-history-on-start: false
+    total-size-cap: 3000MB
+
 socket:
   port: 19688
