@@ -49,6 +49,16 @@ public interface XPage<T> {
         return xPage;
     }
 
+    static <T> XPage<T> fromIPage(IPage<T> iPage) {
+        XPageImpl<T> xPage = new XPageImpl<>();
+        xPage.setPageNum(iPage.getCurrent());
+        xPage.setPageSize(iPage.getSize());
+        xPage.setTotal(iPage.getTotal());
+        xPage.setOrders(iPage.orders());
+        xPage.setData(iPage.getRecords());
+        return xPage;
+    }
+
     @JsonIgnore
     default long getStartIndex() {
         return (this.getPageNum() - 1) * this.getPageSize();
