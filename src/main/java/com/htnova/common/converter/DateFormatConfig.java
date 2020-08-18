@@ -24,7 +24,8 @@ import org.springframework.lang.Nullable;
 public class DateFormatConfig implements Converter<String, LocalDateTime> {
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String DATE_FORMAT_REGEXP = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}";
-    private static final String TIME_STAMP_FORMAT_REGEXP = "^\\d+$";
+    private static final String SECOND_FORMAT_REGEXP = "^\\d{10}$";
+    private static final String MILLI_FORMAT_REGEXP = "^\\d{13}$";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     // ===============================json格式化start（http body）=============================
@@ -71,9 +72,15 @@ public class DateFormatConfig implements Converter<String, LocalDateTime> {
         if (value.matches(DATE_FORMAT_REGEXP)) {
             return LocalDateTime.parse(value, dateTimeFormatter);
         }
-        if (value.matches(TIME_STAMP_FORMAT_REGEXP)) {
+        if (value.matches(SECOND_FORMAT_REGEXP)) {
             return LocalDateTime.ofInstant(
                 Instant.ofEpochSecond(Long.parseLong(value)),
+                ZoneId.of(GlobalConst.TIME_ZONE_ID)
+            );
+        }
+        if (value.matches(MILLI_FORMAT_REGEXP)) {
+            return LocalDateTime.ofInstant(
+                Instant.ofEpochMilli(Long.parseLong(value)),
                 ZoneId.of(GlobalConst.TIME_ZONE_ID)
             );
         }
