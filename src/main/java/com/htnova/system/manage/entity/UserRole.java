@@ -1,5 +1,6 @@
 package com.htnova.system.manage.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.htnova.common.base.BaseEntity;
 import java.util.List;
@@ -21,5 +22,6 @@ public class UserRole extends BaseEntity {
     private Long roleId;
 
     /** 角色列表 */
+    @TableField(exist = false)
     private List<Role> roleList;
 }
