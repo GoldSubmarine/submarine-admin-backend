@@ -82,7 +82,10 @@ public enum ResultStatus {
     APPROVE_SUCCESS(16007, "审批完成"),
     CLAIM_SUCCESS(16008, "签收成功"),
     DELEGATE_SUCCESS(16009, "委托成功"),
-    NOT_CANDIDATE(16010, "您不是当前任务的候选人，操作失败")
+    NOT_CANDIDATE(16010, "您不是当前任务的候选人，操作失败"),
+
+    // ===============工具相关(17)=============
+    FIELD_NOT_SUPPORT(17001, "该字段不支持记忆查询")
     // ===============业务相关(99)=============
     ;
 
