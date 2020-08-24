@@ -2,6 +2,7 @@ package com.htnova.common.mybatisplus;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.htnova.common.base.BaseEntity;
+import com.htnova.common.constant.GlobalConst;
 import com.htnova.common.util.UserUtil;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -15,8 +16,8 @@ public class MetaHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         Long userId = Optional.ofNullable(UserUtil.getAuthUser()).map(BaseEntity::getId).orElse(null);
-        this.setFieldValByName("createTime", LocalDateTime.now(), metaObject);
-        this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("createTime", LocalDateTime.now(GlobalConst.ZONE_ID), metaObject);
+        this.setFieldValByName("updateTime", LocalDateTime.now(GlobalConst.ZONE_ID), metaObject);
         this.setFieldValByName("createBy", userId, metaObject);
         this.setFieldValByName("updateBy", userId, metaObject);
     }
@@ -25,7 +26,7 @@ public class MetaHandler implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         Long userId = Optional.ofNullable(UserUtil.getAuthUser()).map(BaseEntity::getId).orElse(null);
-        this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("updateTime", LocalDateTime.now(GlobalConst.ZONE_ID), metaObject);
         this.setFieldValByName("updateBy", userId, metaObject);
     }
 }

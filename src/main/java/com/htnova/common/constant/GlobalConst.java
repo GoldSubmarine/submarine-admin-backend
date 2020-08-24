@@ -1,10 +1,13 @@
 package com.htnova.common.constant;
 
+import java.time.ZoneId;
+
 public interface GlobalConst {
     String PACKAGE = "com.htnova";
 
     // 东八区
     String TIME_ZONE_ID = "+8";
+    ZoneId ZONE_ID = ZoneId.of(TIME_ZONE_ID);
 
     /** socket默认错误路径 */
     String SOCKET_ERROR_PATH = "/socket/error";
