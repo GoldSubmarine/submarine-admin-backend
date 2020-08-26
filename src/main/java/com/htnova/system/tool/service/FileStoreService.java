@@ -6,7 +6,6 @@ import com.htnova.common.base.BaseEntity;
 import com.htnova.system.tool.dto.FileStoreDto;
 import com.htnova.system.tool.entity.FileStore;
 import com.htnova.system.tool.mapper.FileStoreMapper;
-import com.htnova.system.tool.service.interfaces.HandleFile;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;

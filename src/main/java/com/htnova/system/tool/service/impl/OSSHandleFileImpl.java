@@ -1,9 +1,10 @@
-package com.htnova.system.tool.service.interfaces;
+package com.htnova.system.tool.service.impl;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.PutObjectResult;
 import com.htnova.system.tool.entity.FileStore;
+import com.htnova.system.tool.service.HandleFile;
 import java.io.IOException;
 import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;

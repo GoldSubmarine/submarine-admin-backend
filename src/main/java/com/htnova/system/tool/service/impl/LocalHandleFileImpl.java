@@ -1,9 +1,11 @@
-package com.htnova.system.tool.service.interfaces;
+package com.htnova.system.tool.service.impl;
 
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.exception.ServiceException;
 import com.htnova.system.tool.entity.FileStore;
+import com.htnova.system.tool.service.HandleFile;
 import java.io.*;
+import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -30,7 +32,7 @@ public class LocalHandleFileImpl implements HandleFile {
     private ServerProperties serverProperties;
 
     private String getPrefixUrl() {
-        return serverProperties.getServlet().getContextPath() + "/file/download/";
+        return Optional.ofNullable(serverProperties.getServlet().getContextPath()).orElse("") + "/file/download/";
     }
 
     @Override

@@ -39,4 +39,4 @@ dev:
 upload:
   type: local
   local:
-    path: C:\Users\vinson\Desktop\project\java\submarine-admin-backend\src\main\resources\public\
+    path: ./src/main/resources/public/

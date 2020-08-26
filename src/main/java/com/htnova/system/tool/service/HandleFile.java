@@ -1,4 +1,4 @@
-package com.htnova.system.tool.service.interfaces;
+package com.htnova.system.tool.service;
 
 import com.htnova.system.tool.entity.FileStore;
 import java.io.IOException;
