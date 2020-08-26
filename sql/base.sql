@@ -5975,8 +5975,8 @@ CREATE TABLE `t_sys_role`  (
 -- ----------------------------
 -- Records of t_sys_role
 -- ----------------------------
-INSERT INTO `t_sys_role` VALUES (1, '超级管理员', NULL, 'superAdmin', NULL, NULL, NULL, NULL, NULL, 0);
-INSERT INTO `t_sys_role` VALUES (2, '测试角色', NULL, 'test', NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `t_sys_role` VALUES (1, '超级管理员', 'hidden', 'SuperAdmin', NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `t_sys_role` VALUES (2, '测试角色', 'visible', 'test', NULL, NULL, NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for t_sys_role_permission

@@ -7,6 +7,7 @@ import com.htnova.common.util.UserUtil;
 import com.htnova.system.manage.dto.RoleDto;
 import com.htnova.system.manage.entity.Permission;
 import com.htnova.system.manage.entity.Role;
+import com.htnova.system.manage.entity.Role.RoleCode;
 import com.htnova.system.manage.entity.RolePermission;
 import com.htnova.system.manage.mapper.RoleMapper;
 import java.util.Arrays;
@@ -39,10 +40,10 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
     public List<Role> findRoleList(RoleDto roleDto) {
         List<Role> roleList = roleMapper.findList(roleDto);
         if (!UserUtil.getAuthUser().isSuperAdmin()) {
-            roleList = filterRoleByCode(roleList, Role.SUPER_ADMIN_CODE);
+            roleList = filterRoleByCode(roleList, RoleCode.SuperAdmin.name());
         }
-        if (UserUtil.getAuthUser().getRoles().contains(Role.ORG_ADMIN_CODE)) {
-            roleList = filterRoleByCode(roleList, Role.ADMIN_CODE, Role.ORG_ADMIN_CODE);
+        if (UserUtil.getAuthUser().getRoles().contains(RoleCode.OrgAdmin.name())) {
+            roleList = filterRoleByCode(roleList, RoleCode.Admin.name(), RoleCode.OrgAdmin.name());
             roleList =
                 roleList
                     .stream()

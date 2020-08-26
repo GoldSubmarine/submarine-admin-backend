@@ -15,13 +15,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @TableName("t_sys_role")
 public class Role extends BaseEntity {
-    // 超级管理员，开发人员
-    public static final String SUPER_ADMIN_CODE = "SuperAdmin";
-    // 系统管理员
-    public static final String ADMIN_CODE = "Admin";
-    // 机构管理员
-    public static final String ORG_ADMIN_CODE = "OrgAdmin";
-
     /** 名称（中文） */
     private String name;
 
@@ -36,8 +29,12 @@ public class Role extends BaseEntity {
     private List<Permission> permissionList;
 
     public enum RoleCode {
+        // 超级管理员，开发人员
         SuperAdmin,
+        // 系统管理员
         Admin,
+        // 机构管理员
+        OrgAdmin,
     }
 
     public enum DisplayType {
