@@ -16,12 +16,6 @@ spring:
       enabled: true
       maxFileSize: 100MB
       max-request-size: 100MB
-  session:
-    store-type: redis
-    timeout: 1H
-    redis:
-      flush-mode: on_save
-      namespace: springboot-session
   security:
     login-page: /login
     login-processing-url: /auth/login
