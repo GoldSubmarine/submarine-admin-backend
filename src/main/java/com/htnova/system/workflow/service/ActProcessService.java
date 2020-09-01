@@ -2,6 +2,7 @@ package com.htnova.system.workflow.service;
 
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.XPage;
+import com.htnova.common.dto.XPage.Order;
 import com.htnova.common.exception.ServiceException;
 import com.htnova.common.util.DateUtil;
 import com.htnova.system.workflow.dto.ActProcessDTO;
@@ -42,12 +43,10 @@ public class ActProcessService {
             processDefinitionQuery.latestVersion();
         }
         // 排序
-        if (!CollectionUtils.isEmpty(page.getOrders())) {
-            if (page.getOrders().get(0).isAsc()) {
-                processDefinitionQuery.asc();
-            } else {
-                processDefinitionQuery.desc();
-            }
+        if (Order.ascending.equals(page.getOrder())) {
+            processDefinitionQuery.asc();
+        } else {
+            processDefinitionQuery.desc();
         }
         // 动态查询
         if (StringUtils.isNotBlank(actProcessDTO.getCategory())) {

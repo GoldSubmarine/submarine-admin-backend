@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Lists;
 import com.htnova.common.base.BaseMapStruct;
 import java.util.List;
 import org.mapstruct.factory.Mappers;
+import org.springframework.util.CollectionUtils;
 
 public interface XPage<T> {
     long getPageSize();
@@ -21,9 +23,13 @@ public interface XPage<T> {
 
     void setTotal(long total);
 
-    List<OrderItem> getOrders();
+    String getSort();
 
-    void setOrders(List<OrderItem> orderItemList);
+    void setSort(String order);
+
+    Order getOrder();
+
+    void setOrder(Order order);
 
     List<T> getData();
 
@@ -33,7 +39,12 @@ public interface XPage<T> {
         Page<V> page = new Page<>();
         page.setSize(xPage.getPageSize());
         page.setCurrent(xPage.getPageNum());
-        page.setOrders(xPage.getOrders());
+        if (xPage.getOrder().equals(Order.ascending)) {
+            page.setOrders(Lists.newArrayList(OrderItem.asc(xPage.getSort())));
+        }
+        if (xPage.getOrder().equals(Order.descending)) {
+            page.setOrders(Lists.newArrayList(OrderItem.desc(xPage.getSort())));
+        }
         return page;
     }
 
@@ -42,7 +53,15 @@ public interface XPage<T> {
         xPage.setPageNum(iPage.getCurrent());
         xPage.setPageSize(iPage.getSize());
         xPage.setTotal(iPage.getTotal());
-        xPage.setOrders(iPage.orders());
+        if (!CollectionUtils.isEmpty(iPage.orders())) {
+            OrderItem orderItem = iPage.orders().get(0);
+            xPage.setSort(orderItem.getColumn());
+            if (orderItem.isAsc()) {
+                xPage.setOrder(Order.ascending);
+            } else {
+                xPage.setOrder(Order.descending);
+            }
+        }
 
         BaseMapStruct<T, V> mapper = Mappers.getMapper(mapStruct);
         xPage.setData(mapper.toDto(iPage.getRecords()));
@@ -54,7 +73,15 @@ public interface XPage<T> {
         xPage.setPageNum(iPage.getCurrent());
         xPage.setPageSize(iPage.getSize());
         xPage.setTotal(iPage.getTotal());
-        xPage.setOrders(iPage.orders());
+        if (!CollectionUtils.isEmpty(iPage.orders())) {
+            OrderItem orderItem = iPage.orders().get(0);
+            xPage.setSort(orderItem.getColumn());
+            if (orderItem.isAsc()) {
+                xPage.setOrder(Order.ascending);
+            } else {
+                xPage.setOrder(Order.descending);
+            }
+        }
         xPage.setData(iPage.getRecords());
         return xPage;
     }
@@ -67,5 +94,10 @@ public interface XPage<T> {
     @JsonIgnore
     default long getEndIndex() {
         return this.getPageNum() * this.getPageSize();
+    }
+
+    enum Order {
+        descending,
+        ascending,
     }
 }

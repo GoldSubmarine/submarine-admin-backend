@@ -1,9 +1,12 @@
 package com.htnova.system.workflow.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.google.common.collect.Lists;
 import com.htnova.common.constant.ResultStatus;
 import com.htnova.common.dto.Result;
 import com.htnova.common.dto.XPage;
+import com.htnova.common.dto.XPage.Order;
 import com.htnova.common.dto.XPageImpl;
 import com.htnova.system.workflow.dto.ActModelDTO;
 import com.htnova.system.workflow.service.ActModelService;
@@ -11,6 +14,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.flowable.engine.repository.Model;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,7 +32,15 @@ public class ActModelController {
         result.setTotal(iPage.getTotal());
         result.setPageSize(iPage.getSize());
         result.setPageNum(iPage.getCurrent());
-        result.setOrders(iPage.orders());
+        if (!CollectionUtils.isEmpty(iPage.orders())) {
+            OrderItem orderItem = iPage.orders().get(0);
+            xPage.setSort(orderItem.getColumn());
+            if (orderItem.isAsc()) {
+                xPage.setOrder(Order.ascending);
+            } else {
+                xPage.setOrder(Order.descending);
+            }
+        }
         result.setData(iPage.getRecords().stream().map(ActModelDTO::new).collect(Collectors.toList()));
         return result;
     }
