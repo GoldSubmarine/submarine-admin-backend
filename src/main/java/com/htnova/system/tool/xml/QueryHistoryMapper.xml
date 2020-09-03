@@ -6,4 +6,8 @@
 		select distinct ${fieldName} FROM ${tableName} WHERE del_flag = 0
 	</select>
 
+	<select id="queryHistoryLike" resultType="String">
+		select distinct ${fieldName} FROM ${tableName} WHERE del_flag = 0 AND ${fieldName} LIKE concat('%', #{value}, '%')
+	</select>
+
 </mapper>

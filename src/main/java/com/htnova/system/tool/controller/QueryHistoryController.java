@@ -77,7 +77,7 @@ public class QueryHistoryController {
      * @param field: 允许逗号拼接
      */
     @GetMapping("/history")
-    public Map<String, List<String>> queryHistory(String table, String field) {
+    public Map<String, List<String>> queryHistory(String table, String field, String value) {
         Map<String, List<String>> result = new HashMap<>();
         Lists
             .newArrayList(field.split(","))
@@ -91,7 +91,7 @@ public class QueryHistoryController {
                         .orElse(false);
                     if (isAllow) {
                         List<String> wrapList = queryHistoryService
-                            .queryHistory(fieldName, tableName)
+                            .queryHistory(fieldName, tableName, value)
                             .stream()
                             .filter(StringUtils::isNotBlank)
                             .collect(Collectors.toList());
