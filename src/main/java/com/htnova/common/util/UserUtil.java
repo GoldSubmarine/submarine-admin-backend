@@ -16,7 +16,11 @@ public class UserUtil {
         if (Objects.nonNull(socketUserThreadLocal.get())) {
             return socketUserThreadLocal.get();
         }
-        return null;
+        return new AuthUser();
+    }
+
+    public static boolean hasAuthUser() {
+        return getAuthUser().getId() != null;
     }
 
     public static void setAuthUser(AuthUser authUser) {

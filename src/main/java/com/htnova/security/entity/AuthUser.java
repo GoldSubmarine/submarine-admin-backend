@@ -6,11 +6,13 @@ import com.htnova.common.base.BaseEntity;
 import com.htnova.system.manage.entity.Permission;
 import com.htnova.system.manage.entity.Role;
 import com.htnova.system.manage.entity.User;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.CollectionUtils;
 
 @Data
 @AllArgsConstructor
@@ -60,14 +62,17 @@ public class AuthUser extends BaseEntity {
     private List<Permission> permissionList;
 
     public List<String> getRoles() {
+        if (CollectionUtils.isEmpty(roleList)) return Collections.emptyList();
         return roleList.stream().map(Role::getCode).collect(Collectors.toList());
     }
 
     public boolean isSuperAdmin() {
+        if (CollectionUtils.isEmpty(roleList)) return false;
         return roleList.stream().map(Role::getCode).anyMatch(item -> Role.RoleCode.SuperAdmin.toString().equals(item));
     }
 
     public boolean isAdmin() {
+        if (CollectionUtils.isEmpty(roleList)) return false;
         return roleList.stream().map(Role::getCode).anyMatch(item -> Role.RoleCode.Admin.toString().equals(item));
     }
 }

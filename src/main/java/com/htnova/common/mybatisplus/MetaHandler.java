@@ -15,18 +15,16 @@ public class MetaHandler implements MetaObjectHandler {
     /** 新增的时候自动填充 */
     @Override
     public void insertFill(MetaObject metaObject) {
-        Long userId = Optional.ofNullable(UserUtil.getAuthUser()).map(BaseEntity::getId).orElse(null);
         this.setFieldValByName("createTime", LocalDateTime.now(GlobalConst.ZONE_ID), metaObject);
         this.setFieldValByName("updateTime", LocalDateTime.now(GlobalConst.ZONE_ID), metaObject);
-        this.setFieldValByName("createBy", userId, metaObject);
-        this.setFieldValByName("updateBy", userId, metaObject);
+        this.setFieldValByName("createBy", UserUtil.getAuthUser().getId(), metaObject);
+        this.setFieldValByName("updateBy", UserUtil.getAuthUser().getId(), metaObject);
     }
 
     /** 更新的时候自动填充 */
     @Override
     public void updateFill(MetaObject metaObject) {
-        Long userId = Optional.ofNullable(UserUtil.getAuthUser()).map(BaseEntity::getId).orElse(null);
         this.setFieldValByName("updateTime", LocalDateTime.now(GlobalConst.ZONE_ID), metaObject);
-        this.setFieldValByName("updateBy", userId, metaObject);
+        this.setFieldValByName("updateBy", UserUtil.getAuthUser().getId(), metaObject);
     }
 }
