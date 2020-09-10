@@ -46,7 +46,7 @@ public class SocketConfig {
         // Ping消息超时时间（毫秒），默认60000，这个时间间隔内没有接收到心跳消息就会发送超时事件
         config.setPingTimeout(60000);
         // 根路径，设置为和spring security设置的cookie的path一致
-        config.setContext(serverProperties.getServlet().getContextPath());
+        config.setContext(serverProperties.getServlet().getContextPath() + "/socket.io");
 
         config.setExceptionListener(new SocketExceptionListener());
 
@@ -67,14 +67,10 @@ public class SocketConfig {
     @OnConnect
     public void onConnect(SocketIOClient client) {
         String httpSessionId = SocketUtil.getHttpSessionId(client);
-        if (SocketUtil.isExpired(httpSessionId)) {
-            // 如果 httpSession 过期 client 再断开连接，那缓存的 client 对象将无法释放，所以将 authuser 放在SocketIOClient里
-            AuthUser authUser = SpringContextUtil.getAuthUser(httpSessionId);
-            client.set(SocketUtil.SOCKET_USER_KEY, authUser);
-            SocketUtil.saveClient(authUser.getId(), client);
-        } else {
-            client.disconnect();
-        }
+        // 如果 httpSession 过期 client 再断开连接，那缓存的 client 对象将无法释放，所以将 authuser 放在SocketIOClient里
+        AuthUser authUser = SpringContextUtil.getAuthUser(httpSessionId);
+        client.set(SocketUtil.SOCKET_USER_KEY, authUser);
+        SocketUtil.saveClient(authUser.getId(), client);
     }
 
     /** 客户端断开连接 */
