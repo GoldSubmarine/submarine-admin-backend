@@ -4,6 +4,7 @@ import com.htnova.system.manage.entity.Permission;
 import com.htnova.system.manage.entity.User;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class UserDetail implements UserDetails {
             .ofNullable(user.getPermissionList())
             .orElseGet(ArrayList::new)
             .stream()
+            .filter(item -> Objects.nonNull(item.getValue()))
             .filter(item -> Permission.PermissionType.button == item.getType())
             .map(permission -> new SimpleGrantedAuthority(permission.getValue()))
             .collect(Collectors.toList());
