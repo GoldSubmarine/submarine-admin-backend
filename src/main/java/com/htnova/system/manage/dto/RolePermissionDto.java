@@ -23,8 +23,22 @@ public class RolePermissionDto extends BaseDto {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long roleId;
 
-    /** 类型 */
-    private Permission.PermissionType type;
+    private String roleIds;
+
+    /** 批量授权类型 */
+    private BatchAuthType batchAuthType;
 
     private List<Long> permissionList;
+
+    public enum BatchAuthType {
+        /**
+         * 批量授权
+         */
+        auth,
+
+        /**
+         * 批量撤销授权
+         */
+        revoke,
+    }
 }

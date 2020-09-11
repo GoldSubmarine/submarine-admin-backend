@@ -18,7 +18,4 @@ public class RolePermission extends BaseEntity {
 
     /** 角色id */
     private Long roleId;
-
-    /** 类型 */
-    private Permission.PermissionType type;
 }

@@ -62,9 +62,16 @@ public class RoleController {
     @PreAuthorize("hasAnyAuthority('role.add', 'role.edit')")
     @PostMapping("/permission/save")
     public Result<Void> saveRolePermission(@RequestBody RolePermissionDto rolePermissionDto) {
-        rolePermissionService.saveRolePermission(
-            rolePermissionDto.getRoleId(),
-            rolePermissionDto.getType(),
+        rolePermissionService.saveRolePermission(rolePermissionDto.getRoleId(), rolePermissionDto.getPermissionList());
+        return Result.build(ResultStatus.SAVE_SUCCESS);
+    }
+
+    /** 批量角色的权限保存 */
+    @PostMapping("/permission/batch-save")
+    public Result<Void> saveRolePermissionBatch(@RequestBody RolePermissionDto rolePermissionDto) {
+        rolePermissionService.saveRolePermissionBatch(
+            rolePermissionDto.getBatchAuthType(),
+            rolePermissionDto.getRoleIds(),
             rolePermissionDto.getPermissionList()
         );
         return Result.build(ResultStatus.SAVE_SUCCESS);

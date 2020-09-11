@@ -4,7 +4,6 @@
 
     <sql id="SelectColumns">
         a.id as `id`,
-        a.type as `type`,
         a.permission_id as `permissionId`,
         a.role_id as `roleId`,
         a.remark as `remark`,
@@ -22,9 +21,6 @@
         FROM t_sys_role_permission a WHERE a.del_flag = #{rolePermissionDto.delFlag}
         <if test="rolePermissionDto.id != null and rolePermissionDto.id != ''">
             AND a.id = #{rolePermissionDto.id}
-        </if>
-        <if test="rolePermissionDto.type != null">
-            AND a.type = #{rolePermissionDto.type}
         </if>
         <if test="rolePermissionDto.permissionId != null and rolePermissionDto.permissionId != ''">
             AND a.permission_id = #{rolePermissionDto.permissionId}
