@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htnova.system.tool.mapper.BizNumberMapper">
+	<select id="getMaxBizNumber" resultType="String">
+		SELECT
+			MAX( busi_number )
+		FROM
+			${table}
+		WHERE
+			DATE ( time ) = DATE ( #{time} )
+			AND del_flag = 0
+	</select>
+</mapper>
