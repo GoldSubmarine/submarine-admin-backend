@@ -28,7 +28,7 @@ public class LocationController {
     @GetMapping("/list/page")
     public XPage<LocationDto> findListByPage(LocationDto locationDto, XPage<Void> xPage) {
         IPage<Location> locationPage = locationService.findLocationList(locationDto, XPage.toIPage(xPage));
-        return DtoConverter.toDto(locationPage, LocationMapStruct.class);
+        return DtoConverter.toDto(locationPage, LocationMapStruct.INSTANCE);
     }
 
     /** 查询 */
@@ -36,7 +36,7 @@ public class LocationController {
     @GetMapping("/list/all")
     public List<LocationDto> findList(LocationDto locationDto) {
         List<Location> locationList = locationService.findLocationList(locationDto);
-        return DtoConverter.toDto(locationList, LocationMapStruct.class);
+        return DtoConverter.toDto(locationList, LocationMapStruct.INSTANCE);
     }
 
     /** 获取省市区的tree */
@@ -45,7 +45,7 @@ public class LocationController {
     public List<LocationDto> getLocationTree(LocationDto locationDto) {
         List<Location> locationList = locationService.findLocationList(locationDto);
         List<Location> treeList = TreeConverter.listToTree(locationList);
-        return DtoConverter.toDto(treeList, LocationMapStruct.class);
+        return DtoConverter.toDto(treeList, LocationMapStruct.INSTANCE);
     }
 
     /** 详情 */
@@ -53,14 +53,14 @@ public class LocationController {
     @GetMapping("/detail/{id}")
     public LocationDto getById(@PathVariable long id) {
         Location location = locationService.getLocationById(id);
-        return DtoConverter.toDto(location, LocationMapStruct.class);
+        return DtoConverter.toDto(location, LocationMapStruct.INSTANCE);
     }
 
     /** 保存 */
     @PreAuthorize("hasAnyAuthority('location.add', 'location.edit')")
     @PostMapping("/save")
     public Result<Void> save(@Valid @RequestBody LocationDto locationDto) {
-        locationService.saveLocation(DtoConverter.toEntity(locationDto, LocationMapStruct.class));
+        locationService.saveLocation(DtoConverter.toEntity(locationDto, LocationMapStruct.INSTANCE));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

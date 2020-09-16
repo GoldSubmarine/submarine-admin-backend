@@ -48,7 +48,7 @@ public interface XPage<T> {
         return page;
     }
 
-    static <T, V> XPage<T> fromIPage(IPage<V> iPage, Class<? extends BaseMapStruct<T, V>> mapStruct) {
+    static <T, V> XPage<T> fromIPage(IPage<V> iPage, BaseMapStruct<T, V> mapStructInstance) {
         XPageImpl<T> xPage = new XPageImpl<>();
         xPage.setPageNum(iPage.getCurrent());
         xPage.setPageSize(iPage.getSize());
@@ -63,8 +63,7 @@ public interface XPage<T> {
             }
         }
 
-        BaseMapStruct<T, V> mapper = Mappers.getMapper(mapStruct);
-        xPage.setData(mapper.toDto(iPage.getRecords()));
+        xPage.setData(mapStructInstance.toDto(iPage.getRecords()));
         return xPage;
     }
 

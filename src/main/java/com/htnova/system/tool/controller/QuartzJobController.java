@@ -34,7 +34,7 @@ public class QuartzJobController {
     @GetMapping("/list/page")
     public XPage<QuartzJobDto> findListByPage(QuartzJobDto quartzJobDto, XPage<Void> xPage) {
         IPage<QuartzJob> quartzJobPage = quartzJobService.findQuartzJobList(quartzJobDto, XPage.toIPage(xPage));
-        return DtoConverter.toDto(quartzJobPage, QuartzJobMapStruct.class);
+        return DtoConverter.toDto(quartzJobPage, QuartzJobMapStruct.INSTANCE);
     }
 
     /** 查询 */
@@ -42,7 +42,7 @@ public class QuartzJobController {
     @GetMapping("/list/all")
     public List<QuartzJobDto> findList(QuartzJobDto quartzJobDto) {
         List<QuartzJob> quartzJobList = quartzJobService.findQuartzJobList(quartzJobDto);
-        return DtoConverter.toDto(quartzJobList, QuartzJobMapStruct.class);
+        return DtoConverter.toDto(quartzJobList, QuartzJobMapStruct.INSTANCE);
     }
 
     /** 详情 */
@@ -50,14 +50,14 @@ public class QuartzJobController {
     @GetMapping("/detail/{id}")
     public QuartzJobDto getById(@PathVariable long id) {
         QuartzJob quartzJob = quartzJobService.getQuartzJobById(id);
-        return DtoConverter.toDto(quartzJob, QuartzJobMapStruct.class);
+        return DtoConverter.toDto(quartzJob, QuartzJobMapStruct.INSTANCE);
     }
 
     /** 保存 */
     @PreAuthorize("hasAnyAuthority('quartzJob.add', 'quartzJob.edit')")
     @PostMapping("/save")
     public Result<Void> save(@Valid @RequestBody QuartzJobDto quartzJobDto) {
-        quartzJobService.saveQuartzJob(DtoConverter.toEntity(quartzJobDto, QuartzJobMapStruct.class));
+        quartzJobService.saveQuartzJob(DtoConverter.toEntity(quartzJobDto, QuartzJobMapStruct.INSTANCE));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
@@ -90,6 +90,6 @@ public class QuartzJobController {
     @GetMapping("/log/page")
     public XPage<QuartzLogDto> findLogByPage(QuartzLogDto quartzLogDto, XPage<Void> xPage) {
         IPage<QuartzLog> quartzLogPage = quartzLogService.findQuartzLogList(quartzLogDto, XPage.toIPage(xPage));
-        return DtoConverter.toDto(quartzLogPage, QuartzLogMapStruct.class);
+        return DtoConverter.toDto(quartzLogPage, QuartzLogMapStruct.INSTANCE);
     }
 }

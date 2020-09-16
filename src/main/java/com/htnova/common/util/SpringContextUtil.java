@@ -55,8 +55,7 @@ public class SpringContextUtil implements ApplicationContextAware, DisposableBea
         if (Objects.isNull(userDetail)) {
             return null;
         }
-        AuthUserMapStruct mapper = Mappers.getMapper(AuthUserMapStruct.class);
-        return mapper.toAuthUser(userDetail.getUser());
+        return AuthUserMapStruct.INSTANCE.toAuthUser(userDetail.getUser());
     }
 
     @SuppressWarnings("unchecked")
@@ -76,8 +75,7 @@ public class SpringContextUtil implements ApplicationContextAware, DisposableBea
         if (Objects.isNull(userDetail)) {
             return null;
         }
-        AuthUserMapStruct mapper = Mappers.getMapper(AuthUserMapStruct.class);
-        return mapper.toAuthUser(userDetail.getUser());
+        return AuthUserMapStruct.INSTANCE.toAuthUser(userDetail.getUser());
     }
 
     public static HttpServletRequest getRequest() {

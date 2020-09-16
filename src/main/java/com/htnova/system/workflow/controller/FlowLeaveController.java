@@ -25,28 +25,28 @@ public class FlowLeaveController {
     @GetMapping("/list/page")
     public XPage<FlowLeaveDto> findListByPage(FlowLeaveDto flowLeaveDto, XPage<Void> xPage) {
         IPage<FlowLeave> flowLeavePage = flowLeaveService.findFlowLeaveList(flowLeaveDto, XPage.toIPage(xPage));
-        return DtoConverter.toDto(flowLeavePage, FlowLeaveMapStruct.class);
+        return DtoConverter.toDto(flowLeavePage, FlowLeaveMapStruct.INSTANCE);
     }
 
     /** 查询 */
     @GetMapping("/list/all")
     public List<FlowLeaveDto> findList(FlowLeaveDto flowLeaveDto) {
         List<FlowLeave> flowLeaveList = flowLeaveService.findFlowLeaveList(flowLeaveDto);
-        return DtoConverter.toDto(flowLeaveList, FlowLeaveMapStruct.class);
+        return DtoConverter.toDto(flowLeaveList, FlowLeaveMapStruct.INSTANCE);
     }
 
     /** 详情 */
     @GetMapping("/detail/{id}")
     public FlowLeaveDto getById(@PathVariable long id) {
         FlowLeave flowLeave = flowLeaveService.getFlowLeaveById(id);
-        return DtoConverter.toDto(flowLeave, FlowLeaveMapStruct.class);
+        return DtoConverter.toDto(flowLeave, FlowLeaveMapStruct.INSTANCE);
     }
 
     /** 根据processInstanceId查找详情 */
     @GetMapping("/detail/by-process-instance-id/{id}")
     public FlowLeaveDto getFlowLeaveDetailByProcessInstanceId(@PathVariable String id) {
         FlowLeave flowLeave = flowLeaveService.getDetailByProcessInstanceId(id);
-        return DtoConverter.toDto(flowLeave, FlowLeaveMapStruct.class);
+        return DtoConverter.toDto(flowLeave, FlowLeaveMapStruct.INSTANCE);
     }
 
     /** 保存 */

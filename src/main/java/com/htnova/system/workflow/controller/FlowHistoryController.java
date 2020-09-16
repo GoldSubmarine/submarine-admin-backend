@@ -30,7 +30,7 @@ public class FlowHistoryController {
             flowHistoryDto,
             XPage.toIPage(xPage)
         );
-        return DtoConverter.toDto(flowHistoryPage, FlowHistoryMapStruct.class);
+        return DtoConverter.toDto(flowHistoryPage, FlowHistoryMapStruct.INSTANCE);
     }
 
     /** 查询 */
@@ -38,7 +38,7 @@ public class FlowHistoryController {
     @GetMapping("/list/all")
     public List<FlowHistoryDto> findList(FlowHistoryDto flowHistoryDto) {
         List<FlowHistory> flowHistoryList = flowHistoryService.findFlowHistoryList(flowHistoryDto);
-        return DtoConverter.toDto(flowHistoryList, FlowHistoryMapStruct.class);
+        return DtoConverter.toDto(flowHistoryList, FlowHistoryMapStruct.INSTANCE);
     }
 
     /** 详情 */
@@ -46,14 +46,14 @@ public class FlowHistoryController {
     @GetMapping("/detail/{id}")
     public FlowHistoryDto getById(@PathVariable long id) {
         FlowHistory flowHistory = flowHistoryService.getFlowHistoryById(id);
-        return DtoConverter.toDto(flowHistory, FlowHistoryMapStruct.class);
+        return DtoConverter.toDto(flowHistory, FlowHistoryMapStruct.INSTANCE);
     }
 
     /** 保存 */
     @PreAuthorize("hasAnyAuthority('flowHistory.add', 'flowHistory.edit')")
     @PostMapping("/save")
     public Result<Void> save(@Valid @RequestBody FlowHistoryDto flowHistoryDto) {
-        flowHistoryService.saveFlowHistory(DtoConverter.toEntity(flowHistoryDto, FlowHistoryMapStruct.class));
+        flowHistoryService.saveFlowHistory(DtoConverter.toEntity(flowHistoryDto, FlowHistoryMapStruct.INSTANCE));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

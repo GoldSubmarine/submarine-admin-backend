@@ -29,7 +29,7 @@ public class UserCenterController {
     @GetMapping("/detail")
     public UserDto userDetail() {
         User user = userService.getUserById(UserUtil.getAuthUser().getId());
-        return DtoConverter.toDto(user, UserMapStruct.class);
+        return DtoConverter.toDto(user, UserMapStruct.INSTANCE);
     }
 
     /** 保存 */
@@ -37,7 +37,7 @@ public class UserCenterController {
     @PostMapping("/save")
     public Result<String> save(@RequestBody UserDto userDto) {
         userDto.setId(UserUtil.getAuthUser().getId());
-        String randomPass = userService.saveUser(DtoConverter.toEntity(userDto, UserMapStruct.class));
+        String randomPass = userService.saveUser(DtoConverter.toEntity(userDto, UserMapStruct.INSTANCE));
         return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
     }
 

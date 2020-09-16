@@ -11,10 +11,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.factory.Mappers;
 import org.springframework.util.CollectionUtils;
 
 @Mapper
 public interface UserMapStruct extends BaseMapStruct<UserDto, User> {
+    UserMapStruct INSTANCE = Mappers.getMapper(UserMapStruct.class);
+
     @AfterMapping // or @BeforeMapping
     default void toEntityRoleIdList(User user, @MappingTarget UserDto userDto) {
         if (!CollectionUtils.isEmpty(user.getRoleList())) {
