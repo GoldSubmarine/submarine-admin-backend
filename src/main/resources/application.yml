@@ -24,7 +24,7 @@ spring:
     error-page: /error-page
 
 flowable:
-  database-schema-update: true
+  database-schema-update: false
   async-executor-activate: false
   dmn:
     enabled: false

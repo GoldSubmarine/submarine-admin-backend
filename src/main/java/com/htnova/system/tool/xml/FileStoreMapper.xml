@@ -12,6 +12,7 @@
 		a.store_type as `storeType`,
 		a.remark as `remark`,
 		a.create_by as `createBy`,
+        a.creator_name as `creatorName`,
 		a.create_time as `createTime`,
 		a.update_by as `updateBy`,
 		a.update_time as `updateTime`,
@@ -53,6 +54,9 @@
 		</if>
 		<if test="fileStoreDto.createBy != null and fileStoreDto.createBy != ''">
 			AND a.create_by = #{fileStoreDto.createBy}
+		</if>
+		<if test="fileStoreDto.creatorName != null and fileStoreDto.creatorName != ''">
+			AND a.creator_name LIKE concat('%',#{fileStoreDto.creatorName},'%')
 		</if>
 		<if test="fileStoreDto.createTime != null">
 			AND a.create_time = #{fileStoreDto.createTime}

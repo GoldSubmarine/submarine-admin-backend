@@ -11,6 +11,7 @@
 		a.status as `status`,
 		a.remark as `remark`,
 		a.create_by as `createBy`,
+        a.creator_name as `creatorName`,
 		a.create_time as `createTime`,
 		a.update_by as `updateBy`,
 		a.update_time as `updateTime`,
@@ -49,6 +50,9 @@
 		</if>
 		<if test="quartzJobDto.createBy != null">
 			AND a.create_by = #{quartzJobDto.createBy}
+		</if>
+		<if test="quartzJobDto.creatorName != null and quartzJobDto.creatorName != ''">
+			AND a.creator_name LIKE concat('%',#{quartzJobDto.creatorName},'%')
 		</if>
 		<if test="quartzJobDto.createTime != null">
 			AND a.create_time = #{quartzJobDto.createTime}

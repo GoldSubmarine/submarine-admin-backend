@@ -7,6 +7,7 @@
         a.name as `name`,
         a.remark as `remark`,
         a.create_by as `createBy`,
+        a.creator_name as `creatorName`,
         a.create_time as `createTime`,
         a.update_by as `updateBy`,
         a.update_time as `updateTime`,
@@ -29,6 +30,9 @@
         </if>
         <if test="dictionaryDto.createBy != null and dictionaryDto.createBy != ''">
             AND a.create_by = #{dictionaryDto.createBy}
+        </if>
+        <if test="dictionaryDto.creatorName != null and dictionaryDto.creatorName != ''">
+            AND a.creator_name LIKE concat('%',#{dictionaryDto.creatorName},'%')
         </if>
         <if test="dictionaryDto.createTime != null">
             AND a.create_time = #{dictionaryDto.createTime}

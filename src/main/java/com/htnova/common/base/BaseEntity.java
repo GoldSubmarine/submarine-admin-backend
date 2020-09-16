@@ -33,6 +33,9 @@ public abstract class BaseEntity implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     protected Long createBy;
 
+    /** 创建人姓名 */
+    protected String creatorName;
+
     /** 创建时间 */
     @TableField(fill = FieldFill.INSERT)
     protected LocalDateTime createTime;

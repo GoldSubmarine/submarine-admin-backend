@@ -10,6 +10,7 @@
 		a.remark as `remark`,
 		a.process_instance_id as `processInstanceId`,
 		a.create_by as `createBy`,
+        a.creator_name as `creatorName`,
 		a.create_time as `createTime`,
 		a.update_by as `updateBy`,
 		a.update_time as `updateTime`,
@@ -45,6 +46,9 @@
 		</if>
 		<if test="flowLeaveDto.createBy != null">
 			AND a.create_by = #{flowLeaveDto.createBy}
+		</if>
+		<if test="flowLeaveDto.creatorName != null and flowLeaveDto.creatorName != ''">
+			AND a.creator_name LIKE concat('%',#{flowLeaveDto.creatorName},'%')
 		</if>
 		<if test="flowLeaveDto.createTime != null">
 			AND a.create_time = #{flowLeaveDto.createTime}

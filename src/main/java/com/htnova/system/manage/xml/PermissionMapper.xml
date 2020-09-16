@@ -11,6 +11,7 @@
         a.pids as `pids`,
         a.remark as `remark`,
         a.create_by as `createBy`,
+        a.creator_name as `creatorName`,
         a.create_time as `createTime`,
         a.update_by as `updateBy`,
         a.update_time as `updateTime`,
@@ -36,6 +37,9 @@
         </if>
         <if test="permissionDto.pids != null and permissionDto.pids != ''">
             AND a.pids = #{permissionDto.pids}
+        </if>
+        <if test="permissionDto.creatorName != null and permissionDto.creatorName != ''">
+            AND a.creator_name LIKE concat('%',#{permissionDto.creatorName},'%')
         </if>
     </sql>
 

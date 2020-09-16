@@ -10,6 +10,7 @@
 		a.point as `point`,
 		a.remark as `remark`,
 		a.create_by as `createBy`,
+        a.creator_name as `creatorName`,
 		a.create_time as `createTime`,
 		a.update_by as `updateBy`,
 		a.update_time as `updateTime`,
@@ -42,6 +43,9 @@
 		</if>
 		<if test="locationDto.createBy != null and locationDto.createBy != ''">
 			AND a.create_by = #{locationDto.createBy}
+		</if>
+		<if test="locationDto.creatorName != null and locationDto.creatorName != ''">
+			AND a.creator_name LIKE concat('%',#{locationDto.creatorName},'%')
 		</if>
 		<if test="locationDto.createTime != null">
 			AND a.create_time = #{locationDto.createTime}
