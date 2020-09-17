@@ -10,6 +10,7 @@
 		a.remark as `remark`,
 		a.create_user_name as `createUserName`,
 		a.create_by as `createBy`,
+        a.creator_name as `creatorName`,
 		a.create_time as `createTime`,
 		a.update_by as `updateBy`,
 		a.update_time as `updateTime`,
@@ -45,6 +46,9 @@
 		</if>
 		<if test="flowHistoryDto.createBy != null">
 			AND a.create_by = #{flowHistoryDto.createBy}
+		</if>
+		<if test="flowHistoryDto.creatorName != null and flowHistoryDto.creatorName != ''">
+			AND a.creator_name LIKE concat('%',#{flowHistoryDto.creatorName},'%')
 		</if>
 		<if test="flowHistoryDto.createTime != null">
 			AND a.create_time = #{flowHistoryDto.createTime}

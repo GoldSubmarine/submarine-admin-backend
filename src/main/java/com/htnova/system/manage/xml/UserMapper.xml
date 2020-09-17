@@ -18,6 +18,7 @@
         a.dept_name as `deptName`,
         a.remark as `remark`,
         a.create_by as `createBy`,
+        a.creator_name as `creatorName`,
         a.create_time as `createTime`,
         a.update_by as `updateBy`,
         a.update_time as `updateTime`,
@@ -73,6 +74,9 @@
         </if>
         <if test="userDto.createBy != null and userDto.createBy != ''">
             AND a.create_by = #{userDto.createBy}
+        </if>
+        <if test="userDto.creatorName != null and userDto.creatorName != ''">
+            AND a.creator_name LIKE concat('%',#{userDto.creatorName},'%')
         </if>
         <if test="userDto.createTime != null">
             AND a.create_time = #{userDto.createTime}

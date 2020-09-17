@@ -9,6 +9,7 @@
         a.org_admin_display as `orgAdminDisplay`,
         a.remark as `remark`,
         a.create_by as `createBy`,
+        a.creator_name as `creatorName`,
         a.create_time as `createTime`,
         a.update_by as `updateBy`,
         a.update_time as `updateTime`,
@@ -37,6 +38,9 @@
         </if>
         <if test="roleDto.createBy != null and roleDto.createBy != ''">
             AND a.create_by = #{roleDto.createBy}
+        </if>
+        <if test="roleDto.creatorName != null and roleDto.creatorName != ''">
+            AND a.creator_name LIKE concat('%',#{roleDto.creatorName},'%')
         </if>
         <if test="roleDto.createTime != null">
             AND a.create_time = #{roleDto.createTime}
