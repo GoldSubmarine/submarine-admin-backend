@@ -31,7 +31,7 @@ public class RoleController {
     @GetMapping("/list/page")
     public XPage<RoleDto> findListByPage(RoleDto roleDto, XPage<Void> xPage) {
         IPage<Role> rolePage = roleService.findRoleList(roleDto, XPage.toIPage(xPage));
-        return DtoConverter.toDto(rolePage, RoleMapStruct.class);
+        return DtoConverter.toDto(rolePage, RoleMapStruct.INSTANCE);
     }
 
     /** 角色查询 */
@@ -39,7 +39,7 @@ public class RoleController {
     @GetMapping("/list/all")
     public List<RoleDto> findList(RoleDto roleDto) {
         List<Role> roleList = roleService.findRoleList(roleDto);
-        return DtoConverter.toDto(roleList, RoleMapStruct.class);
+        return DtoConverter.toDto(roleList, RoleMapStruct.INSTANCE);
     }
 
     /** 角色详情 */
@@ -47,14 +47,14 @@ public class RoleController {
     @GetMapping("/detail/{id}")
     public RoleDto getById(@PathVariable long id) {
         Role role = roleService.getRoleById(id);
-        return DtoConverter.toDto(role, RoleMapStruct.class);
+        return DtoConverter.toDto(role, RoleMapStruct.INSTANCE);
     }
 
     /** 角色保存 */
     @PreAuthorize("hasAnyAuthority('role.add', 'role.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody RoleDto roleDto) {
-        roleService.saveRole(DtoConverter.toEntity(roleDto, RoleMapStruct.class));
+        roleService.saveRole(DtoConverter.toEntity(roleDto, RoleMapStruct.INSTANCE));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

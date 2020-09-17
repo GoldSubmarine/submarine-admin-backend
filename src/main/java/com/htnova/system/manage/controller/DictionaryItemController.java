@@ -29,7 +29,7 @@ public class DictionaryItemController {
             dictionaryItemDto,
             XPage.toIPage(xPage)
         );
-        return DtoConverter.toDto(dictionaryItemPage, DictionaryItemMapStruct.class);
+        return DtoConverter.toDto(dictionaryItemPage, DictionaryItemMapStruct.INSTANCE);
     }
 
     /** 查询 */
@@ -37,7 +37,7 @@ public class DictionaryItemController {
     @GetMapping("/list/all")
     public List<DictionaryItemDto> findList(DictionaryItemDto dictionaryItemDto) {
         List<DictionaryItem> dictionaryItemList = dictionaryItemService.findDictionaryItemList(dictionaryItemDto);
-        return DtoConverter.toDto(dictionaryItemList, DictionaryItemMapStruct.class);
+        return DtoConverter.toDto(dictionaryItemList, DictionaryItemMapStruct.INSTANCE);
     }
 
     /** 详情 */
@@ -45,7 +45,7 @@ public class DictionaryItemController {
     @GetMapping("/detail/{id}")
     public DictionaryItemDto getById(@PathVariable long id) {
         DictionaryItem dictionaryItem = dictionaryItemService.getDictionaryItemById(id);
-        return DtoConverter.toDto(dictionaryItem, DictionaryItemMapStruct.class);
+        return DtoConverter.toDto(dictionaryItem, DictionaryItemMapStruct.INSTANCE);
     }
 
     /** 保存 */
@@ -53,7 +53,7 @@ public class DictionaryItemController {
     @PostMapping("/save")
     public Result<Void> save(@RequestBody DictionaryItemDto dictionaryItemDto) {
         dictionaryItemService.saveDictionaryItem(
-            DtoConverter.toEntity(dictionaryItemDto, DictionaryItemMapStruct.class)
+            DtoConverter.toEntity(dictionaryItemDto, DictionaryItemMapStruct.INSTANCE)
         );
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }

@@ -29,7 +29,7 @@ public class PermissionController {
     @GetMapping("/list/page")
     public XPage<PermissionDto> findListByPage(PermissionDto permissionDto, XPage<Void> xPage) {
         IPage<Permission> permissionPage = permissionService.findPermissionList(permissionDto, XPage.toIPage(xPage));
-        return DtoConverter.toDto(permissionPage, PermissionMapStruct.class);
+        return DtoConverter.toDto(permissionPage, PermissionMapStruct.INSTANCE);
     }
 
     /** 权限查询 */
@@ -37,7 +37,7 @@ public class PermissionController {
     @GetMapping("/list/all")
     public List<PermissionDto> findList(PermissionDto permissionDto) {
         List<Permission> permissionList = permissionService.findPermissionList(permissionDto);
-        return DtoConverter.toDto(permissionList, PermissionMapStruct.class);
+        return DtoConverter.toDto(permissionList, PermissionMapStruct.INSTANCE);
     }
 
     /** 权限详情 */
@@ -45,7 +45,7 @@ public class PermissionController {
     @GetMapping("/detail/{id}")
     public PermissionDto getById(@PathVariable long id) {
         Permission permission = permissionService.getPermissionById(id);
-        return DtoConverter.toDto(permission, PermissionMapStruct.class);
+        return DtoConverter.toDto(permission, PermissionMapStruct.INSTANCE);
     }
 
     /**
@@ -58,14 +58,14 @@ public class PermissionController {
     public List<PermissionDto> getPermissionTree(PermissionDto permissionDto) {
         List<Permission> permissionList = permissionService.findPermissionList(permissionDto);
         List<Permission> treeList = TreeConverter.listToTree(permissionList);
-        return DtoConverter.toDto(treeList, PermissionMapStruct.class);
+        return DtoConverter.toDto(treeList, PermissionMapStruct.INSTANCE);
     }
 
     /** 权限保存 */
     @PreAuthorize("hasAnyAuthority('permission.add', 'permission.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody PermissionDto permissionDto) {
-        permissionService.savePermission(DtoConverter.toEntity(permissionDto, PermissionMapStruct.class));
+        permissionService.savePermission(DtoConverter.toEntity(permissionDto, PermissionMapStruct.INSTANCE));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
@@ -73,7 +73,7 @@ public class PermissionController {
     @PreAuthorize("hasAnyAuthority('permission.add', 'permission.edit')")
     @PostMapping("/save/module")
     public Result<Void> saveModule(@RequestBody PermissionDto permissionDto) {
-        Permission permission = DtoConverter.toEntity(permissionDto, PermissionMapStruct.class);
+        Permission permission = DtoConverter.toEntity(permissionDto, PermissionMapStruct.INSTANCE);
         permissionService.savePermission(permission);
         Map<String, String> map = new HashMap<>();
         map.put("查询", ".find");

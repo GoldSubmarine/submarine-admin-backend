@@ -30,7 +30,7 @@ public class FileStoreController {
     @GetMapping("/list/page")
     public XPage<FileStoreDto> findListByPage(FileStoreDto fileStoreDto, XPage<Void> xPage) {
         IPage<FileStore> fileStorePage = fileStoreService.findFileStoreList(fileStoreDto, XPage.toIPage(xPage));
-        return DtoConverter.toDto(fileStorePage, FileStoreMapStruct.class);
+        return DtoConverter.toDto(fileStorePage, FileStoreMapStruct.INSTANCE);
     }
 
     /** 查询 */
@@ -38,7 +38,7 @@ public class FileStoreController {
     @GetMapping("/list/all")
     public List<FileStoreDto> findList(FileStoreDto fileStoreDto) {
         List<FileStore> fileStoreList = fileStoreService.findFileStoreList(fileStoreDto);
-        return DtoConverter.toDto(fileStoreList, FileStoreMapStruct.class);
+        return DtoConverter.toDto(fileStoreList, FileStoreMapStruct.INSTANCE);
     }
 
     /** 根据ids查询 */
@@ -46,7 +46,7 @@ public class FileStoreController {
     @GetMapping("/list/ids")
     public List<FileStoreDto> findListByIds(FileStoreDto fileStoreDto) {
         List<FileStore> fileStoreList = fileStoreService.findFileStoreByIds(fileStoreDto.getIds());
-        return DtoConverter.toDto(fileStoreList, FileStoreMapStruct.class);
+        return DtoConverter.toDto(fileStoreList, FileStoreMapStruct.INSTANCE);
     }
 
     /** 详情 */
@@ -54,14 +54,14 @@ public class FileStoreController {
     @GetMapping("/detail/{id}")
     public FileStoreDto getById(@PathVariable long id) {
         FileStore fileStore = fileStoreService.getFileStoreById(id);
-        return DtoConverter.toDto(fileStore, FileStoreMapStruct.class);
+        return DtoConverter.toDto(fileStore, FileStoreMapStruct.INSTANCE);
     }
 
     /** 保存 */
     @PreAuthorize("hasAnyAuthority('fileStore.add', 'fileStore.edit')")
     @PostMapping("/save")
     public Result<Void> save(@Valid @RequestBody FileStoreDto fileStoreDto) {
-        fileStoreService.saveFileStore(DtoConverter.toEntity(fileStoreDto, FileStoreMapStruct.class));
+        fileStoreService.saveFileStore(DtoConverter.toEntity(fileStoreDto, FileStoreMapStruct.INSTANCE));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 
@@ -77,7 +77,7 @@ public class FileStoreController {
     @PostMapping("/upload")
     public Result<FileStoreDto> upload(@RequestParam MultipartFile file) throws IOException {
         FileStore fileStore = fileStoreService.upload(file);
-        return Result.build(ResultStatus.SAVE_SUCCESS, DtoConverter.toDto(fileStore, FileStoreMapStruct.class));
+        return Result.build(ResultStatus.SAVE_SUCCESS, DtoConverter.toDto(fileStore, FileStoreMapStruct.INSTANCE));
     }
 
     /** 下载附件 */

@@ -38,7 +38,7 @@ public class FlowLeaveService extends ActBaseService<FlowLeaveMapper, FlowLeave>
 
     @Transactional
     public void saveFlowLeave(FlowLeaveDto flowLeaveDto) {
-        FlowLeave flowLeave = DtoConverter.toEntity(flowLeaveDto, FlowLeaveMapStruct.class);
+        FlowLeave flowLeave = DtoConverter.toEntity(flowLeaveDto, FlowLeaveMapStruct.INSTANCE);
         super.saveOrUpdate(flowLeave);
         ProcessInstance processInstance = actTaskService.startProcess(
             flowLeaveDto.getProcessDefinitionId(),
@@ -51,7 +51,7 @@ public class FlowLeaveService extends ActBaseService<FlowLeaveMapper, FlowLeave>
 
     @Transactional
     public void approve(FlowLeaveDto flowLeaveDto) {
-        FlowLeave flowLeave = DtoConverter.toEntity(flowLeaveDto, FlowLeaveMapStruct.class);
+        FlowLeave flowLeave = DtoConverter.toEntity(flowLeaveDto, FlowLeaveMapStruct.INSTANCE);
         super.saveOrUpdate(flowLeave);
         saveFlowHistory(flowLeaveDto, flowLeave.getId());
         actTaskService.complete(

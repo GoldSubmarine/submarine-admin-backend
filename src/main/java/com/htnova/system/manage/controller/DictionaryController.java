@@ -26,7 +26,7 @@ public class DictionaryController {
     @GetMapping("/list/page")
     public XPage<DictionaryDto> findListByPage(DictionaryDto dictionaryDto, XPage<Void> xPage) {
         IPage<Dictionary> dictionaryPage = dictionaryService.findDictionaryList(dictionaryDto, XPage.toIPage(xPage));
-        return DtoConverter.toDto(dictionaryPage, DictionaryMapStruct.class);
+        return DtoConverter.toDto(dictionaryPage, DictionaryMapStruct.INSTANCE);
     }
 
     /** 查询 */
@@ -34,7 +34,7 @@ public class DictionaryController {
     @GetMapping("/list/all")
     public List<DictionaryDto> findList(DictionaryDto dictionaryDto) {
         List<Dictionary> dictionaryList = dictionaryService.findDictionaryList(dictionaryDto);
-        return DtoConverter.toDto(dictionaryList, DictionaryMapStruct.class);
+        return DtoConverter.toDto(dictionaryList, DictionaryMapStruct.INSTANCE);
     }
 
     /** 详情 */
@@ -42,14 +42,14 @@ public class DictionaryController {
     @GetMapping("/detail/{id}")
     public DictionaryDto getById(@PathVariable long id) {
         Dictionary dictionary = dictionaryService.getDictionaryById(id);
-        return DtoConverter.toDto(dictionary, DictionaryMapStruct.class);
+        return DtoConverter.toDto(dictionary, DictionaryMapStruct.INSTANCE);
     }
 
     /** 保存 */
     @PreAuthorize("hasAnyAuthority('dictionary.add', 'dictionary.edit')")
     @PostMapping("/save")
     public Result<Void> save(@RequestBody DictionaryDto dictionaryDto) {
-        dictionaryService.saveDictionary(DtoConverter.toEntity(dictionaryDto, DictionaryMapStruct.class));
+        dictionaryService.saveDictionary(DtoConverter.toEntity(dictionaryDto, DictionaryMapStruct.INSTANCE));
         return Result.build(ResultStatus.SAVE_SUCCESS);
     }
 

@@ -31,7 +31,7 @@ public class UserController {
     @GetMapping("/list/page")
     public XPage<UserDto> findListByPage(UserDto userDto, XPage<Void> xPage) {
         IPage<User> userPage = userService.findUserList(userDto, XPage.toIPage(xPage));
-        return DtoConverter.toDto(userPage, UserMapStruct.class);
+        return DtoConverter.toDto(userPage, UserMapStruct.INSTANCE);
     }
 
     /** 查询 */
@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping("/list/all")
     public List<UserDto> findList(UserDto userDto) {
         List<User> userList = userService.findUserList(userDto);
-        return DtoConverter.toDto(userList, UserMapStruct.class);
+        return DtoConverter.toDto(userList, UserMapStruct.INSTANCE);
     }
 
     /** 详情 */
@@ -47,14 +47,14 @@ public class UserController {
     @GetMapping("/detail/{id}")
     public UserDto getById(@PathVariable long id) {
         User user = userService.getUserById(id);
-        return DtoConverter.toDto(user, UserMapStruct.class);
+        return DtoConverter.toDto(user, UserMapStruct.INSTANCE);
     }
 
     /** 保存 */
     @PreAuthorize("hasAnyAuthority('user.add', 'user.edit')")
     @PostMapping("/save")
     public Result<String> save(@RequestBody UserDto userDto) {
-        String randomPass = userService.saveUser(DtoConverter.toEntity(userDto, UserMapStruct.class));
+        String randomPass = userService.saveUser(DtoConverter.toEntity(userDto, UserMapStruct.INSTANCE));
         return Result.build(ResultStatus.SAVE_SUCCESS, randomPass);
     }
 

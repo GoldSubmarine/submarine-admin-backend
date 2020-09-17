@@ -68,8 +68,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     @Transactional(readOnly = true)
     public AuthUser getAuthUser(User user) {
-        AuthUserMapStruct mapper = Mappers.getMapper(AuthUserMapStruct.class);
-        return mapper.toAuthUser(user);
+        return AuthUserMapStruct.INSTANCE.toAuthUser(user);
     }
 
     @Transactional
