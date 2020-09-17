@@ -20,24 +20,24 @@ public class LocalDateTimeValidator implements DevValidator {
         try (ScanResult scanResult = new ClassGraph().enableAllInfo().acceptPackages(GlobalConst.PACKAGE).scan()) {
             ClassInfoList classInfos = scanResult.getAllClasses().filter(classInfo -> !classInfo.isInnerClass());
             classInfos.forEach(
-                    classInfo ->
-                            classInfo
-                                    .getDeclaredFieldInfo()
-                                    .filter(
-                                            fieldInfo ->
-                                                    "Date".equalsIgnoreCase(fieldInfo.getTypeDescriptor().toStringWithSimpleNames())
+                classInfo ->
+                    classInfo
+                        .getDeclaredFieldInfo()
+                        .filter(
+                            fieldInfo ->
+                                "Date".equalsIgnoreCase(fieldInfo.getTypeDescriptor().toStringWithSimpleNames())
+                        )
+                        .filter(fieldInfo -> !fieldInfo.isStatic())
+                        .forEach(
+                            fieldInfo ->
+                                log.warn(
+                                    String.format(
+                                        "类【%s】字段 [%s] 使用了 Date 类型",
+                                        fieldInfo.getClassInfo().getSimpleName(),
+                                        fieldInfo.getName()
                                     )
-                                    .filter(fieldInfo -> !fieldInfo.isStatic())
-                                    .forEach(
-                                            fieldInfo ->
-                                                    log.warn(
-                                                            String.format(
-                                                                    "类【%s】字段 [%s] 使用了 Date 类型",
-                                                                    fieldInfo.getClassInfo().getSimpleName(),
-                                                                    fieldInfo.getName()
-                                                            )
-                                                    )
-                                    )
+                                )
+                        )
             );
         }
     }

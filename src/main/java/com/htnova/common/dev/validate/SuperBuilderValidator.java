@@ -5,12 +5,11 @@ import com.htnova.common.dev.config.DevValidator;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.lang.NonNull;
-
-import java.util.stream.Stream;
 
 @Slf4j
 public class SuperBuilderValidator implements DevValidator {
