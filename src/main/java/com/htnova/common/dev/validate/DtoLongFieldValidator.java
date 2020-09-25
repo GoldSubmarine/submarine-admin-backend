@@ -18,6 +18,7 @@ import org.springframework.lang.NonNull;
 @Slf4j
 public class DtoLongFieldValidator implements DevValidator {
 
+    @Override
     public void onApplicationEvent(@NonNull ApplicationReadyEvent applicationReadyEvent) {
         try (ScanResult scanResult = new ClassGraph().enableAllInfo().acceptPackages(GlobalConst.PACKAGE).scan()) {
             ClassInfoList dtoClassInfos = scanResult
