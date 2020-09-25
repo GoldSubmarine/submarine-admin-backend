@@ -78,7 +78,7 @@
             AND b.del_flag = 0
             AND a.role_id IN
         <foreach item="item" index="index" collection="ids"  open="(" separator="," close=")">
-            '${item}'
+            #{item}
         </foreach>
     </select>
 
