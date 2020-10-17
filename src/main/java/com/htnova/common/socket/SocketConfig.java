@@ -11,6 +11,7 @@ import com.htnova.security.entity.AuthUser;
 import javax.annotation.Resource;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -46,7 +47,7 @@ public class SocketConfig {
         // Ping消息超时时间（毫秒），默认60000，这个时间间隔内没有接收到心跳消息就会发送超时事件
         config.setPingTimeout(60000);
         // 根路径，设置为和spring security设置的cookie的path一致
-        config.setContext(serverProperties.getServlet().getContextPath() + "/socket.io");
+        config.setContext(StringUtils.trimToEmpty(serverProperties.getServlet().getContextPath()) + "/socket.io");
 
         config.setExceptionListener(new SocketExceptionListener());
 
