@@ -190,12 +190,6 @@
             <version>${aliyun-oss.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.htnova</groupId>
-            <artifactId>signature-server</artifactId>
-            <version>1.0</version>
-        </dependency>
-
     </dependencies>
 
 
